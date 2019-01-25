@@ -13,7 +13,7 @@ class TreeLevel extends Phaser.Scene {
 
     create() {
         // This are the bounds of our world
-        this.physics.world.setBounds(0, 0, 800, 2400, true, true, true, true);
+        this.physics.world.setBounds(0, 0, 800, 2600, true, true, true, true);
 
         // Background
         this.add.image(400, 300, 'background').setScale(2);
@@ -22,7 +22,7 @@ class TreeLevel extends Phaser.Scene {
         let platforms = this.physics.add.staticGroup();
 
         // Create the ground
-        platforms.create(400, 2400, 'ground').setScale(2).refreshBody();;
+        platforms.create(400, 2600, 'ground').setScale(5).refreshBody();
 
         // Create the branches
         platforms.create(20, 100, 'branch');

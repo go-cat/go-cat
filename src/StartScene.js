@@ -23,6 +23,9 @@ class StartScene extends Phaser.Scene {
             graphics.fillRect(0, ((lineHeight * 0.6) + (i * lineHeight)), this.game.config.width, lineHeight * 0.4)
         }
 
+        this.add.circle(400, 300, 150, color1)
+        this.add.image(400, 300, 'logo')
+
         this.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
                 case '1':
@@ -36,7 +39,5 @@ class StartScene extends Phaser.Scene {
                     break;
             }
         })
-
-        this.add.image(400, 300, 'logo')
     }
 }
