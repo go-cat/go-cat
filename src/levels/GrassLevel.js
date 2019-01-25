@@ -12,21 +12,28 @@ class GrassLevel extends Phaser.Scene {
             'assets/images/GrassLevel/dude.png',
             { frameWidth: 32, frameHeight: 48 }
         );
+
+        this.load.tilemapTiledJSON('map', 'assets/maps/GrassLevel/level.json');
+        this.load.image('tiles1', 'assets/images/GrassLevel/sprites.png');
     }
 
     create() {
-        this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 2400, 600);
+        this.physics.world.setBounds(0,0,3392,600, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 3392, 600);
         this.score=0;
-        this.add.image(0, 0, 'sky').setOrigin(0, 0)
-        this.add.image(800, 0, 'sky').setOrigin(0, 0)
+        this.add.image(0, 0, 'sky').setOrigin(0, 0);
+        this.add.image(800, 0, 'sky').setOrigin(0, 0);
+
+        var map = this.make.tilemap({ key: 'map' });
+        var tileset = map.addTilesetImage('SuperMarioBros-World1-1', 'tiles1');
+        var layer = map.createStaticLayer('World1', tileset, 0, 0);
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
-        this.platforms = this.physics.add.staticGroup();
+        //this.platforms = this.physics.add.staticGroup();
 
         //  Here we create the ground.
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
+        //this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 450, 'dude');
@@ -95,6 +102,7 @@ class GrassLevel extends Phaser.Scene {
         {
             return;
         }
+        //this.scoreText.setXY(this.cameras.main.x, this.cameras.main.y);
 
         if (this.cursors.left.isDown)
         {
