@@ -37,6 +37,9 @@ class StartScene extends Phaser.Scene {
                 case '3':
                     this.scene.start('StreetLevel')
                     break;
+                case '4':
+                    this.scene.start('SecretLevel')
+                    break;
             }
         })
     }
