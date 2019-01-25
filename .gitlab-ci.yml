@@ -4,8 +4,5 @@ pages:
   stage: deploy
   script:
   - rsync -e "ssh -p 222" -r --delete src/ assets/ index.html goicaa@www531.your-server.de:public_html/
-  artifacts:
-    paths:
-    - public
   only:
   - master
