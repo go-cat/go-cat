@@ -40,6 +40,9 @@ class TreeLevel extends Phaser.Scene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
 
+        // Colide events
+        this.physics.add.collider(this.cat, platforms);
+        
         /* Initialize the keys */
         this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
