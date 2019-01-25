@@ -5,7 +5,6 @@ class TreeLevel extends Phaser.Scene {
 
     preload() {
         this.load.image('cat', 'assets/images/cat.png');
-        this.load.image('background', 'assets/images/TreeLevel/background.png');
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/TreeLevel/bird.png');
@@ -13,16 +12,14 @@ class TreeLevel extends Phaser.Scene {
 
     create() {
         // This are the bounds of our world
-        this.physics.world.setBounds(0, 0, 800, 2600, true, true, true, true);
-
-        // Background
-        this.add.image(400, 300, 'background').setScale(2);
+        this.physics.world.setBounds(0, 0, this.game.config.width, this.game.config.height*4, true, true, true, true);
+        this.cameras.main.setBackgroundColor('#89C0FF');
 
         // Our platforms and ground, all static in a group
         let platforms = this.physics.add.staticGroup();
 
         // Create the ground
-        platforms.create(400, 2600, 'ground').setScale(5).refreshBody();
+        platforms.create(this.game.config.width/2, this.game.config.height*4, 'ground').setScale(2).refreshBody();
 
         // Create the branches
         platforms.create(20, 100, 'branch');
@@ -42,7 +39,7 @@ class TreeLevel extends Phaser.Scene {
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
-        
+
         /* Initialize the keys */
         this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
