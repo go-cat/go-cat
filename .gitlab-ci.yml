@@ -3,6 +3,8 @@
 pages:
   stage: deploy
   script:
-  - rsync -e "ssh -p 222" -r --delete src/ assets/ index.html goicaa@www531.your-server.de:public_html/
+      - rsync -e "ssh -p 222" -r --delete index.html goicaa@www531.your-server.de:public_html/
+      - rsync -e "ssh -p 222" -r --delete src/ goicaa@www531.your-server.de:public_html/src/
+      - rsync -e "ssh -p 222" -r --delete assets/ goicaa@www531.your-server.de:public_html/assets/
   only:
   - master
