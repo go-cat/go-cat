@@ -10,9 +10,13 @@ let config = {
             debug: false
         }
     },
-    scene: {
-        preload: preload,
-        create: create,
-        update: update
-    }
+    scene: [
+        StartScene,
+        GrassLevel,
+        StreetLevel,
+        TreeLevel,
+        EndScene
+    ]
 };
+
+let game = new Phaser.Game(config);
