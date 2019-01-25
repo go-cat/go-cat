@@ -1,30 +1,33 @@
 class StartScene extends Phaser.Scene {
     constructor() {
-        super({ key: 'StartScene' })
+        super({ key: 'StartScene' });
     }
 
     preload() {
         this.load.image('logo', 'assets/images/go_cat_icon_transparent.png');
+        this.load.image('start_button', 'assets/images/go_cat_startbutton_brown.png');
+        this.load.image('background', 'assets/images/go_cat_start_background_brown.png');
     }
 
     create() {
-        let graphics = this.add.graphics();
-        const color1 = 0xffa435;
-        const color2 = 0xc26700;
-        const lineHeight = 50;
-        for (let i = 0; i < this.game.config.height / lineHeight; i++) {
-            graphics.fillGradientStyle(color1, color1, color2, color2);
-            graphics.fillRect(0, (i * lineHeight), this.game.config.width, lineHeight * 0.1);
-            graphics.fillStyle(color2);
-            graphics.fillRect(0, ((lineHeight * 0.1) + (i * lineHeight)), this.game.config.width, lineHeight * 0.4);
-            graphics.fillGradientStyle(color2, color2, color1, color1);
-            graphics.fillRect(0, ((lineHeight * 0.5) + (i * lineHeight)), this.game.config.width, lineHeight * 0.1);
-            graphics.fillStyle(color1);
-            graphics.fillRect(0, ((lineHeight * 0.6) + (i * lineHeight)), this.game.config.width, lineHeight * 0.4)
-        }
-
-        this.add.circle(400, 300, 150, color1);
+        this.add.image(400, 300, 'background');
         this.add.image(400, 300, 'logo');
+        this.startButton = this.add.image(400, 500, 'start_button');
+        this.startButton.setInteractive();
+
+        this.startButton.on('pointerover', (event) => {
+            this.startButton.setScale(1.05);
+        });
+        this.startButton.on('pointerdown', (event) => {
+            this.startButton.setScale(1.15);
+        });
+        this.startButton.on('pointerout', (event) => {
+            this.startButton.setScale(1);
+        });
+        this.startButton.on('pointerup', (event) => {
+            this.startButton.setScale(1);
+            this.scene.start('TreeLevel');
+        });
 
         this.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
@@ -41,6 +44,6 @@ class StartScene extends Phaser.Scene {
                     this.scene.start('SecretLevel');
                     break;
             }
-        })
+        });
     }
 }
