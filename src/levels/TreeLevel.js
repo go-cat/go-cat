@@ -32,14 +32,26 @@ class TreeLevel extends Phaser.Scene {
         platforms.create(100, 2200, 'branch'); 
         
         // Our cat
-        cat = this.physics.add.sprite(100, 0, 'cat');
-        player.setBounce(0.2);
-        player.setCollideWorldBounds(true);        
+        this.cat = this.physics.add.sprite(100, 0, 'cat');
+        this.cat.setBounce(0.2);
+        this.cat.setCollideWorldBounds(true);   
+        
+        /* Initialize the keys */
+        this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);        
         
         
     }
 
     update() {
-
+        
+        /* react to key presses */
+        if (this.leftKey.isDown) {
+            this.cat.x -= 10;
+        }
+        
+        if (this.rightKey.isDown) {
+            this.cat.x += 10;
+        }
     }
 }
