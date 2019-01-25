@@ -20,10 +20,12 @@ class StreetLevel extends Phaser.Scene {
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0,0);
 
-        this.car = this.physics.add.image(50, 50, 'car');
-        target.x=100;
-        target.y=100;
-        this.physics.moveToObject(this.car, target, 200);
+        this.car = this.physics.add.image(0, 50, 'car');
+        this.car.body.setAllowGravity(0,0);
+        this.target = new Phaser.Math.Vector2();
+        this.target.x=800;
+        this.target.y=50;
+        this.physics.moveToObject(this.car, this.target, 200);
 
         /* Initialize the keys */
         this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -33,6 +35,20 @@ class StreetLevel extends Phaser.Scene {
     }
 
     update() {
+        var distance = Phaser.Math.Distance.Between(this.car.x, this.car.y, this.target.x, this.target.y);
+
+        if (this.car.body.speed > 0)
+        {
+            // distanceText.setText('Distance: ' + distance);
+
+            //  4 is our distance tolerance, i.e. how close the source can get to the target
+            //  before it is considered as being there. The faster it moves, the more tolerance is required.
+            if (distance < 4)
+            {
+                this.car.body.reset(this.target.x, this.target.y);
+            }
+        }
+
         /* react to key presses */
         if (this.leftKey.isDown) {
             this.cat.x -= 5;
