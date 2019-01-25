@@ -31,6 +31,11 @@ class TreeLevel extends Phaser.Scene {
         platforms.create(700, 1900, 'branch'); 
         platforms.create(100, 2200, 'branch'); 
         
+        // Our cat
+        cat = this.physics.add.sprite(100, 450, 'cat');
+        player.setBounce(0.2);
+        player.setCollideWorldBounds(true);        
+        
         
     }
 
