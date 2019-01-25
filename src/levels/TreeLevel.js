@@ -16,7 +16,7 @@ class TreeLevel extends Phaser.Scene {
         this.add.image(400, 300, 'background');
 
         // Our platforms and ground, all static in a group
-        platforms = this.physics.add.staticGroup();
+        let platforms = this.physics.add.staticGroup();
 
         // Create the ground
         platforms.create(400, 2400, 'ground');
@@ -32,7 +32,7 @@ class TreeLevel extends Phaser.Scene {
         platforms.create(100, 2200, 'branch'); 
         
         // Our cat
-        cat = this.physics.add.sprite(100, 450, 'cat');
+        cat = this.physics.add.sprite(100, 0, 'cat');
         player.setBounce(0.2);
         player.setCollideWorldBounds(true);        
         
