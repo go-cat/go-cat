@@ -4,37 +4,35 @@ class GrassLevel extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky', 'assets/images/sky.png');
-        this.load.image('ground', 'assets/images/platform.png');
-        this.load.image('star', 'assets/images/star.png');
-        this.load.image('bomb', 'assets/images/bomb.png');
+        this.load.image('sky', 'assets/images/GrassLevel/sky.png');
+        this.load.image('ground', 'assets/images/GrassLevel/bottom_green_60px.png');
+        this.load.image('star', 'assets/images/GrassLevel/star.png');
+        this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.spritesheet('dude',
-            'assets/images/dude.png',
+            'assets/images/GrassLevel/dude.png',
             { frameWidth: 32, frameHeight: 48 }
         );
     }
 
     create() {
+        this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 2400, 600);
         this.score=0;
         this.add.image(0, 0, 'sky').setOrigin(0, 0)
+        this.add.image(800, 0, 'sky').setOrigin(0, 0)
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
 
         //  Here we create the ground.
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
-        //  Now let's create some ledges
-        this.platforms.create(600, 400, 'ground');
-        this.platforms.create(50, 250, 'ground');
-        this.platforms.create(750, 220, 'ground');
+        this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 450, 'dude');
 
         //  Player physics properties. Give the little guy a slight bounce.
-        this.player.setBounce(0.2);
+        this.player.setBounce(0.1);
         this.player.setCollideWorldBounds(true);
 
         //  Our player animations, turning, walking left and walking right.
@@ -89,6 +87,7 @@ class GrassLevel extends Phaser.Scene {
         this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
 
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
+        this.cameras.main.startFollow(this.player);
     }
 
     update() {
