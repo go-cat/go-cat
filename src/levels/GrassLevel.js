@@ -7,12 +7,12 @@ class GrassLevel extends BaseLevelScene {
         super.preload();
 
         this.load.tilemapTiledJSON("grass_map","assets/maps/GrassLevel/world.json");
-        this.load.image('grass_tiles',"assets/images/GrassLevel/sprites.png");
+        this.load.image('grass_tiles',"assets/images/GrassLevel/sprites_grass.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('empty', 'assets/images/GrassLevel/empty.png');
-        this.load.image('cat', 'assets/images/cat_walking_right.png');
-        this.load.image('goal', 'assets/images/house_home_transparent.png');
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
+        this.load.image('grass_goal', 'assets/images/house_home_transparent.png');
 
         // Audio
         this.load.audio('backgroundmusicgrass', 'assets/sounds/songs/Hamster_March.mp3');
@@ -46,45 +46,75 @@ class GrassLevel extends BaseLevelScene {
         this.millis = 0;
 
         // The player and its settings
-        this.cat = this.physics.add.sprite(100, 400, 'cat');
+        this.cat = this.physics.add.sprite(100, 400, 'animcat');
+        this.cameras.main.startFollow(this.cat);
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
-        this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
+        this.anims.remove('walk');
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.anims.remove('stand');
+        this.anims.create({
+            key: 'stand',
+            frames: [ { key: 'animcat', frame: 0 } ],
+            frameRate: 20,
+        });
 
         // Create pits
+
         this.pits = this.physics.add.group();
-        GrassLevel.spawnObject(92,17,'empty', this.pits);
-        GrassLevel.spawnObject(93,17,'empty', this.pits);
-        GrassLevel.spawnObject(94,17,'empty', this.pits);
-        GrassLevel.spawnObject(95,17,'empty', this.pits);
-        GrassLevel.spawnObject(106,17,'empty', this.pits);
-        GrassLevel.spawnObject(107,17,'empty', this.pits);
-        GrassLevel.spawnObject(108,17,'empty', this.pits);
-        GrassLevel.spawnObject(139,17,'empty', this.pits);
-        GrassLevel.spawnObject(140,17,'empty', this.pits);
-        GrassLevel.spawnObject(141,17,'empty', this.pits);
-        GrassLevel.spawnObject(152,17,'empty', this.pits);
-        GrassLevel.spawnObject(153,17,'empty', this.pits);
+        this.spawnObject(92,17,'empty', this.pits);
+        this.spawnObject(93,17,'empty', this.pits);
+        this.spawnObject(94,17,'empty', this.pits);
+        this.spawnObject(95,17,'empty', this.pits);
+        this.spawnObject(106,17,'empty', this.pits);
+        this.spawnObject(107,17,'empty', this.pits);
+        this.spawnObject(108,17,'empty', this.pits);
+        this.spawnObject(139,17,'empty', this.pits);
+        this.spawnObject(140,17,'empty', this.pits);
+        this.spawnObject(141,17,'empty', this.pits);
+        this.spawnObject(152,17,'empty', this.pits);
+        this.spawnObject(153,17,'empty', this.pits);
 
 
         //  Create mice
         this.mice = this.physics.add.group();
-        GrassLevel.spawnObject(28,8,'mouse', this.mice);
-        GrassLevel.spawnObject(29,8,'mouse', this.mice);
-        GrassLevel.spawnObject(30,8,'mouse', this.mice);
-        GrassLevel.spawnObject(31,8,'mouse', this.mice);
+        this.spawnObject(28,8,'mouse', this.mice);
+        this.spawnObject(29,8,'mouse', this.mice);
+        this.spawnObject(30,8,'mouse', this.mice);
+        this.spawnObject(31,8,'mouse', this.mice);
 
         // Create bomb
-        this.bombs = this.physics.add.group({
-            key: 'bomb',
-            setXY: { x: 420, y: 0}
-        });
+        this.bombs = this.physics.add.group();
+
+        this.spawnObject(31,14, 'bomb', this.bombs);
+        this.spawnObject(56,14, 'bomb', this.bombs);
+        this.spawnObject(68,10, 'bomb', this.bombs);
+        this.spawnObject(79,10, 'bomb', this.bombs);
+        this.spawnObject(99,14, 'bomb', this.bombs);
+        this.spawnObject(126,14, 'bomb', this.bombs);
+        this.spawnObject(127,14, 'bomb', this.bombs);
+        this.spawnObject(130,14, 'bomb', this.bombs);
+        this.spawnObject(131,14, 'bomb', this.bombs);
+        this.spawnObject(149,14, 'bomb', this.bombs);
+        this.spawnObject(178,14, 'bomb', this.bombs);
+        this.spawnObject(181,10, 'bomb', this.bombs);
+        this.spawnObject(182,10, 'bomb', this.bombs);
+
+        this.bombs.children.iterate(function (bomb) {
+            bomb.scaleX = 2;
+            bomb.scaleY = 2;
+        })
 
         // Add goal
-        this.goal = this.physics.add.sprite(204*32,0,'goal');
+        this.goal = this.physics.add.sprite(204*32,0,'grass_goal');
         this.physics.add.collider(this.cat, this.goal, ()=>{
             this.addScore(100);
             this.addScore(Math.floor(this.timeLeft));
@@ -111,8 +141,8 @@ class GrassLevel extends BaseLevelScene {
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.pits, collisionLayer);
 
-        //  Checks to see if the player overlaps with any of the mice, if he does call the collectMouse function
-        this.physics.add.overlap(this.cat, this.mice, this.collectMouse, null, this);
+        //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
+        this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
         this.physics.add.collider(this.cat, this.pits, this.receiveHit, null, this);
         this.physics.add.collider(this.cat, this.bombs, this.receiveHit, null, this);
@@ -124,9 +154,11 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(-220);
+            this.cat.setVelocityX(-350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand');
         }
 
         if (this.cat.flipX === false) {
@@ -136,9 +168,11 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(220);
+            this.cat.setVelocityX(350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand');
         }
 
         if (this.cat.flipX === true) {
@@ -152,7 +186,8 @@ class GrassLevel extends BaseLevelScene {
         }
     }
 
-    collectMouse(player, mouse) {
+    collectmouse (player, mouse)
+    {
         mouse.disableBody(true, true);
         try {
             this.sound.play("meow");
@@ -163,11 +198,13 @@ class GrassLevel extends BaseLevelScene {
         this.addScore();
     }
 
-    receiveHit(player, sender) {
+    receiveHit (player, sender)
+    {
         this.catDies(player);
     }
 
-    static spawnObject(x, y, sprite, group){
+    spawnObject (x, y, sprite, group){
         group.create(x*32+16, y*32, sprite);
     }
+
 }
