@@ -83,7 +83,7 @@ class TreeLevel extends BaseLevelScene {
     }
 
     update() {
-
+        super.update();
     }
 
     buttonPressedLeft(pressed) {

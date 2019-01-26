@@ -2,7 +2,10 @@
 
 class BaseLevelScene extends Phaser.Scene {
     constructor(config) {
-        super(config)
+        super(config);
+
+        this.xAxisGamepadPressed = false;
+        this.yAxisGamepadPressed = false;
     }
 
     create() {
@@ -63,4 +66,58 @@ class BaseLevelScene extends Phaser.Scene {
             }
         });
     }
+
+    update() {
+        if (this.input.gamepad.total !== 0) {
+            let pads = this.input.gamepad.gamepads;
+            for (let i = 0; i < pads.length; i++) {
+                let pad = pads[i];
+
+                if (!pad) {
+                    continue;
+                }
+
+                switch (pad.axes[0].value) {
+                    case -1:
+                        this.xAxisGamepadPressed = true;
+                        this.buttonPressedLeft(true);
+                        break;
+                    case 1:
+                        this.xAxisGamepadPressed = true;
+                        this.buttonPressedRight(true);
+                        break;
+                    case 0:
+                        if (this.xAxisGamepadPressed) {
+                            this.buttonPressedLeft(false);
+                            this.buttonPressedRight(false);
+                            this.xAxisGamepadPressed = false;
+                        }
+                        break;
+                }
+
+                switch (pad.axes[1].value) {
+                    case -1:
+                        this.yAxisGamepadPressed = true;
+                        this.buttonPressedUp(true);
+                        break;
+                    case 1:
+                        this.yAxisGamepadPressed = true;
+                        this.buttonPressedDown(true);
+                        break;
+                    case 0:
+                        if (this.yAxisGamepadPressed) {
+                            this.buttonPressedUp(false);
+                            this.buttonPressedDown(false);
+                            this.yAxisGamepadPressed = false;
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    buttonPressedLeft() {}
+    buttonPressedRight() {}
+    buttonPressedUp() {}
+    buttonPressedDown() {}
 }

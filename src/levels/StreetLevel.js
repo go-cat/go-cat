@@ -32,6 +32,8 @@ class StreetLevel extends BaseLevelScene {
     }
 
     update() {
+        super.update();
+
         if (this.car.x >= 800) {
             this.car.setVelocityX(-200);
         } else if (this.car.x <= 0) {

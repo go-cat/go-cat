@@ -99,6 +99,8 @@ class GrassLevel extends BaseLevelScene {
     }
 
     update() {
+        super.update();
+
         if (this.gameOver)
         {
             // TODO do something

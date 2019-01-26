@@ -93,6 +93,8 @@ class SecretLevel extends BaseLevelScene {
     }
 
     update() {
+        super.update();
+
         if (this.gameOver) {
             return null;
         }
@@ -112,27 +114,22 @@ class SecretLevel extends BaseLevelScene {
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
         } else {
             this.player.setVelocityX(0);
-            this.player.anims.play('turn');
         }
     }
 
     buttonPressedRight(pressed) {
         if (pressed) {
             this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
         } else {
             this.player.setVelocityX(0);
-            this.player.anims.play('turn');
         }
     }
 
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.player.body.velocity.y) < 2) {
             this.player.setVelocityY(-350);
-            this.player.anims.play('up', true);
         }
     }
 
@@ -171,8 +168,6 @@ class SecretLevel extends BaseLevelScene {
         this.physics.pause();
 
         player.setTint(0xff0000);
-
-        player.anims.play('turn');
 
         this.gameOver = true;
     }
