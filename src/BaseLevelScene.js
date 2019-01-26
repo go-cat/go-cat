@@ -310,7 +310,7 @@ class BaseLevelScene extends Phaser.Scene {
 
         try {
             this.sound.play('angry_cat');
-        } catch { 
+        } catch {
             console.log('no audio possible');
         }
 
@@ -319,7 +319,7 @@ class BaseLevelScene extends Phaser.Scene {
                 this.sound.play('falling');
             } catch {
                 console.log('no audio possible');
-            }                
+            }
 
             cat.setTint(0xffffff);
             this.physics.resume();
@@ -335,8 +335,15 @@ class BaseLevelScene extends Phaser.Scene {
         );
     }
 
-    buttonPressedLeft() {}
-    buttonPressedRight() {}
-    buttonPressedUp() {}
-    buttonPressedDown() {}
+    buttonPressedLeft() {
+    }
+
+    buttonPressedRight() {
+    }
+
+    buttonPressedUp() {
+    }
+
+    buttonPressedDown() {
+    }
 }

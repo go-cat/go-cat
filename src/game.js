@@ -6,7 +6,7 @@ let config = {
     height: 600,
     parent: 'game',
     input: {
-        gamepad: true,   
+        gamepad: true,
     },
     physics: {
         default: 'arcade',
