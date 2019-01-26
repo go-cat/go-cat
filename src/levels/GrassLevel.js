@@ -8,7 +8,6 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
-        this.load.image('spacedog', 'assets/images/SecretLevel/dog.jpg');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
 
         // Audio
@@ -25,11 +24,11 @@ class GrassLevel extends BaseLevelScene {
 
         const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        //const miceLayer = map.createStaticLayer("mice", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
 
-
-        this.physics.world.setBounds(0,0,2400,576, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 2400, 576);
+        this.physics.world.setBounds(0,0,6784,576, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 6784, 576);
 
         // Variables
         this.dogSpeed = 30;
@@ -47,12 +46,9 @@ class GrassLevel extends BaseLevelScene {
         this.cat.scaleX=0.6;
 
 
-        //  Create mice, bombs and a dog
-        this.mice = this.physics.add.group({
-            key: 'mouse',
-            repeat: 20,
-            setXY: { x: 50, y: 0, stepX: 100 }
-        });
+        //  Create mice and a bomb
+        this.mice = this.physics.add.group();
+        this.spawnObject(28,8,'mouse', this.mice);
 
         this.bombs = this.physics.add.group({
             key: 'bomb',
@@ -65,9 +61,6 @@ class GrassLevel extends BaseLevelScene {
             child.setBounceY(0);
             child.setGravityY(1000);
         });
-
-        this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
-        this.dog.setVelocityX(this.dogSpeed);
 
         //  Collide the player and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
@@ -120,30 +113,15 @@ class GrassLevel extends BaseLevelScene {
         this.sound.play("meow");
 
         this.addScore();
-
-        if (this.mice.countActive(true) === 0)
-        {
-            //  A new batch of mice to collect
-            this.mice.children.iterate(function (child) {
-
-                child.enableBody(true, child.x, 0, true, true);
-
-            });
-
-            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-            var bomb = this.bombs.create(x, 16, 'bomb');
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            bomb.allowGravity = false;
-
-        }
     }
 
     hitbomb (player, bomb)
     {
         this.catDies(player);
+    }
+
+    spawnObject (x, y, sprite, group){
+        group.create(x*32+16, y*32, sprite);
     }
 
 }
