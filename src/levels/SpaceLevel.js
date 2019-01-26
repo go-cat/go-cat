@@ -1,14 +1,14 @@
-class SecretLevel extends BaseLevelScene {
+class SpaceLevel extends BaseLevelScene {
     constructor() {
-        super({ key: 'SecretLevel' })
+        super({ key: 'SpaceLevel' })
     }
 
     preload() {
-        this.load.tilemapTiledJSON("map","assets/maps/SecretLevel/world.json");
-        this.load.image('tiles',"assets/images/SecretLevel/spaceTileset.png");
+        this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
+        this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
-        this.load.image('dogImage', 'assets/images/SecretLevel/dog.png');
+        this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
 
         // Audio
