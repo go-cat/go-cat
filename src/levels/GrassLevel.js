@@ -25,11 +25,11 @@ class GrassLevel extends BaseLevelScene {
 
         const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        //const miceLayer = map.createStaticLayer("mice", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
 
-
-        this.physics.world.setBounds(0,0,2400,576, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 2400, 576);
+        this.physics.world.setBounds(0,0,6784,576, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 6784, 576);
 
         // Variables
         this.dogSpeed = 30;
@@ -48,11 +48,8 @@ class GrassLevel extends BaseLevelScene {
 
 
         //  Create mice, bombs and a dog
-        this.mice = this.physics.add.group({
-            key: 'mouse',
-            repeat: 20,
-            setXY: { x: 50, y: 0, stepX: 100 }
-        });
+        this.mice = this.physics.add.group();
+        this.spawnObject(28,8,'mouse', this.mice);
 
         this.bombs = this.physics.add.group({
             key: 'bomb',
@@ -156,6 +153,10 @@ class GrassLevel extends BaseLevelScene {
         player.setTint(0xff0000);
 
         this.gameOver = true;
+    }
+
+    spawnObject (x, y, sprite, group){
+        group.create(x*32+16, y*32, sprite);
     }
 
 }
