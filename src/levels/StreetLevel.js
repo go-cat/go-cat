@@ -1,3 +1,5 @@
+"use strict";
+
 class StreetLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'StreetLevel' })

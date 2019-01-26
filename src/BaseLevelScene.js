@@ -1,3 +1,5 @@
+"use strict";
+
 class BaseLevelScene extends Phaser.Scene {
     constructor(config) {
         super(config)

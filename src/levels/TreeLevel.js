@@ -1,10 +1,12 @@
+"use strict";
+
 class TreeLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'TreeLevel' })
     }
 
     preload() {
-        this.load.image('cat', 'assets/images/cat.png');
+        this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/TreeLevel/bird.png');
@@ -75,10 +77,20 @@ class TreeLevel extends BaseLevelScene {
         /* react to key presses */
         if (this.leftKey.isDown) {
             this.cat.x -= 10;
+            
+            if (this.cat.flipX == false) {
+                this.cat.flipX = true;
+            }            
         }
 
         if (this.rightKey.isDown) {
             this.cat.x += 10;
+            
+            if (this.cat.flipX == true) {
+                this.cat.flipX = false;
+            }              
         }
+        
+
     }
 }

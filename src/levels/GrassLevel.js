@@ -1,3 +1,5 @@
+"use strict";
+
 class GrassLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'GrassLevel' })

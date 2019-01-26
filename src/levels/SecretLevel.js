@@ -1,3 +1,5 @@
+"use strict";
+
 class SecretLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'SecretLevel' })
