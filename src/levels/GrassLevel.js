@@ -12,7 +12,7 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('empty', 'assets/images/GrassLevel/empty.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
-        this.load.image('goal', 'assets/images/house_home_transparent.png');
+        this.load.image('grass_goal', 'assets/images/house_home_transparent.png');
 
         // Audio
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
@@ -80,7 +80,7 @@ class GrassLevel extends BaseLevelScene {
         });
 
         // Add goal
-        this.goal = this.physics.add.sprite(204*32,0,'goal');
+        this.goal = this.physics.add.sprite(204*32,0,'grass_goal');
         this.physics.add.collider(this.cat, this.goal, ()=>{
             this.addScore(100);
             this.addScore(Math.floor(this.timeLeft));
