@@ -15,8 +15,6 @@ class TreeLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // This are the bounds of our world
         const worldheight = this.game.config.height*4;
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
@@ -71,14 +69,18 @@ class TreeLevel extends BaseLevelScene {
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
+
         this.physics.add.collider(this.cat, this.mice);
         this.physics.add.collider(this.cat, this.birds);
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.birds, platforms);
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         // Mice run
         this.mice.children.iterate(function (mouse) {
@@ -90,7 +92,7 @@ class TreeLevel extends BaseLevelScene {
             } else {
                 mouse.setVelocityX(500);
             }
-        });        
+        });
 
         // Birds fly
 
@@ -119,10 +121,10 @@ class TreeLevel extends BaseLevelScene {
             this.cat.flipX = false;
         }
     }
-    
+
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-350);
         }
-    }    
+    }
 }

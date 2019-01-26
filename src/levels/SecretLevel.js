@@ -21,8 +21,6 @@ class SecretLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // layer and map for the Tilemap
         const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage("spacetileset","tiles");
@@ -90,10 +88,13 @@ class SecretLevel extends BaseLevelScene {
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.cameras.main.startFollow(this.cat);
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         if (this.gameOver) {
             return null;
@@ -117,10 +118,10 @@ class SecretLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
         }
-        
+
         if (this.cat.flipX === false) {
             this.cat.flipX = true;
-        }        
+        }
     }
 
     buttonPressedRight(pressed) {
@@ -129,10 +130,10 @@ class SecretLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
         }
-        
+
         if (this.cat.flipX === true) {
             this.cat.flipX = false;
-        }        
+        }
     }
 
     buttonPressedUp(pressed) {

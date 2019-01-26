@@ -20,8 +20,6 @@ class GrassLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         this.physics.world.setBounds(0,0,3392,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 3392, 600);
         this.score=0;
@@ -96,10 +94,13 @@ class GrassLevel extends BaseLevelScene {
 
         this.physics.add.collider(this.cat, this.bombs, this.hitBomb, null, this);
         this.cameras.main.startFollow(this.cat);
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         if (this.gameOver)
         {

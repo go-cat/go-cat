@@ -2,7 +2,10 @@
 
 class StartScene extends BaseLevelScene {
     constructor() {
-        super({ key: 'StartScene' });
+        super({
+            key: 'StartScene',
+            showTimer: false,
+        });
     }
 
     preload() {
@@ -12,8 +15,6 @@ class StartScene extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         this.add.image(400, 300, 'background');
         this.add.image(400, 300, 'logo');
         this.startButton = this.add.image(400, 505, 'start_button');
@@ -32,5 +33,7 @@ class StartScene extends BaseLevelScene {
             this.startButton.setScale(1);
             this.scene.start('TreeLevel');
         });
+
+        super.create();
     }
 }

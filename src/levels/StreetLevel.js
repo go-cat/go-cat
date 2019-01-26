@@ -12,8 +12,6 @@ class StreetLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // Our platforms and ground, all static in a group
         let platforms = this.physics.add.staticGroup();
 
@@ -29,10 +27,13 @@ class StreetLevel extends BaseLevelScene {
         this.physics.add.collider(this.cat, this.car, ()=>{
             this.scene.start('EndScene');
         });
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         if (this.car.x >= 800) {
             this.car.setVelocityX(-200);
