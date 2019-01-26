@@ -89,7 +89,7 @@ class TreeLevel extends BaseLevelScene {
         });
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.cat, this.birddropping, () => {
-
+            this.catDies(this.cat);
         });
         this.physics.add.collider(this.cat, this.goal, () => {
             this.addScore(100);

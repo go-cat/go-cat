@@ -1,14 +1,14 @@
-class SecretLevel extends BaseLevelScene {
+class SpaceLevel extends BaseLevelScene {
     constructor() {
-        super({ key: 'SecretLevel' })
+        super({ key: 'SpaceLevel' })
     }
 
     preload() {
-        this.load.tilemapTiledJSON("map","assets/maps/SecretLevel/world.json");
-        this.load.image('tiles',"assets/images/SecretLevel/spaceTileset.png");
+        this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
+        this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
-        this.load.image('dogImage', 'assets/images/SecretLevel/dog.png');
+        this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
 
         // Audio
@@ -130,17 +130,14 @@ class SecretLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
-        if (this.gameOver) {
-            return null;
-        }
-       for(let i =0; i<this.dogs.length; i++){
-           let currentDog = this.dogs[i];
-           if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
-               currentDog["sprite"].setVelocityX(-currentDog["speed"]);
-           }
-           if (currentDog["sprite"].x < currentDog["startX"]){
-               currentDog["sprite"].setVelocityX(currentDog["speed"]);
-       }
+        for(let i =0; i<this.dogs.length; i++){
+            let currentDog = this.dogs[i];
+            if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
+                currentDog["sprite"].setVelocityX(-currentDog["speed"]);
+            }
+            if (currentDog["sprite"].x < currentDog["startX"]){
+                currentDog["sprite"].setVelocityX(currentDog["speed"]);
+            }
         }
         //if (this.dog.x < this.dogStartX){
          //   this.dog.setVelocityX(this.dogSpeed);
@@ -159,7 +156,7 @@ class SecretLevel extends BaseLevelScene {
             this.cat.setVelocityX(0);
         }
 
-        if (this.cat.flipX === false && !this.gameOver) {
+        if (this.cat.flipX === false) {
             this.cat.flipX = true;
         }
     }
@@ -171,7 +168,7 @@ class SecretLevel extends BaseLevelScene {
             this.cat.setVelocityX(0);
         }
 
-        if (this.cat.flipX === true && !this.gameOver) {
+        if (this.cat.flipX === true) {
             this.cat.flipX = false;
         }
     }
@@ -211,20 +208,14 @@ class SecretLevel extends BaseLevelScene {
 
     hitbomb (cat, bomb)
     {
-        this.physics.pause();
-
-        cat.setTint(0xff0000);
-
-        this.gameOver = true;
-
-        cat.anims.play('turn');
+        this.catDies(cat);
     }
+
     hitdog (cat, dog)
     {
-        this.physics.pause();
-        cat.setTint(0xff0000);
         this.sound.play("dogLong");
         this.sound.play("angryCat");
-        this.gameOver = true;
+
+        this.catDies(cat);
     }
 }

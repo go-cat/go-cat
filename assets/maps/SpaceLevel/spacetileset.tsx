@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset name="spacetileset" tilewidth="32" tileheight="32" tilecount="100" columns="10">
- <image source="../../images/SecretLevel/spaceTileset.png" width="320" height="320"/>
+ <image source="../../images/SpaceLevel/spaceTileset.png" width="320" height="320"/>
  <tile id="60">
   <properties>
    <property name="collides" type="bool" value="true"/>

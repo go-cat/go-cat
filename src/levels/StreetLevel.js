@@ -64,8 +64,8 @@ class StreetLevel extends BaseLevelScene {
             child.setVelocityX(Phaser.Math.FloatBetween(100, 200));
         });
 
-        this.physics.add.collider(this.cat, this.cars, ()=>{
-            this.scene.start('EndScene');
+        this.physics.add.collider(this.cat, this.cars, () => {
+            this.catDies(this.cat);
         });
 
         // should be called at the end to the HUD will be on top

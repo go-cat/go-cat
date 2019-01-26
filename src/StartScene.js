@@ -31,6 +31,7 @@ class StartScene extends BaseLevelScene {
         });
         this.startButton.on('pointerup', (event) => {
             this.startButton.setScale(1);
+            this.catLoosesLive();
             this.startNextLevel();
         });
 

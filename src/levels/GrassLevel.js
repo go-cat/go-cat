@@ -8,7 +8,7 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
-        this.load.image('spacedog', 'assets/images/SecretLevel/dog.jpg');
+        this.load.image('spacedog', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
 
         // Audio
@@ -81,14 +81,6 @@ class GrassLevel extends BaseLevelScene {
         super.create();
     }
 
-    update(time, delta) {
-        super.update(time, delta);
-
-        if (this.gameOver) {
-            return null;
-        }
-    }
-
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.cat.setVelocityX(-160);
@@ -148,11 +140,7 @@ class GrassLevel extends BaseLevelScene {
 
     hitbomb (player, bomb)
     {
-        this.physics.pause();
-
-        player.setTint(0xff0000);
-
-        this.gameOver = true;
+        this.catDies(player);
     }
 
     spawnObject (x, y, sprite, group){
