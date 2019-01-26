@@ -4,6 +4,8 @@ class SpaceLevel extends BaseLevelScene {
     }
 
     preload() {
+        super.preload();
+
         this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
         this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
@@ -15,7 +17,8 @@ class SpaceLevel extends BaseLevelScene {
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
-        this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
+        this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
+        this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
 
     }
 
@@ -28,7 +31,7 @@ class SpaceLevel extends BaseLevelScene {
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
 
         collisionLayer.setCollisionByProperty({ collides: true });
-        console.log(map.objects);
+
 
 
         // bounds
@@ -99,8 +102,7 @@ class SpaceLevel extends BaseLevelScene {
 
 
         //this.dog = this.physics.add.sprite(this.dogStartX, this.dogStartY,"dogImage");
-        console.log("collisionlayer: ", collisionLayer);
-        console.log("safezone: ", this.safezoneLayer);
+
         let lay = this.safezoneLayer.objects[0];
         this.safezone = this.physics.add.image(lay.x, lay.y + lay.height/2,"safe");
         this.safezone.body.allowGravity = false;
@@ -116,15 +118,20 @@ class SpaceLevel extends BaseLevelScene {
         this.physics.add.collider(this.dogsSprites, collisionLayer);
 
         this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
-        this.physics.add.overlap(this.cat, this.safezone, this.startNextLevel, null, this);
+        this.physics.add.overlap(this.cat, this.safezone, () => {
+            this.addScore(100);
+            this.addScore(Math.floor(this.timeLeft));
+            this.startNextLevel();
+        }, null, this);
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
+        //console.log("collision",this.physics.world.checkCollision)
 
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
         super.create();
-        console.log (this.safezone)
+
     }
 
     update(time, delta) {
@@ -139,9 +146,15 @@ class SpaceLevel extends BaseLevelScene {
                 currentDog["sprite"].setVelocityX(currentDog["speed"]);
             }
         }
-        //if (this.dog.x < this.dogStartX){
-         //   this.dog.setVelocityX(this.dogSpeed);
+
+        //if (this.cat.y > 566){
+         //   this.catDies(this.cat);
         //}
+
+        if (this.cat.velocity < 10){
+            this.sound.play("land");
+        }
+
         if (this.millis > Phaser.Math.Between(100, 8000)){
             this.sound.play("bark");
             this.millis = 0;
@@ -176,6 +189,7 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-400);
+            this.sound.play("jump");
         }
     }
 
@@ -214,7 +228,7 @@ class SpaceLevel extends BaseLevelScene {
     hitdog (cat, dog)
     {
         this.sound.play("dogLong");
-        this.sound.play("angryCat");
+        this.sound.play("angry_cat");
 
         this.catDies(cat);
     }

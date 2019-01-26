@@ -4,6 +4,8 @@ class GrassLevel extends BaseLevelScene {
     }
 
     preload() {
+        super.preload();
+
         this.load.tilemapTiledJSON("map","assets/maps/GrassLevel/world.json");
         this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
@@ -66,6 +68,7 @@ class GrassLevel extends BaseLevelScene {
         this.goal = this.physics.add.sprite(204*32,0,'goal');
         this.physics.add.collider(this.cat, this.goal, ()=>{
             this.addScore(100);
+            this.addScore(Math.floor(this.timeLeft));
             this.startNextLevel();
         });
 
