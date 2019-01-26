@@ -70,15 +70,16 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 3800, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 4000, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 4200, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 4350, 'branch');        
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 4500, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 4600, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 4750, 'branch');        
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 4900, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 5100, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 5200, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 5400, 'branch');        
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 5500, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 5750, 'branch');
-        platforms.create(Phaser.Math.Between(0, this.game.config.width), 6000, 'branch');
-        platforms.create(Phaser.Math.Between(0, this.game.config.width), 6200, 'branch');
 
         // Our cat
         this.cat = this.physics.add.sprite(100, 0, 'animcat');
