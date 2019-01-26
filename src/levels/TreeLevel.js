@@ -83,8 +83,7 @@ class TreeLevel extends BaseLevelScene {
     }
 
     update() {
-        let pad = Phaser.Input.Gamepad.Gamepad;
-        console.log('h');
+
     }
 
     buttonPressedLeft(pressed) {
