@@ -114,17 +114,14 @@ class SecretLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
-        if (this.gameOver) {
-            return null;
-        }
-       for(let i =0; i<this.dogs.length; i++){
-           let currentDog = this.dogs[i];
-           if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
-               currentDog["sprite"].setVelocityX(-currentDog["speed"]);
-           }
-           if (currentDog["sprite"].x < currentDog["startX"]){
-               currentDog["sprite"].setVelocityX(currentDog["speed"]);
-       }
+        for(let i =0; i<this.dogs.length; i++){
+            let currentDog = this.dogs[i];
+            if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
+                currentDog["sprite"].setVelocityX(-currentDog["speed"]);
+            }
+            if (currentDog["sprite"].x < currentDog["startX"]){
+                currentDog["sprite"].setVelocityX(currentDog["speed"]);
+            }
         }
         //if (this.dog.x < this.dogStartX){
          //   this.dog.setVelocityX(this.dogSpeed);
@@ -195,20 +192,35 @@ class SecretLevel extends BaseLevelScene {
 
     hitbomb (cat, bomb)
     {
-        this.physics.pause();
-
-        cat.setTint(0xff0000);
+        this.catLoosesLive();
 
         cat.anims.play('turn');
 
-        this.gameOver = true;
+        this.physics.pause();
+        player.setTint(0xff0000);
+
+        setTimeout(() => {
+            player.setTint(0xffffff);
+            this.physics.resume();
+
+            // TODO make sure cat will not loose another life directly
+        }, 1000);
     }
+
     hitdog (cat, dog)
     {
-        this.physics.pause();
-        cat.setTint(0xff0000);
+        this.catLoosesLive();
+
         this.sound.play("dogLong");
         this.sound.play("angryCat");
-        this.gameOver = true;
+
+        this.physics.pause();
+        player.setTint(0xff0000);
+        setTimeout(() => {
+            player.setTint(0xffffff);
+            this.physics.resume();
+
+            // TODO make sure cat will not loose another life directly
+        }, 1000);
     }
 }
