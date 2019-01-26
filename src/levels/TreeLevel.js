@@ -112,7 +112,7 @@ class TreeLevel extends BaseLevelScene {
 
         // Mice
         this.mice = this.physics.add.group();
-	    for (let i = 0; i < 100; i++) {
+	    for (let i = 0; i < 20; i++) {
 	    	let x = Phaser.Math.Between(0, this.game.config.width);
 	    	let y = Phaser.Math.Between(600, worldheight);
             let mouse = this.mice.create(x, y, 'mouse');
@@ -127,7 +127,6 @@ class TreeLevel extends BaseLevelScene {
         this.physics.add.collider(this.cat, this.mice, (cat, mouse) => {
             this.addScore();
             mouse.disableBody(true, true);
-            this.cat.body.stop();
             this.sound.play("meow");
         });
         this.physics.add.collider(this.cat, this.birdpoops, () => {
@@ -157,9 +156,10 @@ class TreeLevel extends BaseLevelScene {
         /* Do we have a bird? */
         if (this.bird.flying) {
             /* should he poop? */
-            if (Phaser.Math.Between(1, 100) < 3 && this.bird.y > 250) {
+            if (Phaser.Math.Between(1, 1000) < 20 && this.bird.y > 250) {
                 let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2);
                 birdpoop.setBounceY(0);
+                birdpoop.setMass(0.1);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
             }
