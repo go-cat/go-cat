@@ -306,7 +306,7 @@ class BaseLevelScene extends Phaser.Scene {
         this.physics.pause();
         cat.setTint(0xff0000);
 
-        this.sound.play('angry_cat');
+        //this.sound.play('angry_cat');
 
         setTimeout(() => {
             this.sound.play('falling');
