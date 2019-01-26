@@ -8,7 +8,7 @@ class StreetLevel extends BaseLevelScene {
     preload() {
         this.load.image('grass', 'assets/images/StreetLevel/grass.png');
         this.load.image('car', 'assets/images/StreetLevel/car.png');
-        this.load.image('cat', 'assets/images/cat.png')
+        this.load.image('cat', 'assets/images/cat_walking_right.png')
     }
 
     create() {
@@ -49,17 +49,28 @@ class StreetLevel extends BaseLevelScene {
             //  before it is considered as being there. The faster it moves, the more tolerance is required.
             if (distance < 4)
             {
-                this.car.body.reset(this.target.x, this.target.y);
+                // this.car.body.reset(this.target.x, this.target.y);
+                // this.car.body.reset(0, 50);
+                this.car.body.x = 0;
+                this.car.body.y = 50;
             }
         }
 
         /* react to key presses */
         if (this.leftKey.isDown) {
             this.cat.x -= 5;
+
+            if (this.cat.flipX == false) {
+                this.cat.flipX = true;
+            }
         }
 
         if (this.rightKey.isDown) {
             this.cat.x += 5;
+
+            if (this.cat.flipX == true) {
+                this.cat.flipX = false;
+            }
         }
 
         if (this.upKey.isDown) {
