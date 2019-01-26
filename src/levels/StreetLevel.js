@@ -10,25 +10,28 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('car', 'assets/images/car.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png')
         this.load.image('goal', 'assets/images/StreetLevel/house.png');
+        this.load.image('house', 'assets/images/StreetLevel/house.png');
     }
 
     create() {
-        super.create();
-
+        // Set world and camera bounds
         const worldheight = this.game.config.height*4;
         this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
 
-        // Our platforms and ground, all static in a group
-        let platforms = this.physics.add.staticGroup();
+        // Our houses, all static in a group
+        let houses = this.physics.add.staticGroup();
 
+        // Add background (with streets)
         this.add.image(0, 0, 'bg').setOrigin(0, 0);
 
+        // Add cat
         this.cat = this.physics.add.sprite(0, worldheight, 'cat');
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0, 0);
         this.cameras.main.startFollow(this.cat);
 
+        // Add goal
         this.goal = this.physics.add.sprite(this.game.config.width-64, 59, 'goal');
         this.goal.body.setAllowGravity(0, 0);
 
@@ -37,6 +40,19 @@ class StreetLevel extends BaseLevelScene {
             this.startNextLevel();
         });
 
+        // Add houses
+        houses.create(300, 480, 'house');
+        houses.create(550, 800, 'house');
+        houses.create(100, 1185, 'house');
+        houses.create(250, 1185, 'house');
+        houses.create(700, 1450, 'house');
+        houses.create(550, 1580, 'house');
+        houses.create(100, 2100, 'house');
+        houses.create(700, 2100, 'house');
+
+        this.physics.add.collider(this.cat, houses);
+
+        // Add cars
         this.cars = this.physics.add.group({
             key: 'car',
             repeat: 20,
