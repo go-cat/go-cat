@@ -10,8 +10,9 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
+        this.load.image('empty', 'assets/images/GrassLevel/empty.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
-        this.load.image('goal', 'assets/images/house_home.png');
+        this.load.image('goal', 'assets/images/house_home_transparent.png');
 
 
         // Audio
@@ -28,9 +29,7 @@ class GrassLevel extends BaseLevelScene {
 
         const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
-        const pitLayer = map.createStaticLayer("pits", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
-        pitLayer.setCollisionByProperty({ collides: true });
 
         this.physics.world.setBounds(0,0,6784,576, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 6784, 576);
@@ -49,6 +48,23 @@ class GrassLevel extends BaseLevelScene {
         this.cat.body.gravity.y = 300;
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
+
+
+        // Create pits
+
+        this.pits = this.physics.add.group();
+        this.spawnObject(92,17,'empty', this.pits);
+        this.spawnObject(93,17,'empty', this.pits);
+        this.spawnObject(94,17,'empty', this.pits);
+        this.spawnObject(95,17,'empty', this.pits);
+        this.spawnObject(106,17,'empty', this.pits);
+        this.spawnObject(107,17,'empty', this.pits);
+        this.spawnObject(108,17,'empty', this.pits);
+        this.spawnObject(139,17,'empty', this.pits);
+        this.spawnObject(140,17,'empty', this.pits);
+        this.spawnObject(141,17,'empty', this.pits);
+        this.spawnObject(152,17,'empty', this.pits);
+        this.spawnObject(153,17,'empty', this.pits);
 
 
         //  Create mice
@@ -79,16 +95,23 @@ class GrassLevel extends BaseLevelScene {
             child.setGravityY(1000);
         });
 
+        this.pits.children.iterate(function (child) {
+
+            //  Give each mouse a slightly different bounce
+            child.setCollideWorldBounds(true);
+        });
+
         //  Collide the player and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.goal, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
+        this.physics.add.collider(this.pits, collisionLayer);
 
         //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
         this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
-        this.physics.add.collider(this.cat, pitLayer, this.receiveHit, null, this);
+        this.physics.add.collider(this.cat, this.pits, this.receiveHit, null, this);
         this.physics.add.collider(this.cat, this.bombs, this.receiveHit, null, this);
         this.cameras.main.startFollow(this.cat);
 
