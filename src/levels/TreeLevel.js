@@ -61,44 +61,44 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
-        
+
         // Birds
         const birds = this.physics.add.group({
             key: 'bird',
             repeat: 11,
             setXY: { x: 12, y: 0, stepX: 70 },
             body: { allowGravity: false },
-        });     
+        });
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
-
-        /* Initialize the keys */
-        this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-
     }
 
     update() {
 
-        /* react to key presses */
-        if (this.leftKey.isDown) {
-            this.cat.x -= 10;
-            
-            if (this.cat.flipX === false) {
-                this.cat.flipX = true;
-            }            
+    }
+
+    buttonPressedLeft(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(-500);
+        } else {
+            this.cat.setVelocityX(0);
         }
 
-        if (this.rightKey.isDown) {
-            this.cat.x += 10;
-            
-            if (this.cat.flipX === true) {
-                this.cat.flipX = false;
-            }              
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
         }
-        
+    }
 
+    buttonPressedRight(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(500);
+        } else {
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
+        }
     }
 }
