@@ -14,10 +14,15 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/StreetLevel/house.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
 
+        this.load.audio('backgroundmusic', 'assets/sounds//songs/Big_Rock.mp3');
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
     }
 
     create() {
+        // Music!
+        this.music = this.sound.add('backgroundmusic');
+        this.music.play();
+
         // Set world and camera bounds
         const worldheight = this.game.config.height*4;
         this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);

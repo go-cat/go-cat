@@ -19,10 +19,15 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/StreetLevel/house.png');
 
         // Sound
+        this.load.audio('backgroundmusic', 'assets/sounds//songs/A_Mission.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
     }
 
     create() {
+        // Music!
+        this.music = this.sound.add('backgroundmusic');
+        this.music.play();
+
         // This are the bounds of our world
         const worldheight = this.game.config.height*4;
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
@@ -129,7 +134,7 @@ class TreeLevel extends BaseLevelScene {
         if (this.bird.flying) {
             /* should he poop? */
             if (Phaser.Math.Between(1, 100) < 3) {
-                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping');
+                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2).refreshBody();
                 birdpoop.setBounceY(0);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
