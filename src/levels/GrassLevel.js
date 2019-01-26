@@ -117,25 +117,6 @@ class GrassLevel extends BaseLevelScene {
         this.sound.play("meow");
 
         this.addScore();
-
-        if (this.mice.countActive(true) === 0)
-        {
-            //  A new batch of mice to collect
-            this.mice.children.iterate(function (child) {
-
-                child.enableBody(true, child.x, 0, true, true);
-
-            });
-
-            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-            var bomb = this.bombs.create(x, 16, 'bomb');
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            bomb.allowGravity = false;
-
-        }
     }
 
     hitbomb (player, bomb)
