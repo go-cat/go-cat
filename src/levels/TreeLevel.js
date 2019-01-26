@@ -63,9 +63,11 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(750, 1400, 'branch');
         platforms.create(50, 1550, 'branch');
         platforms.create(100, 1700, 'branch');
+        platforms.create(750, 1800, 'branch').flipX = true;
         platforms.create(500, 2000, 'branch').flipX = true;
         platforms.create(400, 2150, 'branch');
         platforms.create(200, 2300, 'branch');
+        platforms.create(700, 2400, 'branch');
         platforms.create(300, 2500, 'branch').flipX = true;
         platforms.create(750, 2600, 'branch');
         platforms.create(200, 2750, 'branch').flipX = true;
@@ -81,6 +83,7 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(100, 4500, 'branch');
         platforms.create(400, 4600, 'branch');
         platforms.create(200, 4750, 'branch');
+        platforms.create(700, 4800, 'branch').flipX = true;
         platforms.create(300, 4900, 'branch').flipX = true;
         platforms.create(500, 5100, 'branch');
         platforms.create(200, 5200, 'branch');
@@ -130,7 +133,7 @@ class TreeLevel extends BaseLevelScene {
         this.mice = this.physics.add.group();
         for (let i = 0; i < 20; i++) {
             let x = Phaser.Math.Between(0, this.game.config.width);
-            let y = Phaser.Math.Between(600, worldheight);
+            let y = Phaser.Math.Between(600, worldheight-100);
             let mouse = this.mice.create(x, y, 'mouse');
             mouse.body.setCollideWorldBounds(true);
         }
@@ -161,9 +164,6 @@ class TreeLevel extends BaseLevelScene {
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.mice, this.ground);
         // The poop
-        this.physics.add.collider(this.birdpoops, this.ground, (poop, ground) => {
-            poop.disableBody(true, true);
-        });
         this.physics.add.collider(this.birdpoops, platforms, (poop, ground) => {
             poop.disableBody(true, true);
         });
