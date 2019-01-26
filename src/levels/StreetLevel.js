@@ -9,6 +9,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
         this.load.image('car', 'assets/images/car.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png')
+        this.load.image('goal', 'assets/images/StreetLevel/house.png');
     }
 
     create() {
@@ -28,10 +29,17 @@ class StreetLevel extends BaseLevelScene {
         this.cat.body.setAllowGravity(0, 0);
         this.cameras.main.startFollow(this.cat);
 
+        this.goal = this.physics.add.sprite(this.game.config.width-64, 59, 'goal');
+        this.goal.body.setAllowGravity(0, 0);
+
+        this.physics.add.collider(this.cat, this.goal, ()=>{
+            this.scene.start('EndScene');
+        });
+
         this.cars = this.physics.add.group({
             key: 'car',
             repeat: 20,
-            setXY: { x: 0, y: 50, stepY: 100 }
+            setXY: { x: 0, y: 150, stepY: 100 }
         });
 
         this.cars.children.iterate(function (child) {
