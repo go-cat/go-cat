@@ -19,7 +19,7 @@ class BaseLevelScene extends Phaser.Scene {
             'StreetLevel',
             'SecretLevel',
         ];
-        this.currentScene = this.scenes.indexOf(config.key);
+        this.currentSceneIndex = this.scenes.indexOf(config.key);
     }
 
     init(data) {
@@ -158,6 +158,17 @@ class BaseLevelScene extends Phaser.Scene {
                         }
                         break;
                 }
+
+                for (let b = 0; b < pad.buttons.length; b++) {
+                    if (pad.buttons[b].value === 1) {
+                        if (this.scenes[this.currentSceneIndex] === 'StartScene') {
+                            this.startNextLevel();
+                        }
+                        if (this.scenes[this.currentSceneIndex] === 'EndScene') {
+                            this.startNextLevel(false, 0);
+                        }
+                    }
+                }
             }
         }
 
@@ -177,7 +188,7 @@ class BaseLevelScene extends Phaser.Scene {
     }
 
     startNextLevel(next = true, sceneIndex) {
-        let index = this.currentScene + 1;
+        let index = this.currentSceneIndex + 1;
         if (next === false) {
             index = sceneIndex;
         }
