@@ -15,6 +15,7 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
+        this.load.audio('backgroundmusidave', 'assets/sounds/songs/Industrial_Cinematic.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
@@ -24,6 +25,14 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     create() {
+        // Music!
+        this.music = this.sound.add('backgroundmusidave');
+        try {
+            this.music.play();
+        } catch {
+            console.log('no audio possible');
+        }
+
         // layer and map for the Tilemap
         let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         let tileset = map.addTilesetImage("dave","tiles");
@@ -156,12 +165,20 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         if (this.cat.velocity < 10){
-            this.sound.play("land");
+            try {
+                this.sound.play("land");
+            } catch {
+                console.log('no audio possible');
+            }
         }
 
         if (this.millis > this.timeout){
             this.createDogs();
-            this.sound.play("bark");
+            try {
+                this.sound.play("bark");
+            } catch {
+                console.log('no audio possible');
+            }
             this.millis = 0;
             this.timeout = Phaser.Math.Between(800, 8000);
         }
@@ -209,14 +226,22 @@ class DDaveLevel extends BaseLevelScene {
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-400);
-            this.sound.play("jump");
+            try {
+                this.sound.play("jump");
+            } catch {
+                console.log('no audio possible');
+            }
         }
     }
 
     collectmouse (cat, mouse)
     {
         mouse.disableBody(true, true);
-        this.sound.play("meow");
+        try {
+            this.sound.play("meow");
+        } catch {
+            console.log('no audio possible');
+        }
         //  Add and update the score
         this.addScore();
     }
@@ -224,8 +249,12 @@ class DDaveLevel extends BaseLevelScene {
 
     hitdog (cat, dog)
     {
-        this.sound.play("dogLong");
-        this.sound.play("angry_cat");
+        try {
+            this.sound.play("dogLong");
+            this.sound.play("angry_cat");
+        } catch {
+            console.log('no audio possible');
+        }
 
         this.catDies(cat);
     }
