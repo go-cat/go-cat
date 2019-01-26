@@ -13,6 +13,8 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('bird', 'assets/images/bird_flying_left.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
+        this.load.image('birddroppings', 'assets/images/birddroppings.png');
+        this.load.image('goal', 'assets/images/StreetLevel/house.png');
 
         // Sound
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
@@ -33,6 +35,10 @@ class TreeLevel extends BaseLevelScene {
         // Create the ground
         platforms.create(this.game.config.width/2, worldheight, 'ground').setScale(2).refreshBody();
 
+        // Our goal
+        this.goal = this.physics.add.sprite(this.game.config.width-64, worldheight-100, 'goal');
+        this.goal.body.setAllowGravity(0, 0);
+
         // Create the branches
         platforms.create(20, 100, 'branch');
         platforms.create(100, 400, 'branch');
@@ -48,18 +54,14 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
+        this.cat.body.gravity.y = 300;
 
         // Birds
-        this.birds = this.physics.add.group({
-            key: 'bird',
-            repeat: 11,
-            setXY: { x: 12, y: 0, stepX: 70 },
-        });
-        this.birds.children.iterate(function (bird) {
-            bird.setBounceY(0);
-            bird.body.allowGravity = false;
-            bird.body.setCollideWorldBounds(true);
-        });
+        this.bird = this.physics.add.sprite(100, 0, 'bird');
+        this.bird.setBounceY(0);
+        this.bird.body.allowGravity = false;
+        this.bird.body.setCollideWorldBounds(true);
+        this.bird.flying = false;
 
         // Mice
         this.mice = this.physics.add.group({
@@ -73,11 +75,9 @@ class TreeLevel extends BaseLevelScene {
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
-
-        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); this.sound.play("meow"); } );
-        this.physics.add.collider(this.cat, this.birds);
+        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); this.sound.play("meow"); });
         this.physics.add.collider(this.mice, platforms);
-        this.physics.add.collider(this.birds, platforms);
+        this.physics.add.collider(this.cat, this.goal, () => { this.startNextLevel(); });
 
         // should be called at the end to the HUD will be on top
         super.create();
@@ -99,26 +99,22 @@ class TreeLevel extends BaseLevelScene {
         });
 
         // Birds fly
-        this.birds.children.iterate(function (bird) {
-            let x = Phaser.Math.Between(1, 3);
-            if (x === 1) {
-                bird.setVelocityX(0);
-            } else if (x === 2) {
-                bird.setVelocityX(-100);
-            } else {
-                bird.setVelocityX(100);
-            }
+        /* Do we have a bird? */
+        if (this.bird.flying) {
 
-            let y = Phaser.Math.Between(1, 3);
-            if (y === 1) {
-                bird.setVelocityY(0);
-            } else if (y === 2) {
-                bird.setVelocityY(-100);
-            } else {
-                bird.setVelocityY(100);
-            }
-        });
 
+        } else if (Phaser.Math.Between(1, 100) < 2) {
+            /* start the bird */
+            if (Phaser.Math.Between(1, 2) == 1) {
+                this.bird.x = 0;
+                this.bird.setVelocityX(100);
+            } else {
+                this.bird.x = this.game.config.width;
+                this.bird.x = 0;
+                this.bird.setVelocityX(-100);
+            }
+            this.bird.flying = true;
+        }
     }
 
     buttonPressedLeft(pressed) {
