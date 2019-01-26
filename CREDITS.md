@@ -4,4 +4,4 @@ Music:
 - "Hamster March" by Kevin MacLeod (incompetech.com)
 - "Iron Horse" by Kevin MacLeod (incompetech.com)
 
-License: Creative Commons: By Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/)
+All Songs: Creative Commons: By Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/)
