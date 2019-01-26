@@ -9,13 +9,13 @@ class SpaceLevel extends BaseLevelScene {
         this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
         this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
-        this.load.audio('backgroundmusic', 'assets/sounds/songs/Iron_Horse.mp3');
+        this.load.audio('backgroundmusicspace', 'assets/sounds/songs/Iron_Horse.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
@@ -26,7 +26,7 @@ class SpaceLevel extends BaseLevelScene {
 
     create() {
         // Music!
-        this.music = this.sound.add('backgroundmusic');
+        this.music = this.sound.add('backgroundmusicspace');
         try {
             this.music.play();
         } catch {
@@ -62,6 +62,20 @@ class SpaceLevel extends BaseLevelScene {
         this.cat.body.gravity.y = 300;
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
+
+        this.anims.remove('walk');
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.anims.remove('stand');
+        this.anims.create({
+            key: 'stand',
+            frames: [ { key: 'animcat', frame: 0 } ],
+            frameRate: 20,
+        });
 
 
         // "Read" the Object-Layers
@@ -128,7 +142,7 @@ class SpaceLevel extends BaseLevelScene {
 
 
         //  Collide the cat and the mice with the platforms
-        this.physics.add.collider(this.mice, collisionLayer);
+
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.dogsSprites, collisionLayer);
         this.physics.add.collider(this.miceSprites, collisionLayer);
@@ -207,8 +221,10 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.cat.setVelocityX(-160);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand');
         }
 
         if (this.cat.flipX === false) {
@@ -219,8 +235,10 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedRight(pressed) {
         if (pressed) {
             this.cat.setVelocityX(160);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand', true);
         }
 
         if (this.cat.flipX === true) {

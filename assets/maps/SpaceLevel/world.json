@@ -30,15 +30,15 @@
          "name":"safezone",
          "objects":[
                 {
-                 "height":86.6666666666667,
+                 "height":86.6667,
                  "id":9,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":82,
-                 "x":1704.66666666667,
-                 "y":5.33333333333333
+                 "x":1704.67,
+                 "y":5.33333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -170,6 +170,83 @@
                  "width":28,
                  "x":2116,
                  "y":322
+                }, 
+                {
+                 "height":29,
+                 "id":29,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":153,
+                 "x":69,
+                 "y":131
+                }, 
+                {
+                 "height":26,
+                 "id":30,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":169,
+                 "x":354,
+                 "y":388
+                }, 
+                {
+                 "height":27,
+                 "id":31,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":113,
+                 "x":678,
+                 "y":322
+                }, 
+                {
+                 "height":28,
+                 "id":32,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":221,
+                 "x":126,
+                 "y":512
+                }, 
+                {
+                 "height":27,
+                 "id":33,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":209,
+                 "x":1433,
+                 "y":353
+                }, 
+                {
+                 "height":28,
+                 "id":34,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":261,
+                 "x":1134,
+                 "y":575
+                }, 
+                {
+                 "height":32,
+                 "id":35,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":1985,
+                 "y":448
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -189,7 +266,7 @@
                  "type":"",
                  "visible":true,
                  "width":2408,
-                 "x":0.666666666666742,
+                 "x":0.666667,
                  "y":596
                 }],
          "opacity":1,
@@ -210,30 +287,30 @@
                  "type":"",
                  "visible":true,
                  "width":190,
-                 "x":671.333333333333,
-                 "y":321.333333333333
+                 "x":671.333,
+                 "y":321.333
                 }, 
                 {
-                 "height":29.3333333333334,
+                 "height":29.3333,
                  "id":7,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":156.666666666667,
-                 "x":163.666666666667,
-                 "y":259.666666666667
+                 "width":156.667,
+                 "x":163.667,
+                 "y":259.667
                 }, 
                 {
-                 "height":29.3333333333334,
+                 "height":29.3333,
                  "id":10,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":517.333333333333,
-                 "x":1042.66666666667,
-                 "y":573.333333333333
+                 "width":517.333,
+                 "x":1042.67,
+                 "y":573.333
                 }, 
                 {
                  "height":33,
@@ -252,7 +329,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":29,
+ "nextobjectid":36,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.1",
@@ -261,7 +338,7 @@
         {
          "columns":10,
          "firstgid":1,
-         "image":"..\/..\/images\/SecretLevel\/spaceTileset.png",
+         "image":"..\/..\/images\/SpaceLevel\/spaceTileset.png",
          "imageheight":320,
          "imagewidth":320,
          "margin":0,

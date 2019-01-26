@@ -21,6 +21,7 @@ let config = {
         StreetLevel,
         TreeLevel,
         SpaceLevel,
+        DDaveLevel,
         EndScene,
     ],
 };
