@@ -75,7 +75,12 @@ class TreeLevel extends BaseLevelScene {
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
-        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); this.sound.play("meow"); });
+        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => {
+            this.addScore();
+            mouse.disableBody(true, true);
+            this.cat.body.stop();
+            this.sound.play("meow");
+        });
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.cat, this.goal, () => {
             this.addScore(100);
@@ -105,20 +110,23 @@ class TreeLevel extends BaseLevelScene {
         /* Do we have a bird? */
         if (this.bird.flying) {
             /* should he poop? */
-            
+
             /* bird is gone */
             if (this.bird.x < 0 || this.bird.x > this.game.config.width) {
-                this.bird.flying = false;   
+                this.bird.flying = false;
             }
         } else if (Phaser.Math.Between(1, 100) < 10) {
             /* start the bird */
             if (Phaser.Math.Between(1, 2) == 1) {
-                this.bird.y = this.cameras.main.y + Phaser.Math.Between(10, 300);
+                this.bird.x = 0;
+                this.bird.y = this.cameras.main.scrollY + Phaser.Math.Between(10, 300);
                 this.bird.setVelocityX(400);
+                this.bird.flipX = true;
             } else {
                 this.bird.x = this.game.config.width;
-                this.bird.y = this.cameras.main.y + Phaser.Math.Between(10, 300);
+                this.bird.y = this.cameras.main.scrollY + Phaser.Math.Between(10, 300);
                 this.bird.setVelocityX(-400);
+                this.bird.flipX = false;
             }
             this.bird.flying = true;
         }
