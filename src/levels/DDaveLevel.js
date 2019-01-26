@@ -1,13 +1,13 @@
-class SpaceLevel extends BaseLevelScene {
+class DDaveLevel extends BaseLevelScene {
     constructor() {
-        super({ key: 'SpaceLevel' })
+        super({ key: 'DDaveLevel' })
     }
 
     preload() {
         super.preload();
 
-        this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
-        this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
+        this.load.tilemapTiledJSON("map","assets/maps/DDaveLevel/dave.json");
+        this.load.image('tiles',"assets/images/DDaveLevel/DDaveTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
@@ -15,7 +15,6 @@ class SpaceLevel extends BaseLevelScene {
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
-        this.load.audio('backgroundmusic', 'assets/sounds/songs/Iron_Horse.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
@@ -25,41 +24,32 @@ class SpaceLevel extends BaseLevelScene {
     }
 
     create() {
-        // Music!
-        this.music = this.sound.add('backgroundmusic');
-        try {
-            this.music.play();
-        } catch {
-            console.log('no audio possible');
-        }
-
         // layer and map for the Tilemap
         let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
-        let tileset = map.addTilesetImage("spacetileset","tiles");
+        let tileset = map.addTilesetImage("dave","tiles");
 
-        let dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
+
+
         let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
-
         collisionLayer.setCollisionByProperty({ collides: true });
 
 
 
         // bounds
-        this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 2400, 600);
+        this.physics.world.setBounds(0,0,3200,3200, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 3200, 3200);
 
         // Variables
-
-
         this.millis = 0;
+        this.timeout = 1000;
 
 
         // The cat and its settings
-        this.cat = this.physics.add.sprite(2000, 300, 'cat');
-        this.cat.setBounce(0.2);
+        this.cat = this.physics.add.sprite(200, 3000, 'cat');
+        this.cat.setBounce(0.1);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
-        this.cat.body.gravity.y = 300;
+        this.cat.body.gravity.y = 500;
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
 
@@ -85,29 +75,16 @@ class SpaceLevel extends BaseLevelScene {
         this.miceSpawnLayer =  map.objects.filter((maplayer)=> {
             return maplayer.name == "micespawn";
         })[0];
-        this.groundLayer =  map.objects.filter((maplayer)=> {
-            return maplayer.name == "ground";
-        })[0];
         this.safezoneLayer =  map.objects.filter((maplayer)=> {
             return maplayer.name == "safezone";
         })[0];
 
+
         // Create a Dogs-Object-Array
         this.dogs = [];
         this.dogsSprites = this.physics.add.group();
-        for(let i = 0; i < this.dogSpawnLayer.objects.length; i++){
-            let dogStartX = this.dogSpawnLayer.objects[i].x;
-            let dogStartY = this.dogSpawnLayer.objects[i].y-40;
-            let dogPath = this.dogSpawnLayer.objects[i].width;
-            let dogSpeed = Phaser.Math.Between(30, 60);
-            let sprite = this.physics.add.sprite(dogStartX, dogStartY,"dogImage");
-            sprite.setSize(sprite.width*0.8, sprite.height*0.8);
-            this.dogsSprites.add(sprite);
-            sprite.setVelocityX(dogSpeed);
-            sprite.scaleY=0.6;
-            sprite.scaleX=0.6;
-            this.dogs.push({"sprite" : sprite ,"path": dogPath, "startX": dogStartX, "speed": dogSpeed});
-        }
+        this.createDogs();
+
 
         // Create a Mice-Object-Array
         this.mice = [];
@@ -119,7 +96,7 @@ class SpaceLevel extends BaseLevelScene {
             let mouseSpeed = Phaser.Math.Between(50, 80);
             let sprite = this.physics.add.sprite(mouseStartX, mouseStartY,"mouse");
             sprite.flipX = true;
-            sprite.setGravityY(1000);
+            sprite.body.gravity.y=1000;
             this.miceSprites.add(sprite);
             sprite.setVelocityX(mouseSpeed);
             this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
@@ -132,20 +109,15 @@ class SpaceLevel extends BaseLevelScene {
         this.safezone.displayHeight = lay.height;
         this.safezone.displayWidth = lay.width;
 
-        let lay2 = this.groundLayer.objects[0];
-        this.ground = this.physics.add.image(lay2.x + lay2.width/2 , lay2.y + lay2.height/2 ,"home");
-        this.ground.body.allowGravity = false;
-        this.ground.displayHeight = lay2.height;
-        this.ground.displayWidth = lay2.width;
-        this.ground.visible = false;
-
 
 
         //  Collide the cat and the mice with the platforms
 
         this.physics.add.collider(this.cat, collisionLayer);
-        this.physics.add.collider(this.dogsSprites, collisionLayer);
         this.physics.add.collider(this.miceSprites, collisionLayer);
+        this.physics.add.collider(this.dogsSprites, collisionLayer);
+        this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
+
 
         this.physics.add.overlap(this.cat, this.miceSprites, this.collectmouse, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
@@ -154,8 +126,7 @@ class SpaceLevel extends BaseLevelScene {
             this.startNextLevel();
         }, null, this);
 
-        this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
-        this.physics.add.collider(this.cat, this.ground, ()=>{this.catDies(this.cat);}, null, this);
+
 
 
         this.cameras.main.startFollow(this.cat);
@@ -167,21 +138,6 @@ class SpaceLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
-        for(let i =0; i<this.dogs.length; i++){
-            let currentDog = this.dogs[i];
-            if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
-                currentDog["sprite"].setVelocityX(-currentDog["speed"]);
-                if (currentDog["sprite"].flipX === false) {
-                    currentDog["sprite"].flipX = true;
-                }
-            }
-            if (currentDog["sprite"].x < currentDog["startX"]){
-                currentDog["sprite"].setVelocityX(currentDog["speed"]);
-                if (currentDog["sprite"].flipX === true  ) {
-                    currentDog["sprite"].flipX = false;
-                }
-            }
-        }
 
         for(let i =0; i<this.mice.length; i++){
             let currentMouse = this.mice[i];
@@ -200,20 +156,15 @@ class SpaceLevel extends BaseLevelScene {
         }
 
         if (this.cat.velocity < 10){
-            try {
-                this.sound.play("land");
-            } catch {
-                console.log('no audio possible');
-            }
+            this.sound.play("land");
         }
 
-        if (this.millis > Phaser.Math.Between(100, 8000)){
-            try {
-                this.sound.play("bark");
-            } catch {
-                console.log('no audio possible');
-            }
+        if (this.millis > this.timeout){
+            console.log("millis!!")
+            this.createDogs();
+            this.sound.play("bark");
             this.millis = 0;
+            this.timeout = Phaser.Math.Between(800, 8000);
         }
         this.millis +=1;
     }
@@ -249,22 +200,14 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-400);
-            try {
-                this.sound.play("jump");
-            } catch {
-                console.log('no audio possible');
-            }
+            this.sound.play("jump");
         }
     }
 
     collectmouse (cat, mouse)
     {
         mouse.disableBody(true, true);
-        try {
-            this.sound.play("meow");
-        } catch {
-            console.log('no audio possible');
-        }
+        this.sound.play("meow");
         //  Add and update the score
         this.addScore();
     }
@@ -272,13 +215,31 @@ class SpaceLevel extends BaseLevelScene {
 
     hitdog (cat, dog)
     {
-        try {
-            this.sound.play("dogLong");
-            this.sound.play("angry_cat");
-        } catch {
-            console.log('no audio possible');
-        }
+        this.sound.play("dogLong");
+        this.sound.play("angry_cat");
 
         this.catDies(cat);
+    }
+
+    createDogs() {
+        for (let i = 0; i < this.dogSpawnLayer.objects.length; i++) {
+            let dogStartX = this.dogSpawnLayer.objects[i].x;
+            let dogStartY = this.dogSpawnLayer.objects[i].y - 40;
+            let dogSpeed = Phaser.Math.Between(30, 100);
+            let sprite = this.physics.add.sprite(dogStartX, dogStartY, "dogImage");
+            let dogDirection = 1;
+            if (this.dogSpawnLayer.objects[i].properties.left === true) {
+                dogDirection = -1;
+                sprite.flipX = true;
+            }
+            sprite.setSize(sprite.width * 0.8, sprite.height * 0.8);
+            sprite.body.gravity.y = 1000;
+            this.dogsSprites.add(sprite);
+            sprite.setVelocityX(dogSpeed * dogDirection);
+            sprite.scaleY = 0.6;
+            sprite.scaleX = 0.6;
+            this.dogs.push({"sprite": sprite, "startX": dogStartX, "speed": dogSpeed});
+        }
+
     }
 }

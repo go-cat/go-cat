@@ -5,3 +5,6 @@ Music:
 - "Iron Horse" by Kevin MacLeod (incompetech.com)
 
 License: Creative Commons: By Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/)
+
+Soundeffects from freesound.org under CC0
+e.g. "Cat, Screaming, A.wav" by InspectorJ (www.jshaw.co.uk) of Freesound.org

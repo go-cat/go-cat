@@ -19,6 +19,7 @@ class BaseLevelScene extends Phaser.Scene {
             'GrassLevel',
             'StreetLevel',
             'SpaceLevel',
+            'DDaveLevel',
             'EndScene',
         ];
         this.currentSceneIndex = this.scenes.indexOf(config.key);
