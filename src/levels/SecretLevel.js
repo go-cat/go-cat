@@ -16,7 +16,7 @@ class SecretLevel extends BaseLevelScene {
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
         this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
-        
+
     }
 
     create() {
@@ -159,7 +159,7 @@ class SecretLevel extends BaseLevelScene {
             this.cat.setVelocityX(0);
         }
 
-        if (this.cat.flipX === false) {
+        if (this.cat.flipX === false && !this.gameOver) {
             this.cat.flipX = true;
         }
     }
@@ -171,7 +171,7 @@ class SecretLevel extends BaseLevelScene {
             this.cat.setVelocityX(0);
         }
 
-        if (this.cat.flipX === true) {
+        if (this.cat.flipX === true && !this.gameOver) {
             this.cat.flipX = false;
         }
     }
@@ -215,9 +215,9 @@ class SecretLevel extends BaseLevelScene {
 
         cat.setTint(0xff0000);
 
-        cat.anims.play('turn');
-
         this.gameOver = true;
+
+        cat.anims.play('turn');
     }
     hitdog (cat, dog)
     {
