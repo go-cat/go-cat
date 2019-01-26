@@ -1,4 +1,4 @@
-class SecretLevel extends Phaser.Scene {
+class SecretLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'SecretLevel' })
     }
@@ -18,6 +18,8 @@ class SecretLevel extends Phaser.Scene {
     }
 
     create() {
+        super.create();
+
         // layer and map for the Tilemap
         const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage("spacetileset","tiles");

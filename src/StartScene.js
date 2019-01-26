@@ -1,4 +1,4 @@
-class StartScene extends Phaser.Scene {
+class StartScene extends BaseLevelScene {
     constructor() {
         super({ key: 'StartScene' });
     }
@@ -10,6 +10,8 @@ class StartScene extends Phaser.Scene {
     }
 
     create() {
+        super.create();
+
         this.add.image(400, 300, 'background');
         this.add.image(400, 300, 'logo');
         this.startButton = this.add.image(400, 505, 'start_button');
@@ -27,23 +29,6 @@ class StartScene extends Phaser.Scene {
         this.startButton.on('pointerup', (event) => {
             this.startButton.setScale(1);
             this.scene.start('TreeLevel');
-        });
-
-        this.input.keyboard.on('keydown', (event) => {
-            switch (event.key) {
-                case '1':
-                    this.scene.start('TreeLevel');
-                    break;
-                case '2':
-                    this.scene.start('GrassLevel');
-                    break;
-                case '3':
-                    this.scene.start('StreetLevel');
-                    break;
-                case '4':
-                    this.scene.start('SecretLevel');
-                    break;
-            }
         });
     }
 }

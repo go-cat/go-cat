@@ -1,4 +1,4 @@
-class StreetLevel extends Phaser.Scene {
+class StreetLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'StreetLevel' })
     }
@@ -10,6 +10,8 @@ class StreetLevel extends Phaser.Scene {
     }
 
     create() {
+        super.create();
+
         // Our platforms and ground, all static in a group
         let platforms = this.physics.add.staticGroup();
 

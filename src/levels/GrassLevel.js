@@ -1,4 +1,4 @@
-class GrassLevel extends Phaser.Scene {
+class GrassLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'GrassLevel' })
     }
@@ -18,6 +18,8 @@ class GrassLevel extends Phaser.Scene {
     }
 
     create() {
+        super.create();
+
         this.physics.world.setBounds(0,0,3392,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 3392, 600);
         this.score=0;
