@@ -74,22 +74,24 @@ class StreetLevel extends BaseLevelScene {
         this.physics.add.collider(this.cat, this.housesSprites);
 
         // Add cars
-        this.cars = this.physics.add.group({
-            key: 'car',
-            repeat: 10,
-            setXY: {
-                x: Phaser.Math.FloatBetween(0, -200),
-                y: 150,
-                stepY: 150
-            }
-        });
+        this.cars = [];
+        this.carsSprites = this.physics.add.group();
 
-        this.cars.children.iterate(function (child) {
-            child.body.setAllowGravity(0, 0);
-            child.setVelocityX(Phaser.Math.FloatBetween(100, 200));
-        });
+        let streets_y = [280, 565, 886, 1006, 1266, 1672, 1793, 2179];
+        let car_max = 20;
 
-        this.physics.add.collider(this.cat, this.cars, () => {
+        for (let i = 0; i < car_max; i++) {
+            let random_x = Phaser.Math.FloatBetween(0, -200);
+            let random_y = Phaser.Utils.Array.GetRandom(streets_y);
+            let sprite = this.physics.add.sprite(random_x, random_y + 50, 'car');
+            this.carsSprites.add(sprite);
+            sprite.body.setAllowGravity(0, 0);
+            sprite.body.setVelocityX(Phaser.Math.FloatBetween(100, 300));
+            sprite.setSize(90, 35, true);
+            this.cars.push(sprite);
+        }
+
+        this.physics.add.collider(this.cat, this.carsSprites, () => {
             this.sound.play('cat_hit');
             this.catDies(this.cat);
         });
@@ -101,15 +103,15 @@ class StreetLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
-        this.cars.children.iterate(function (child) {
-            if (child.x >= 800) {
-                child.setVelocityX(Math.abs(child.body.velocity.x)*-1);
-                child.flipX = true;
-            } else if (child.x <= 0) {
-                child.setVelocityX(Math.abs(child.body.velocity.x));
-                child.flipX = false;
+        for (var i = 0; i < this.cars.length; i++) {
+            if (this.cars[i].x >= this.game.config.width) {
+                this.cars[i].setVelocityX(Math.abs(this.cars[i].body.velocity.x)*-1);
+                this.cars[i].flipX = true;
+            } else if (this.cars[i].x <= 0) {
+                this.cars[i].setVelocityX(Math.abs(this.cars[i].body.velocity.x));
+                this.cars[i].flipX = false;
             }
-        });
+        }
     }
 
     buttonPressedLeft(pressed) {

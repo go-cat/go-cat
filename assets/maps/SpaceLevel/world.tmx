@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="75" height="19" tilewidth="32" tileheight="32" infinite="0" nextobjectid="14">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="75" height="19" tilewidth="32" tileheight="32" infinite="0" nextobjectid="29">
  <tileset firstgid="1" name="spacetileset" tilewidth="32" tileheight="32" tilecount="100" columns="10">
   <image source="../../images/SecretLevel/spaceTileset.png" width="320" height="320"/>
   <tile id="60">
@@ -51,14 +51,28 @@
   </data>
  </layer>
  <objectgroup name="safezone">
-  <object id="9" x="1718.67" y="5.33333" width="68" height="86.6667"/>
+  <object id="9" x="1704.67" y="5.33333" width="82" height="86.6667"/>
  </objectgroup>
- <objectgroup name="ground">
-  <object id="13" x="-2" y="602" width="2408" height="10"/>
+ <objectgroup name="micespawn">
+  <object id="15" x="67" y="131" width="157" height="31"/>
+  <object id="16" x="353" y="386" width="256" height="30"/>
+  <object id="17" x="129" y="512" width="241" height="29"/>
+  <object id="18" x="866" y="160" width="155" height="31"/>
+  <object id="19" x="797" y="319" width="65" height="32"/>
+  <object id="20" x="1313" y="574" width="445" height="28"/>
+  <object id="21" x="1538" y="193" width="156" height="27"/>
+  <object id="22" x="1363" y="354" width="173" height="29"/>
+  <object id="23" x="2275" y="160" width="27" height="31"/>
+  <object id="24" x="2209" y="223" width="30" height="33"/>
+  <object id="25" x="2116" y="322" width="28" height="27"/>
  </objectgroup>
- <objectgroup name="boxes">
+ <objectgroup name="ground" visible="0">
+  <object id="13" x="0.666667" y="596" width="2408" height="8"/>
+ </objectgroup>
+ <objectgroup name="dogspawn">
   <object id="6" x="671.333" y="321.333" width="190" height="32"/>
   <object id="7" x="162.667" y="292.667" width="156.667" height="29.3333"/>
   <object id="10" x="1042.67" y="573.333" width="517.333" height="29.3333"/>
+  <object id="28" x="892" y="157" width="127" height="33"/>
  </objectgroup>
 </map>
