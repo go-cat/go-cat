@@ -152,7 +152,7 @@ class GrassLevel extends BaseLevelScene {
             player.setTint(0xffffff);
             this.physics.resume();
 
-            // TODO make sure cat will not loose another life directly
+            this.startNextLevel(false, this.currentSceneIndex);
         }, 1000);
     }
 

@@ -197,13 +197,13 @@ class SecretLevel extends BaseLevelScene {
         cat.anims.play('turn');
 
         this.physics.pause();
-        player.setTint(0xff0000);
+        cat.setTint(0xff0000);
 
         setTimeout(() => {
-            player.setTint(0xffffff);
+            cat.setTint(0xffffff);
             this.physics.resume();
 
-            // TODO make sure cat will not loose another life directly
+            this.startNextLevel(false, this.currentSceneIndex);
         }, 1000);
     }
 
@@ -215,12 +215,12 @@ class SecretLevel extends BaseLevelScene {
         this.sound.play("angryCat");
 
         this.physics.pause();
-        player.setTint(0xff0000);
+        cat.setTint(0xff0000);
         setTimeout(() => {
-            player.setTint(0xffffff);
+            cat.setTint(0xffffff);
             this.physics.resume();
 
-            // TODO make sure cat will not loose another life directly
+            this.startNextLevel(false, this.currentSceneIndex);
         }, 1000);
     }
 }
