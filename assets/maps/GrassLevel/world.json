@@ -26,19 +26,8 @@
          "width":212,
          "x":0,
          "y":0
-        }, 
-        {
-         "draworder":"topdown",
-         "id":17,
-         "name":"mice",
-         "objects":[],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
         }],
- "nextlayerid":18,
+ "nextlayerid":19,
  "nextobjectid":1,
  "orientation":"orthogonal",
  "renderorder":"right-down",

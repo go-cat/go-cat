@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="75" height="19" tilewidth="32" tileheight="32" infinite="0" nextobjectid="9">
  <tileset firstgid="1" name="spacetileset" tilewidth="32" tileheight="32" tilecount="100" columns="10">
-  <image source="../../images/SecretLevel/spaceTileset.png" width="320" height="320"/>
+  <image source="../../images/SpaceLevel/spaceTileset.png" width="320" height="320"/>
   <tile id="60">
    <properties>
     <property name="collides" type="bool" value="true"/>
