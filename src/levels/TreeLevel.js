@@ -6,12 +6,16 @@ class TreeLevel extends BaseLevelScene {
     }
 
     preload() {
+        // Images
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/bird_flying_left.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
+
+        // Sound
+        this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
     }
 
     create() {
@@ -70,7 +74,7 @@ class TreeLevel extends BaseLevelScene {
         // Colide events
         this.physics.add.collider(this.cat, platforms);
 
-        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); mouse.disableBody(true, true); } );
+        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); this.sound.play("meow"); } );
         this.physics.add.collider(this.cat, this.birds);
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.birds, platforms);
@@ -104,7 +108,7 @@ class TreeLevel extends BaseLevelScene {
             } else {
                 bird.setVelocityX(100);
             }
-            
+
             let y = Phaser.Math.Between(1, 3);
             if (y === 1) {
                 bird.setVelocityY(0);
@@ -112,8 +116,8 @@ class TreeLevel extends BaseLevelScene {
                 bird.setVelocityY(-100);
             } else {
                 bird.setVelocityY(100);
-            }            
-        });           
+            }
+        });
 
     }
 
