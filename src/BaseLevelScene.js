@@ -215,6 +215,10 @@ class BaseLevelScene extends Phaser.Scene {
     }
 
     startNextLevel(next = true, sceneIndex) {
+        if (this.music && this.music.isPlaying) {
+            this.music.stop();
+        }
+
         let index = this.currentSceneIndex + 1;
         if (next === false) {
             index = sceneIndex;
@@ -241,6 +245,10 @@ class BaseLevelScene extends Phaser.Scene {
     }
 
     catDies(cat) {
+        if (this.music && this.music.isPlaying) {
+            this.music.stop();
+        }
+
         this.catLoosesLive();
 
         this.physics.pause();
