@@ -2,7 +2,10 @@
 
 class EndScene extends BaseLevelScene {
     constructor() {
-        super({ key: 'EndScene' })
+        super({
+            key: 'EndScene',
+            showTimer: false,
+        });
     }
 
     preload() {

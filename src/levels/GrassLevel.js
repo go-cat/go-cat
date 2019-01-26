@@ -68,6 +68,7 @@ class GrassLevel extends BaseLevelScene {
         this.goal = this.physics.add.sprite(204*32,0,'goal');
         this.physics.add.collider(this.cat, this.goal, ()=>{
             this.addScore(100);
+            this.addScore(Math.floor(this.timeLeft));
             this.startNextLevel();
         });
 

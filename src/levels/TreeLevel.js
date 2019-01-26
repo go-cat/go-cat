@@ -31,15 +31,16 @@ class TreeLevel extends BaseLevelScene {
         this.cameras.main.setBackgroundColor('#89C0FF');
         this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);
 
-        // Our platforms and ground, all static in a group
+        // Our platforms static in a group
         const platforms = this.physics.add.staticGroup();
 
         // Create the ground
         this.ground = this.physics.add.image(this.game.config.width/2, worldheight, 'ground');
         this.ground.body.setAllowGravity(0, 0);
+        this.ground.body.immovable = true;
 
         // Our goal
-        this.goal = this.physics.add.image(this.game.config.width-64, worldheight-100, 'goal');
+        this.goal = this.physics.add.image(this.game.config.width-64, worldheight-50, 'goal');
         this.goal.body.setAllowGravity(0, 0);
 
         // Create the branches
@@ -94,6 +95,7 @@ class TreeLevel extends BaseLevelScene {
         });
         this.physics.add.collider(this.cat, this.goal, () => {
             this.addScore(100);
+            this.addScore(Math.floor(this.timeLeft));
             this.startNextLevel();
         });
         // The mice
