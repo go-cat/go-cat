@@ -24,8 +24,40 @@
          "width":75,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "name":"boxes",
+         "objects":[
+                {
+                 "height":32,
+                 "id":6,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":190,
+                 "x":671.333333333333,
+                 "y":321.333333333333
+                }, 
+                {
+                 "height":29.3333333333334,
+                 "id":7,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":156.666666666667,
+                 "x":162.666666666667,
+                 "y":292.666666666667
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.1.1",

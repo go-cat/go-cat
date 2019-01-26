@@ -6,7 +6,7 @@ class StreetLevel extends BaseLevelScene {
     }
 
     preload() {
-        this.load.image('grass', 'assets/images/StreetLevel/grass.png');
+        this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
         this.load.image('car', 'assets/images/StreetLevel/car.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png')
     }
@@ -14,14 +14,19 @@ class StreetLevel extends BaseLevelScene {
     create() {
         super.create();
 
+        const worldheight = this.game.config.height*4;
+        this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);
+        this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
+
         // Our platforms and ground, all static in a group
         let platforms = this.physics.add.staticGroup();
 
-        this.add.image(0, 0, 'grass').setOrigin(0, 0);
+        this.add.image(0, 0, 'bg').setOrigin(0, 0);
 
-        this.cat = this.physics.add.sprite(100, 0, 'cat');
+        this.cat = this.physics.add.sprite(0, worldheight, 'cat');
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0, 0);
+        this.cameras.main.startFollow(this.cat);
 
         this.car = this.physics.add.sprite(0, 50, 'car');
         this.car.body.setAllowGravity(0, 0);
@@ -29,10 +34,13 @@ class StreetLevel extends BaseLevelScene {
         this.physics.add.collider(this.cat, this.car, ()=>{
             this.scene.start('EndScene');
         });
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         if (this.car.x >= 800) {
             this.car.setVelocityX(-200);
