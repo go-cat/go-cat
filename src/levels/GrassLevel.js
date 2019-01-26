@@ -9,6 +9,8 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
+        this.load.image('goal', 'assets/images/StreetLevel/house.png');
+
 
         // Audio
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
@@ -24,8 +26,9 @@ class GrassLevel extends BaseLevelScene {
 
         const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
-        //const miceLayer = map.createStaticLayer("mice", tileset, 0, 0);
+        const pitLayer = map.createStaticLayer("pits", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
+        pitLayer.setCollisionByProperty({ collides: true });
 
         this.physics.world.setBounds(0,0,6784,576, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 6784, 576);
@@ -46,13 +49,24 @@ class GrassLevel extends BaseLevelScene {
         this.cat.scaleX=0.6;
 
 
-        //  Create mice and a bomb
+        //  Create mice
         this.mice = this.physics.add.group();
         this.spawnObject(28,8,'mouse', this.mice);
+        this.spawnObject(29,8,'mouse', this.mice);
+        this.spawnObject(30,8,'mouse', this.mice);
+        this.spawnObject(31,8,'mouse', this.mice);
 
+        // Create bomb
         this.bombs = this.physics.add.group({
             key: 'bomb',
             setXY: { x: 420, y: 0}
+        });
+
+        // Add goal
+        this.goal = this.physics.add.sprite(204*32,0,'goal');
+        this.physics.add.collider(this.cat, this.goal, ()=>{
+            this.addScore(100);
+            this.startNextLevel();
         });
 
         this.mice.children.iterate(function (child) {
@@ -65,12 +79,14 @@ class GrassLevel extends BaseLevelScene {
         //  Collide the player and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
         this.physics.add.collider(this.cat, collisionLayer);
+        this.physics.add.collider(this.goal, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
 
         //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
         this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
-        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
+        this.physics.add.collider(this.cat, pitLayer, this.receiveHit, null, this);
+        this.physics.add.collider(this.cat, this.bombs, this.receiveHit, null, this);
         this.cameras.main.startFollow(this.cat);
 
         // should be called at the end to the HUD will be on top
@@ -91,7 +107,7 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(160);
+            this.cat.setVelocityX(1600);
         } else {
             this.cat.setVelocityX(0);
         }
@@ -115,7 +131,7 @@ class GrassLevel extends BaseLevelScene {
         this.addScore();
     }
 
-    hitbomb (player, bomb)
+    receiveHit (player, sender)
     {
         this.catDies(player);
     }
