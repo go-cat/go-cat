@@ -67,9 +67,6 @@ class GrassLevel extends BaseLevelScene {
             repeat: -1
         });
 
-        //  Input Events
-        this.cursors = this.input.keyboard.createCursorKeys();
-
         //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
         this.stars = this.physics.add.group({
             key: 'star',
@@ -104,32 +101,36 @@ class GrassLevel extends BaseLevelScene {
     update() {
         if (this.gameOver)
         {
-            return;
-        }
-        //this.scoreText.setXY(this.cameras.main.x, this.cameras.main.y);
+            // TODO do something
 
-        if (this.cursors.left.isDown)
-        {
+            return null;
+        }
+    }
+
+    buttonPressedLeft(pressed) {
+        console.log(pressed);
+        if (pressed) {
             this.player.setVelocityX(-160);
-
             this.player.anims.play('left', true);
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.player.setVelocityX(160);
-
-            this.player.anims.play('right', true);
-        }
-        else
-        {
+        } else {
             this.player.setVelocityX(0);
-
             this.player.anims.play('turn');
         }
+    }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down)
-        {
-            this.player.setVelocityY(-3000);
+    buttonPressedRight(pressed) {
+        if (pressed) {
+            this.player.setVelocityX(160);
+            this.player.anims.play('right', true);
+        } else {
+            this.player.setVelocityX(0);
+            this.player.anims.play('turn');
+        }
+    }
+
+    buttonPressedUp(pressed) {
+        if (pressed && Math.abs(this.player.body.velocity.y) < 2) {
+            this.player.setVelocityY(-350);
         }
     }
 
