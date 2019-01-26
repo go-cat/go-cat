@@ -16,9 +16,6 @@ class SecretLevel extends BaseLevelScene {
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
         this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
-
-
-
         
     }
 
@@ -41,7 +38,8 @@ class SecretLevel extends BaseLevelScene {
         // Variables
         this.dogSpeed = 30;
         for(let i = 0; i < map.objects[0].objects.length; i++){
-            this.dogStart = map.objects[0].objects[i].x;
+            this.dogStartX = map.objects[0].objects[i].x;
+            this.dogStartY = map.objects[0].objects[i].y-50;
             this.dogPath = map.objects[0].objects[i].width;
         }
 
@@ -82,7 +80,8 @@ class SecretLevel extends BaseLevelScene {
 
         });
 
-        this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
+        this.dog = this.physics.add.sprite(this.dogStartX, this.dogStartY,"spacedog");
+        console.log(this.dog)
         this.dog.setVelocityX(this.dogSpeed);
 
         //  Collide the cat and the mice with the platforms
@@ -91,15 +90,12 @@ class SecretLevel extends BaseLevelScene {
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.dog, collisionLayer);
 
-        //  Checks to see if the cat overlaps with any of the mice, if he does call the collectmouse function
         this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
-        this.cameras.main.startFollow(this.cat);
+        this.physics.add.collider(this.cat, this.dog, this.hitdog, null, this);
 
-        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.cameras.main.startFollow(this.cat);
-
         // should be called at the end to the HUD will be on top
         super.create();
     }
@@ -110,10 +106,10 @@ class SecretLevel extends BaseLevelScene {
         if (this.gameOver) {
             return null;
         }
-        if (this.dog.x > this.dogStart+this.dogPath){
+        if (this.dog.x > this.dogStartX+this.dogPath){
             this.dog.setVelocityX(-this.dogSpeed);
         }
-        if (this.dog.x < this.dogStart){
+        if (this.dog.x < this.dogStartX){
             this.dog.setVelocityX(this.dogSpeed);
         }
         if (this.millis > Phaser.Math.Between(100, 8000)){
