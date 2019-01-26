@@ -13,7 +13,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('bird', 'assets/images/bird_flying_left.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
-        this.load.image('birddropping', 'assets/images/birddroppings.png');
+        this.load.image('birddropping', 'assets/images/bird_dropping.png');
         this.load.image('goal', 'assets/images/StreetLevel/house.png');
 
         // Sound
@@ -62,12 +62,9 @@ class TreeLevel extends BaseLevelScene {
         this.bird.body.allowGravity = false;
         this.bird.body.setCollideWorldBounds(false);
         this.bird.flying = false;
-
-        // Bird dropping
-        this.birddropping = this.physics.add.sprite(-100, -100, 'birddropping');
-        this.birddropping.setBounceY(0);
-        this.birddropping.body.allowGravity = true;
-        this.birddropping.body.setCollideWorldBounds(false);
+        
+        // Birds do poop
+        this.birdpoops = this.physics.add.group();
 
         // Mice
         this.mice = this.physics.add.group({
@@ -88,7 +85,7 @@ class TreeLevel extends BaseLevelScene {
             this.sound.play("meow");
         });
         this.physics.add.collider(this.mice, platforms);
-        this.physics.add.collider(this.cat, this.birddropping, () => {
+        this.physics.add.collider(this.cat, this.birdpoops, () => {
             this.catDies(this.cat);
         });
         this.physics.add.collider(this.cat, this.goal, () => {
@@ -119,7 +116,12 @@ class TreeLevel extends BaseLevelScene {
         /* Do we have a bird? */
         if (this.bird.flying) {
             /* should he poop? */
-
+            if (Phaser.Math.Between(1, 100) < 3) {
+                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping');
+                birdpoop.setBounceY(0);
+                birdpoop.body.allowGravity = true;
+                birdpoop.body.setCollideWorldBounds(false);
+            }
             /* bird is gone */
             if (this.bird.x < 0 || this.bird.x > this.game.config.width) {
                 this.bird.flying = false;
