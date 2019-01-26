@@ -32,8 +32,6 @@ class SecretLevel extends BaseLevelScene {
         this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 2400, 600);
 
-
-
         // Variables
         this.score=0;
         this.dogSpeed = 30;
@@ -67,9 +65,6 @@ class SecretLevel extends BaseLevelScene {
             frameRate: 10,
             repeat: -1
         });
-
-        //  Input Events
-        this.cursors = this.input.keyboard.createCursorKeys();
 
         //  Create Stars, Bombs and a dog
         this.stars = this.physics.add.group({
@@ -110,49 +105,42 @@ class SecretLevel extends BaseLevelScene {
     }
 
     update() {
-        if (this.gameOver)
-        {
-            return;
+        if (this.gameOver) {
+            return null;
         }
-        if (this.dog.x > 500){
+        if (this.dog.x > 500) {
             this.dog.setVelocityX(-this.dogSpeed);
         }
-        if (this.dog.x < 300){
+        if (this.dog.x < 300) {
             this.dog.setVelocityX(this.dogSpeed);
         }
+    }
 
-        if (this.cursors.left.isDown)
-        {
+    buttonPressedLeft(pressed) {
+        if (pressed) {
             this.player.setVelocityX(-160);
-
             this.player.anims.play('left', true);
-        }
-        else if (this.cursors.right.isDown)
-        {
-            this.player.setVelocityX(160);
-
-            this.player.anims.play('right', true);
-        }
-        else if (this.cursors.up.isDown && Math.abs(this.player.body.velocity.y) < 2)
-        {
-            this.player.setVelocityY(-160);
-
-            this.player.anims.play('up', true);
-        }
-        else if (this.cursors.down.isDown)
-        {
-            this.player.setVelocityY(160);
-
-            this.player.anims.play('down', true);
-        }
-        else
-        {
+        } else {
             this.player.setVelocityX(0);
-
             this.player.anims.play('turn');
         }
+    }
 
+    buttonPressedRight(pressed) {
+        if (pressed) {
+            this.player.setVelocityX(160);
+            this.player.anims.play('right', true);
+        } else {
+            this.player.setVelocityX(0);
+            this.player.anims.play('turn');
+        }
+    }
 
+    buttonPressedUp(pressed) {
+        if (pressed && Math.abs(this.player.body.velocity.y) < 2) {
+            this.player.setVelocityY(-350);
+            this.player.anims.play('up', true);
+        }
     }
 
     collectStar (player, star)

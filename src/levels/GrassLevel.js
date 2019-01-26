@@ -108,7 +108,6 @@ class GrassLevel extends BaseLevelScene {
     }
 
     buttonPressedLeft(pressed) {
-        console.log(pressed);
         if (pressed) {
             this.player.setVelocityX(-160);
             this.player.anims.play('left', true);
