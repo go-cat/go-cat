@@ -22,7 +22,6 @@ class GrassLevel extends BaseLevelScene {
     create() {
         this.physics.world.setBounds(0,0,3392,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 3392, 600);
-        this.score=0;
         this.add.image(0, 0, 'sky').setOrigin(0, 0);
         this.add.image(800, 0, 'sky').setOrigin(0, 0);
 
@@ -81,9 +80,6 @@ class GrassLevel extends BaseLevelScene {
 
         this.bombs = this.physics.add.group();
 
-        //  The score
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-
         //  Collide the player and the stars with the platforms
         this.physics.add.collider(this.cat, this.platforms);
         this.physics.add.collider(this.stars, this.platforms);
@@ -140,10 +136,7 @@ class GrassLevel extends BaseLevelScene {
     {
         star.disableBody(true, true);
 
-        //  Add and update the score
-        this.score += 10;
-        console.log(this.score);
-        this.scoreText.setText('Score: ' + this.score);
+        this.addScore(10);
 
         if (this.stars.countActive(true) === 0)
         {
