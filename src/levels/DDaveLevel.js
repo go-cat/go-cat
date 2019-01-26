@@ -15,6 +15,7 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
+        this.load.audio('backgroundmusidave', 'assets/sounds/songs/Industrial_Cinematic.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
@@ -24,6 +25,14 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     create() {
+        // Music!
+        this.music = this.sound.add('backgroundmusidave');
+        try {
+            this.music.play();
+        } catch {
+            console.log('no audio possible');
+        }
+    
         // layer and map for the Tilemap
         let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         let tileset = map.addTilesetImage("dave","tiles");
