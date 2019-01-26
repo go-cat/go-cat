@@ -7,14 +7,15 @@ class SecretLevel extends BaseLevelScene {
         this.load.tilemapTiledJSON("map","assets/maps/SecretLevel/world.json");
         this.load.image('tiles',"assets/images/SecretLevel/spaceTileset.png");
         this.load.image('space', 'assets/images/SecretLevel/space.png');
-        this.load.image('ground', 'assets/images/GrassLevel/bottom_green_60px.png');
-        this.load.image('star', 'assets/images/GrassLevel/star.png');
+        this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('spacedog', 'assets/images/SecretLevel/dog.jpg');
-        this.load.spritesheet('dude',
-            'assets/images/GrassLevel/dude.png',
-            { frameWidth: 32, frameHeight: 48 }
-        );
+        this.load.image('cat', 'assets/images/cat_walking_right.png');
+
+        // Audio
+
+
+        
     }
 
     create() {
@@ -35,42 +36,24 @@ class SecretLevel extends BaseLevelScene {
         // Variables
         this.score=0;
         this.dogSpeed = 30;
+        this.dogSart = 400;
 
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 500, 'dude');
-
-        //  Player physics properties. Give the little guy a slight bounce.
+        this.player = this.physics.add.sprite(100, 500, 'cat');
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.player);
+        this.player.body.gravity.y = 300;
+        this.player.scaleY=0.6;
+        this.player.scaleX=0.6;
 
-        //  Our player animations, turning, walking left and walking right.
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
 
-        this.anims.create({
-            key: 'turn',
-            frames: [ { key: 'dude', frame: 4 } ],
-            frameRate: 20
-        });
-
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        //  Create Stars, Bombs and a dog
-        this.stars = this.physics.add.group({
-            key: 'star',
-            repeat: 11,
-            setXY: { x: 12, y: 0, stepX: 70 }
+        //  Create mice, bombs and a dog
+        this.mice = this.physics.add.group({
+            key: 'mouse',
+            repeat: 20,
+            setXY: { x: 50, y: 0, stepX: 100 }
         });
 
         this.bombs = this.physics.add.group({
@@ -78,29 +61,31 @@ class SecretLevel extends BaseLevelScene {
             setXY: { x: 420, y: 0}
         });
 
-        this.stars.children.iterate(function (child) {
+        this.mice.children.iterate(function (child) {
 
-            //  Give each star a slightly different bounce
-            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            //  Give each mouse a slightly different bounce
+            child.setBounceY(0);
+            child.setGravityY(1000);
+            child.setVelocityX(Phaser.Math.FloatBetween(-40, 40));
 
         });
 
-        this.dog = this.physics.add.sprite(300, 400, 'spacedog');
+        this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
         this.dog.setVelocityX(this.dogSpeed);
 
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-        //  Collide the player and the stars with the platforms
-        this.physics.add.collider(this.stars, collisionLayer);
+        //  Collide the player and the mice with the platforms
+        this.physics.add.collider(this.mice, collisionLayer);
         this.physics.add.collider(this.player, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.dog, collisionLayer);
 
-        //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
+        //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
+        this.physics.add.overlap(this.player, this.mice, this.collectmouse, null, this);
 
-        this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
+        this.physics.add.collider(this.player, this.bombs, this.hitbomb, null, this);
         this.cameras.main.startFollow(this.player);
     }
 
@@ -108,10 +93,10 @@ class SecretLevel extends BaseLevelScene {
         if (this.gameOver) {
             return null;
         }
-        if (this.dog.x > 500) {
+        if (this.dog.x > this.dogSart+200){
             this.dog.setVelocityX(-this.dogSpeed);
         }
-        if (this.dog.x < 300) {
+        if (this.dog.x < this.dogSart){
             this.dog.setVelocityX(this.dogSpeed);
         }
     }
@@ -143,19 +128,19 @@ class SecretLevel extends BaseLevelScene {
         }
     }
 
-    collectStar (player, star)
+    collectmouse (player, mouse)
     {
-        star.disableBody(true, true);
+        mouse.disableBody(true, true);
 
         //  Add and update the score
         this.score += 10;
         console.log(this.score);
         this.scoreText.setText('Score: ' + this.score);
 
-        if (this.stars.countActive(true) === 0)
+        if (this.mice.countActive(true) === 0)
         {
-            //  A new batch of stars to collect
-            this.stars.children.iterate(function (child) {
+            //  A new batch of mice to collect
+            this.mice.children.iterate(function (child) {
 
                 child.enableBody(true, child.x, 0, true, true);
 
@@ -172,7 +157,7 @@ class SecretLevel extends BaseLevelScene {
         }
     }
 
-    hitBomb (player, bomb)
+    hitbomb (player, bomb)
     {
         this.physics.pause();
 
