@@ -6,6 +6,8 @@ class TreeLevel extends BaseLevelScene {
     }
 
     preload() {
+        super.preload();
+
         // Images
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');

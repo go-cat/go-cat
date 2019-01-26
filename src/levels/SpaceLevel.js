@@ -4,6 +4,8 @@ class SpaceLevel extends BaseLevelScene {
     }
 
     preload() {
+        super.preload();
+
         this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
         this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
@@ -15,7 +17,6 @@ class SpaceLevel extends BaseLevelScene {
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
-        this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
 
@@ -223,7 +224,7 @@ class SpaceLevel extends BaseLevelScene {
     hitdog (cat, dog)
     {
         this.sound.play("dogLong");
-        this.sound.play("angryCat");
+        this.sound.play("angry_cat");
 
         this.catDies(cat);
     }

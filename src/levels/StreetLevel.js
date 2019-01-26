@@ -6,6 +6,8 @@ class StreetLevel extends BaseLevelScene {
     }
 
     preload() {
+        super.preload();
+
         this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
         this.load.image('car', 'assets/images/car.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png')
