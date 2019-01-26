@@ -36,12 +36,7 @@ class SecretLevel extends BaseLevelScene {
         this.cameras.main.setBounds(0, 0, 2400, 600);
 
         // Variables
-        this.dogSpeed = 30;
-        for(let i = 0; i < map.objects[0].objects.length; i++){
-            this.dogStartX = map.objects[0].objects[i].x;
-            this.dogStartY = map.objects[0].objects[i].y-50;
-            this.dogPath = map.objects[0].objects[i].width;
-        }
+
 
         console.log(map.objects[0].objects[0].x);
         this.millis = 0;
@@ -70,7 +65,6 @@ class SecretLevel extends BaseLevelScene {
         });
 
         this.mice.children.iterate(function (child) {
-
             //  Give each mouse a slightly different bounce
             child.setBounceY(0);
             child.setGravityY(1000);
@@ -79,21 +73,38 @@ class SecretLevel extends BaseLevelScene {
 
 
         });
+        this.dogs = [];
+        this.dogsSprites = this.physics.add.group();
 
-        this.dog = this.physics.add.sprite(this.dogStartX, this.dogStartY,"spacedog");
-        console.log(this.dog)
-        this.dog.setVelocityX(this.dogSpeed);
+
+        for(let i = 0; i < map.objects[0].objects.length; i++){
+            let dogStartX = map.objects[0].objects[i].x;
+            let dogStartY = map.objects[0].objects[i].y-50;
+            let dogPath = map.objects[0].objects[i].width;
+            let dogSpeed = 30;
+            let sprite = this.physics.add.sprite(dogStartX, dogStartY,"spacedog");
+            this.dogsSprites.add(sprite);
+            sprite.setVelocityX(dogSpeed);
+            this.dogs.push({"sprite" : sprite ,"path": dogPath, "startX": dogStartX, "speed": dogSpeed});
+
+        }
+
+
+
+        //this.dog = this.physics.add.sprite(this.dogStartX, this.dogStartY,"spacedog");
+        console.log(this.dogs);
+
 
         //  Collide the cat and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
-        this.physics.add.collider(this.dog, collisionLayer);
+        this.physics.add.collider(this.dogsSprites, collisionLayer);
 
         this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
-        this.physics.add.collider(this.cat, this.dog, this.hitdog, null, this);
+        this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
 
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
@@ -106,12 +117,18 @@ class SecretLevel extends BaseLevelScene {
         if (this.gameOver) {
             return null;
         }
-        if (this.dog.x > this.dogStartX+this.dogPath){
-            this.dog.setVelocityX(-this.dogSpeed);
+       for(let i =0; i<this.dogs.length; i++){
+           let currentDog = this.dogs[i];
+           if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
+               currentDog["sprite"].setVelocityX(-currentDog["speed"]);
+           }
+           if (currentDog["sprite"].x < currentDog["startX"]){
+               currentDog["sprite"].setVelocityX(currentDog["speed"]);
+       }
         }
-        if (this.dog.x < this.dogStartX){
-            this.dog.setVelocityX(this.dogSpeed);
-        }
+        //if (this.dog.x < this.dogStartX){
+         //   this.dog.setVelocityX(this.dogSpeed);
+        //}
         if (this.millis > Phaser.Math.Between(100, 8000)){
             this.sound.play("bark");
             this.millis = 0;
@@ -145,7 +162,7 @@ class SecretLevel extends BaseLevelScene {
 
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
-            this.cat.setVelocityY(-350);
+            this.cat.setVelocityY(-400);
         }
     }
 
