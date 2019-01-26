@@ -25,7 +25,11 @@ class TreeLevel extends BaseLevelScene {
     create() {
         // Music!
         this.music = this.sound.add('backgroundmusic');
-        this.music.play();
+        try {
+            this.music.play();
+        } catch {
+            console.log('no audio possible');
+        }
 
         // This are the bounds of our world
         const worldheight = this.game.config.height*10;
@@ -136,7 +140,11 @@ class TreeLevel extends BaseLevelScene {
         this.physics.add.overlap(this.cat, this.mice, (cat, mouse) => {
             this.addScore();
             mouse.disableBody(true, true);
-            this.sound.play("meow");
+            try {
+                this.sound.play("meow");
+            } catch {
+                console.log('no audio possible');
+            }
         });
         this.physics.add.collider(this.cat, this.birdpoops, () => {
             this.catDies(this.cat);

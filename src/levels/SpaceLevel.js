@@ -177,11 +177,19 @@ class SpaceLevel extends BaseLevelScene {
         }
 
         if (this.cat.velocity < 10){
-            this.sound.play("land");
+            try {
+                this.sound.play("land");
+            } catch {
+                console.log('no audio possible');
+            } 
         }
 
         if (this.millis > Phaser.Math.Between(100, 8000)){
-            this.sound.play("bark");
+            try {
+                this.sound.play("bark");
+            } catch {
+                console.log('no audio possible');
+            } 
             this.millis = 0;
         }
         this.millis +=1;
@@ -214,14 +222,22 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-400);
-            this.sound.play("jump");
+            try {
+                this.sound.play("jump");
+            } catch {
+                console.log('no audio possible');
+            } 
         }
     }
 
     collectmouse (cat, mouse)
     {
         mouse.disableBody(true, true);
-        this.sound.play("meow");
+        try {
+            this.sound.play("meow");
+        } catch {
+            console.log('no audio possible');
+        } 
         //  Add and update the score
         this.addScore();
     }
@@ -229,8 +245,12 @@ class SpaceLevel extends BaseLevelScene {
 
     hitdog (cat, dog)
     {
-        this.sound.play("dogLong");
-        this.sound.play("angry_cat");
+        try {
+            this.sound.play("dogLong");
+            this.sound.play("angry_cat");
+        } catch {
+            console.log('no audio possible');
+        } 
 
         this.catDies(cat);
     }

@@ -23,7 +23,11 @@ class StreetLevel extends BaseLevelScene {
     create() {
         // Music!
         this.music = this.sound.add('backgroundmusic');
-        this.music.play();
+        try {
+            this.music.play();
+        } catch {
+            console.log('no audio possible');
+        }
 
         // Set world and camera bounds
         const worldheight = this.game.config.height*4;
@@ -86,7 +90,11 @@ class StreetLevel extends BaseLevelScene {
         this.physics.add.overlap(this.cat, this.mice, (cat, mouse) => {
             this.addScore();
             mouse.disableBody(true, true);
-            this.sound.play('meow');
+            try {
+                this.sound.play('meow');
+            } catch {
+                console.log('no audio possible');
+            }
         });
 
         // Add goal
@@ -122,7 +130,11 @@ class StreetLevel extends BaseLevelScene {
         }
 
         this.physics.add.collider(this.cat, this.carsSprites, () => {
-            this.sound.play('cat_hit');
+            try {
+                this.sound.play('cat_hit');
+            } catch {
+                console.log('no audio possible');
+            }    
             this.catDies(this.cat);
         });
 

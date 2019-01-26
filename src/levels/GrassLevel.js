@@ -151,7 +151,11 @@ class GrassLevel extends BaseLevelScene {
     collectmouse (player, mouse)
     {
         mouse.disableBody(true, true);
-        this.sound.play("meow");
+        try {
+            this.sound.play("meow");
+        } catch {
+            console.log('no audio possible');
+        }            
 
         this.addScore();
     }
