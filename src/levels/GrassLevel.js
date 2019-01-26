@@ -15,12 +15,19 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('grass_goal', 'assets/images/house_home_transparent.png');
 
         // Audio
+        this.load.audio('backgroundmusic', 'assets/sounds/songs/Hamster_March.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
     }
 
     create() {
-        super.create();
+        // Music!
+        this.music = this.sound.add('backgroundmusic');
+        try {
+            this.music.play();
+        } catch {
+            console.log('no audio possible');
+        }
 
         // layer and map for the Tilemap
         let map = this.make.tilemap({ key: "grass_map", tileWidth: 32, tileHeight: 32 });
@@ -155,7 +162,7 @@ class GrassLevel extends BaseLevelScene {
             this.sound.play("meow");
         } catch {
             console.log('no audio possible');
-        }            
+        }
 
         this.addScore();
     }
