@@ -1,3 +1,5 @@
+"use strict";
+
 class StartScene extends BaseLevelScene {
     constructor() {
         super({ key: 'StartScene' });

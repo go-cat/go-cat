@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 let config = {
     type: Phaser.AUTO,
@@ -9,7 +9,7 @@ let config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 100 },
-            debug: true
+            debug: false
         }
     },
     scene: [
