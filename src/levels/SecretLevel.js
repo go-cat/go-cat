@@ -117,6 +117,10 @@ class SecretLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
         }
+        
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
+        }        
     }
 
     buttonPressedRight(pressed) {
@@ -125,6 +129,10 @@ class SecretLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
         }
+        
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
+        }        
     }
 
     buttonPressedUp(pressed) {
