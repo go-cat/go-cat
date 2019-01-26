@@ -93,6 +93,25 @@ class TreeLevel extends BaseLevelScene {
         });        
 
         // Birds fly
+        this.birds.children.iterate(function (bird) {
+            let x = Phaser.Math.Between(1, 3);
+            if (x === 1) {
+                bird.setVelocityX(0);
+            } else if (x === 2) {
+                bird.setVelocityX(-100);
+            } else {
+                bird.setVelocityX(100);
+            }
+            
+            let y = Phaser.Math.Between(1, 3);
+            if (y === 1) {
+                bird.setVelocityY(0);
+            } else if (y === 2) {
+                bird.setVelocityY(-100);
+            } else {
+                bird.setVelocityY(100);
+            }            
+        });           
 
     }
 
