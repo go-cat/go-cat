@@ -19,7 +19,7 @@ let config = {
         TreeLevel,
         SecretLevel,
         EndScene,
-    ]
+    ],
 };
 
 let game = new Phaser.Game(config);
