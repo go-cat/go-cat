@@ -9,7 +9,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
         this.load.image('car', 'assets/images/car.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png')
-        this.load.image('goal', 'assets/images/StreetLevel/house.png');
+        this.load.image('goal', 'assets/images/house_home.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
 
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
@@ -21,44 +21,59 @@ class StreetLevel extends BaseLevelScene {
         this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
 
-        // Our houses, all static in a group
-        let houses = this.physics.add.staticGroup();
-
         // Add background (with streets)
         this.add.image(0, 0, 'bg').setOrigin(0, 0);
+
+        // Add houses
+        this.housesSprites = this.physics.add.group();
+
+        let houses_conf = [
+            {x: 300, y: 480},
+            {x: 550, y: 800},
+            {x: 100, y: 1185},
+            {x: 250, y: 1185},
+            {x: 700, y: 1450},
+            {x: 550, y: 1580},
+            {x: 100, y: 2100},
+            {x: 700, y: 2100}
+        ];
+        for (let i = 0; i < 8; i++) {
+            let sprite = this.physics.add.sprite(houses_conf[i].x, houses_conf[i].y, 'house');
+            this.housesSprites.add(sprite);
+            sprite.body.setAllowGravity(0, 0);
+            sprite.body.setImmovable();
+            sprite.setSize(80, 110, true);
+        }
 
         // Add cat
         this.cat = this.physics.add.sprite(0, worldheight, 'cat');
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0, 0);
+        this.cat.setSize(90, 90, true);
         this.cameras.main.startFollow(this.cat);
 
         // Add goal
         this.goal = this.physics.add.sprite(this.game.config.width-64, 59, 'goal');
         this.goal.body.setAllowGravity(0, 0);
+        this.goal.body.setImmovable();
 
         this.physics.add.collider(this.cat, this.goal, ()=>{
             this.addScore(100);
             this.startNextLevel();
         });
 
-        // Add houses
-        houses.create(300, 480, 'house');
-        houses.create(550, 800, 'house');
-        houses.create(100, 1185, 'house');
-        houses.create(250, 1185, 'house');
-        houses.create(700, 1450, 'house');
-        houses.create(550, 1580, 'house');
-        houses.create(100, 2100, 'house');
-        houses.create(700, 2100, 'house');
-
-        this.physics.add.collider(this.cat, houses);
+        // Add house collision
+        this.physics.add.collider(this.cat, this.housesSprites);
 
         // Add cars
         this.cars = this.physics.add.group({
             key: 'car',
-            repeat: 20,
-            setXY: { x: 0, y: 150, stepY: 100 }
+            repeat: 10,
+            setXY: {
+                x: Phaser.Math.FloatBetween(0, -200),
+                y: 150,
+                stepY: 150
+            }
         });
 
         this.cars.children.iterate(function (child) {
