@@ -9,25 +9,31 @@ class BaseLevelScene extends Phaser.Scene {
 
         this.timeLeft = 0;
         this.showTimer = config.hasOwnProperty('showTimer') ? config.showTimer : true;
+
+        this.score = 0;
+    }
+
+    init(data) {
+        this.score = data.hasOwnProperty('score') ? data.score : 0;
     }
 
     create() {
         this.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
                 case 'Escape':
-                    this.scene.start('StartScene');
+                    this.scene.start('StartScene', { score: this.score });
                     break;
                 case '1':
-                    this.scene.start('TreeLevel');
+                    this.scene.start('TreeLevel', { score: this.score });
                     break;
                 case '2':
-                    this.scene.start('GrassLevel');
+                    this.scene.start('GrassLevel', { score: this.score });
                     break;
                 case '3':
-                    this.scene.start('StreetLevel');
+                    this.scene.start('StreetLevel', { score: this.score });
                     break;
                 case '4':
-                    this.scene.start('SecretLevel');
+                    this.scene.start('SecretLevel', { score: this.score });
                     break;
                 case 'ArrowUp':
                 case 'w':
@@ -71,7 +77,7 @@ class BaseLevelScene extends Phaser.Scene {
 
         if (this.showTimer) {
             this.timeLeft = 120;
-            this.timerText = this.add.text(10, 10, BaseLevelScene.formatTime(this.timeLeft), {
+            this.timerText = this.add.text(10, 40, 'time:   ' + BaseLevelScene.formatNumberToText(this.timeLeft, 3), {
                 fontFamily: 'Monospace',
                 fontSize: 24,
                 color: '#000000',
@@ -80,13 +86,22 @@ class BaseLevelScene extends Phaser.Scene {
             this.timerText.setShadow(2, 2, '#ffffff', 2, true, false);
             this.timerText.setScrollFactor(0);
         }
+
+        this.scoreText = this.add.text(10, 10, 'score: ' + BaseLevelScene.formatNumberToText(this.score, 4), {
+            fontFamily: 'Monospace',
+            fontSize: 24,
+            color: '#000000',
+        });
+        this.scoreText.setStroke('#ffffff', 2);
+        this.scoreText.setShadow(2, 2, '#ffffff', 2, true, false);
+        this.scoreText.setScrollFactor(0);
     }
 
-    static formatTime(time) {
-        let timeString = '' + Math.floor(time);
-        let padding = '000';
+    static formatNumberToText(number, length) {
+        let string = '' + Math.floor(number);
+        let padding = '0'.repeat(length - string.length);
 
-        return 'time: ' + padding.substr(0, padding.length - timeString.length) + timeString;
+        return padding + string;
     }
 
     update(time, delta) {
@@ -140,10 +155,16 @@ class BaseLevelScene extends Phaser.Scene {
         if (this.showTimer) {
             this.timeLeft -= delta / 1000;
             if (this.timeLeft < 0) {
+                this.timeLeft = 0;
                 // TODO time is up
             }
-            this.timerText.text = BaseLevelScene.formatTime(this.timeLeft);
+            this.timerText.text = 'time:   ' + BaseLevelScene.formatNumberToText(this.timeLeft, 3);
         }
+    }
+
+    addScore(score) {
+        this.score += score;
+        this.scoreText.text = 'score: ' + BaseLevelScene.formatNumberToText(this.score, 4);
     }
 
     buttonPressedLeft() {}

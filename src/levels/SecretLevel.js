@@ -39,7 +39,6 @@ class SecretLevel extends BaseLevelScene {
         this.cameras.main.setBounds(0, 0, 2400, 600);
 
         // Variables
-        this.score=0;
         this.dogSpeed = 30;
         for(let i = 0; i < map.objects[0].objects.length; i++){
             this.dogStart = map.objects[0].objects[i].x;
@@ -85,9 +84,6 @@ class SecretLevel extends BaseLevelScene {
 
         this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
         this.dog.setVelocityX(this.dogSpeed);
-
-        //  The score
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         //  Collide the cat and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
@@ -163,10 +159,7 @@ class SecretLevel extends BaseLevelScene {
         this.sound.play("meow");
 
         //  Add and update the score
-        this.score += 10;
-        console.log(this.score);
-        this.scoreText.setText('Score: ' + this.score);
-
+        this.addScore(10);
         if (this.mice.countActive(true) === 0)
         {
             //  A new batch of mice to collect
