@@ -25,6 +25,10 @@ class StreetLevel extends BaseLevelScene {
 
         this.car = this.physics.add.sprite(0, 50, 'car');
         this.car.body.setAllowGravity(0, 0);
+
+        this.physics.add.collider(this.cat, this.car, ()=>{
+            this.scene.start('EndScene');
+        });
     }
 
     update() {

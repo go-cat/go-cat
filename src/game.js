@@ -5,6 +5,9 @@ let config = {
     width: 800,
     height: 600,
     parent: 'game',
+    input: {
+        gamepad: true,   
+    },
     physics: {
         default: 'arcade',
         arcade: {
