@@ -18,7 +18,6 @@ class SpaceLevel extends BaseLevelScene {
         this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
-        this.load.audio("walk", "assets/sounds/movement/walking_sfx_movement_footstepsloop4_slow.wav");
 
     }
 
@@ -31,7 +30,7 @@ class SpaceLevel extends BaseLevelScene {
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
 
         collisionLayer.setCollisionByProperty({ collides: true });
-        console.log(map.objects);
+
 
 
         // bounds
@@ -102,8 +101,7 @@ class SpaceLevel extends BaseLevelScene {
 
 
         //this.dog = this.physics.add.sprite(this.dogStartX, this.dogStartY,"dogImage");
-        console.log("collisionlayer: ", collisionLayer);
-        console.log("safezone: ", this.safezoneLayer);
+
         let lay = this.safezoneLayer.objects[0];
         this.safezone = this.physics.add.image(lay.x, lay.y + lay.height/2,"safe");
         this.safezone.body.allowGravity = false;
@@ -128,7 +126,7 @@ class SpaceLevel extends BaseLevelScene {
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
         super.create();
-        console.log (this.safezone)
+
     }
 
     update(time, delta) {
@@ -147,7 +145,7 @@ class SpaceLevel extends BaseLevelScene {
         //if (this.cat.y > 566){
          //   this.catDies(this.cat);
         //}
-        console.log("velocity", this.cat.);
+
         if (this.cat.velocity < 10){
             this.sound.play("land");
         }
@@ -162,7 +160,6 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.cat.setVelocityX(-160);
-            this.sound.play("walk");
         } else {
             this.cat.setVelocityX(0);
         }
@@ -175,7 +172,6 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedRight(pressed) {
         if (pressed) {
             this.cat.setVelocityX(160);
-            this.sound.play("walk");
         } else {
             this.cat.setVelocityX(0);
         }
