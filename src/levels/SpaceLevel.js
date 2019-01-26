@@ -55,7 +55,7 @@ class SpaceLevel extends BaseLevelScene {
 
 
         // The cat and its settings
-        this.cat = this.physics.add.sprite(2000, 300, 'cat');
+        this.cat = this.physics.add.sprite(100, 300, 'cat');
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
