@@ -48,7 +48,7 @@ class SecretLevel extends BaseLevelScene {
         //this.platforms.create(120, 120, 'ground').setScale(1).refreshBody();
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 600, 'dude');
+        this.player = this.physics.add.sprite(100, 500, 'dude');
 
         //  Player physics properties. Give the little guy a slight bounce.
         this.player.setBounce(0.2);
@@ -79,11 +79,16 @@ class SecretLevel extends BaseLevelScene {
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+        //  Create Stars, Bombs and a dog
         this.stars = this.physics.add.group({
             key: 'star',
             repeat: 11,
             setXY: { x: 12, y: 0, stepX: 70 }
+        });
+
+        this.bombs = this.physics.add.group({
+            key: 'bomb',
+            setXY: { x: 420, y: 0}
         });
 
         this.stars.children.iterate(function (child) {
@@ -93,17 +98,19 @@ class SecretLevel extends BaseLevelScene {
 
         });
 
-        this.bombs = this.physics.add.group();
-
+        this.dog = this.physics.add.sprite(300, 400, 'spacedog');
+        /*for(let i = 0; i<100; i++){
+            this.dog.setXY(this.dog.X, 400+i);
+        }
+*/
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         //  Collide the player and the stars with the platforms
-        this.physics.add.collider(this.player, this.platforms);
-        this.physics.add.collider(this.stars, this.platforms);
         this.physics.add.collider(this.stars, collisionLayer);
         this.physics.add.collider(this.player, collisionLayer);
-        this.physics.add.collider(this.bombs, this.platforms);
+        this.physics.add.collider(this.bombs, collisionLayer);
+        this.physics.add.collider(this.dog, collisionLayer);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
         this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
@@ -130,7 +137,7 @@ class SecretLevel extends BaseLevelScene {
 
             this.player.anims.play('right', true);
         }
-        else if (this.cursors.up.isDown)
+        else if (this.cursors.up.isDown && Math.abs(this.player.body.velocity.y) < 2)
         {
             this.player.setVelocityY(-160);
 
@@ -149,10 +156,7 @@ class SecretLevel extends BaseLevelScene {
             this.player.anims.play('turn');
         }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down)
-        {
-            this.player.setVelocityY(-3000);
-        }
+
     }
 
     collectStar (player, star)
