@@ -50,27 +50,37 @@ class TreeLevel extends BaseLevelScene {
         this.goal.body.setAllowGravity(0, 0);
 
         // Create the branches
-        platforms.create(20, 100, 'branch');
-        platforms.create(100, 400, 'branch');
-        platforms.create(300, 700, 'branch');
-        platforms.create(500, 1000, 'branch');
-        platforms.create(50, 1300, 'branch');
-        platforms.create(200, 1600, 'branch');
-        platforms.create(700, 1900, 'branch');
-        platforms.create(100, 2200, 'branch');
-        platforms.create(600, 2500, 'branch');
-        platforms.create(300, 2700, 'branch');
-        platforms.create(500, 3000, 'branch');
-        platforms.create(10, 3500, 'branch');
-        platforms.create(50, 3800, 'branch');
-        platforms.create(400, 4000, 'branch');
-        platforms.create(700, 4100, 'branch');
-        platforms.create(600, 4500, 'branch');
-        platforms.create(650, 4900, 'branch');
-        platforms.create(200, 5000, 'branch');
-        platforms.create(500, 5200, 'branch');
-        platforms.create(100, 5350, 'branch');
-        platforms.create(300, 5500, 'branch');
+        platforms.create(50, 100, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 200, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 500, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 700, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 800, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 1000, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 1100, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 1300, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 1550, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 1700, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 2000, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 2150, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 2300, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 2500, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 2750, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 3000, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 3100, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 3250, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 3400, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 3800, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 4000, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 4200, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 4500, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 4600, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 4900, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 5100, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 5200, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 5500, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 5750, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 6000, 'branch');
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 6200, 'branch');        
 
         // Our cat
         this.cat = this.physics.add.sprite(100, 0, 'animcat');
@@ -124,7 +134,7 @@ class TreeLevel extends BaseLevelScene {
         // The cat
         this.physics.add.collider(this.cat, platforms);
         this.physics.add.collider(this.cat, this.ground)
-        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => {
+        this.physics.add.overlap(this.cat, this.mice, (cat, mouse) => {
             this.addScore();
             mouse.disableBody(true, true);
             this.sound.play("meow");
