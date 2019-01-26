@@ -1,4 +1,4 @@
-class EndScene extends Phaser.Scene {
+class EndScene extends BaseLevelScene {
     constructor() {
         super({ key: 'EndScene' })
     }
@@ -8,6 +8,7 @@ class EndScene extends Phaser.Scene {
     }
 
     create() {
+        super.create();
 
     }
 }

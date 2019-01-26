@@ -1,4 +1,4 @@
-class TreeLevel extends Phaser.Scene {
+class TreeLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'TreeLevel' })
     }
@@ -11,6 +11,8 @@ class TreeLevel extends Phaser.Scene {
     }
 
     create() {
+        super.create();
+
         // This are the bounds of our world
         this.physics.world.setBounds(0, 0, this.game.config.width, this.game.config.height*4, true, true, true, true);
 
