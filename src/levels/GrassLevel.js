@@ -14,10 +14,6 @@ class GrassLevel extends BaseLevelScene {
         // Audio
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
-
-
-
-
     }
 
     create() {
@@ -68,8 +64,6 @@ class GrassLevel extends BaseLevelScene {
             //  Give each mouse a slightly different bounce
             child.setBounceY(0);
             child.setGravityY(1000);
-            child.setVelocityX(Phaser.Math.FloatBetween(-40, 40));
-
         });
 
         this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
@@ -96,17 +90,6 @@ class GrassLevel extends BaseLevelScene {
         if (this.gameOver) {
             return null;
         }
-        if (this.dog.x > this.dogSart+200){
-            this.dog.setVelocityX(-this.dogSpeed);
-        }
-        if (this.dog.x < this.dogSart){
-            this.dog.setVelocityX(this.dogSpeed);
-        }
-        if (this.millis > Phaser.Math.Between(100, 8000)){
-            this.sound.play("bark");
-            this.millis = 0;
-        }
-        this.millis +=1;
     }
 
     buttonPressedLeft(pressed) {
@@ -115,6 +98,10 @@ class GrassLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
         }
+
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
+        }
     }
 
     buttonPressedRight(pressed) {
@@ -122,6 +109,10 @@ class GrassLevel extends BaseLevelScene {
             this.cat.setVelocityX(160);
         } else {
             this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
         }
     }
 
