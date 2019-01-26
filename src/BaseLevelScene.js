@@ -71,15 +71,22 @@ class BaseLevelScene extends Phaser.Scene {
 
         if (this.showTimer) {
             this.timeLeft = 120;
-            this.timerText = this.add.text(10, 10, BaseLevelScene.formatTime(this.timeLeft));
+            this.timerText = this.add.text(10, 10, BaseLevelScene.formatTime(this.timeLeft), {
+                fontFamily: 'Monospace',
+                fontSize: 24,
+                color: '#000000',
+            });
+            this.timerText.setStroke('#ffffff', 2);
+            this.timerText.setShadow(2, 2, '#ffffff', 2, true, false);
+            this.timerText.setScrollFactor(0);
         }
     }
 
     static formatTime(time) {
-        let timeString = 'time: ' + Math.floor(time);
+        let timeString = '' + Math.floor(time);
         let padding = '000';
 
-        return padding.substring(0, padding.length - timeString.length) + timeString;
+        return 'time: ' + padding.substr(0, padding.length - timeString.length) + timeString;
     }
 
     update(time, delta) {
