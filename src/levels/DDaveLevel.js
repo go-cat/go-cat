@@ -173,7 +173,6 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         if (this.millis > this.timeout){
-            console.log("millis!!")
             this.createDogs();
             try {
                 this.sound.play("bark");
@@ -184,6 +183,16 @@ class DDaveLevel extends BaseLevelScene {
             this.timeout = Phaser.Math.Between(800, 8000);
         }
         this.millis +=1;
+
+        // kill dogs older than 20 sec
+        for(let i = 0; i < this.dogs.length; i++) {
+            let currentDog = this.dogs[i];
+            currentDog.time -= delta;
+            if (currentDog.time < 0) {
+                currentDog.sprite.disableBody(true, true);
+                console.log ("dogs killed")
+            }
+        }
     }
 
     buttonPressedLeft(pressed) {
@@ -251,6 +260,7 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     createDogs() {
+        console.log ("dogs created")
         for (let i = 0; i < this.dogSpawnLayer.objects.length; i++) {
             let dogStartX = this.dogSpawnLayer.objects[i].x;
             let dogStartY = this.dogSpawnLayer.objects[i].y - 40;
@@ -267,7 +277,7 @@ class DDaveLevel extends BaseLevelScene {
             sprite.setVelocityX(dogSpeed * dogDirection);
             sprite.scaleY = 0.6;
             sprite.scaleX = 0.6;
-            this.dogs.push({"sprite": sprite, "startX": dogStartX, "speed": dogSpeed});
+            this.dogs.push({"sprite": sprite, "startX": dogStartX, "speed": dogSpeed, "time" : 40000});
         }
 
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="75" height="19" tilewidth="32" tileheight="32" infinite="0" nextobjectid="29">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="75" height="19" tilewidth="32" tileheight="32" infinite="0" nextobjectid="36">
  <tileset firstgid="1" name="spacetileset" tilewidth="32" tileheight="32" tilecount="100" columns="10">
-  <image source="../../images/SecretLevel/spaceTileset.png" width="320" height="320"/>
+  <image source="../../images/SpaceLevel/spaceTileset.png" width="320" height="320"/>
   <tile id="60">
    <properties>
     <property name="collides" type="bool" value="true"/>
@@ -65,6 +65,13 @@
   <object id="23" x="2275" y="160" width="27" height="31"/>
   <object id="24" x="2209" y="223" width="30" height="33"/>
   <object id="25" x="2116" y="322" width="28" height="27"/>
+  <object id="29" x="69" y="131" width="153" height="29"/>
+  <object id="30" x="354" y="388" width="169" height="26"/>
+  <object id="31" x="678" y="322" width="113" height="27"/>
+  <object id="32" x="126" y="512" width="221" height="28"/>
+  <object id="33" x="1433" y="353" width="209" height="27"/>
+  <object id="34" x="1134" y="575" width="261" height="28"/>
+  <object id="35" x="1985" y="448" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="ground" visible="0">
   <object id="13" x="0.666667" y="596" width="2408" height="8"/>
