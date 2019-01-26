@@ -6,13 +6,15 @@ class SecretLevel extends BaseLevelScene {
     preload() {
         this.load.tilemapTiledJSON("map","assets/maps/SecretLevel/world.json");
         this.load.image('tiles',"assets/images/SecretLevel/spaceTileset.png");
-        this.load.image('space', 'assets/images/SecretLevel/space.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('spacedog', 'assets/images/SecretLevel/dog.jpg');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
 
         // Audio
+        this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
+        this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
+
 
 
         
@@ -37,10 +39,11 @@ class SecretLevel extends BaseLevelScene {
         this.score=0;
         this.dogSpeed = 30;
         this.dogSart = 400;
+        this.millis = 0;
 
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 500, 'cat');
+        this.player = this.physics.add.sprite(100, 400, 'cat');
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.player);
@@ -99,6 +102,11 @@ class SecretLevel extends BaseLevelScene {
         if (this.dog.x < this.dogSart){
             this.dog.setVelocityX(this.dogSpeed);
         }
+        if (this.millis > Phaser.Math.Between(100, 8000)){
+            this.sound.play("bark");
+            this.millis = 0;
+        }
+        this.millis +=1;
     }
 
     buttonPressedLeft(pressed) {
@@ -131,6 +139,7 @@ class SecretLevel extends BaseLevelScene {
     collectmouse (player, mouse)
     {
         mouse.disableBody(true, true);
+        this.sound.play("meow");
 
         //  Add and update the score
         this.score += 10;
