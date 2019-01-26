@@ -14,6 +14,8 @@ class SecretLevel extends BaseLevelScene {
         // Audio
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
+        this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
+        this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
 
 
 
@@ -26,19 +28,26 @@ class SecretLevel extends BaseLevelScene {
         // layer and map for the Tilemap
         const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage("spacetileset","tiles");
-
         const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+
         collisionLayer.setCollisionByProperty({ collides: true });
+        console.log(map.objects);
 
 
+        // bounds
         this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 2400, 600);
 
         // Variables
         this.score=0;
         this.dogSpeed = 30;
-        this.dogSart = 400;
+        for(let i = 0; i < map.objects[0].objects.length; i++){
+            this.dogStart = map.objects[0].objects[i].x;
+            this.dogPath = map.objects[0].objects[i].width;
+        }
+
+        console.log(map.objects[0].objects[0].x);
         this.millis = 0;
 
 
@@ -64,17 +73,28 @@ class SecretLevel extends BaseLevelScene {
             setXY: { x: 420, y: 0}
         });
 
-        this.mice.children.iterate(function (child) {
 
-            //  Give each mouse a slightly different bounce
+        // Platform-Arrays
+        this.dogPlatforms = [];
+        this.micePlatforms = [];
+
+        // Iterate Mice
+        this.mice.children.iterate(function (child) {
             child.setBounceY(0);
             child.setGravityY(1000);
             child.setVelocityX(Phaser.Math.FloatBetween(-40, 40));
 
+
+
         });
 
-        this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
+        this.dog = this.physics.add.sprite(this.dogStart, 200, 'spacedog');
         this.dog.setVelocityX(this.dogSpeed);
+
+
+
+
+
 
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
@@ -89,6 +109,7 @@ class SecretLevel extends BaseLevelScene {
         this.physics.add.overlap(this.player, this.mice, this.collectmouse, null, this);
 
         this.physics.add.collider(this.player, this.bombs, this.hitbomb, null, this);
+        this.physics.add.collider(this.player, this.dog, this.hitdog, null, this);
         this.cameras.main.startFollow(this.player);
     }
 
@@ -96,10 +117,10 @@ class SecretLevel extends BaseLevelScene {
         if (this.gameOver) {
             return null;
         }
-        if (this.dog.x > this.dogSart+200){
+        if (this.dog.x > this.dogStart+this.dogPath){
             this.dog.setVelocityX(-this.dogSpeed);
         }
-        if (this.dog.x < this.dogSart){
+        if (this.dog.x < this.dogStart){
             this.dog.setVelocityX(this.dogSpeed);
         }
         if (this.millis > Phaser.Math.Between(100, 8000)){
@@ -176,5 +197,12 @@ class SecretLevel extends BaseLevelScene {
 
         this.gameOver = true;
     }
-
+    hitdog (player, dog)
+    {
+        this.physics.pause();
+        player.setTint(0xff0000);
+        this.sound.play("dogLong");
+        this.sound.play("angryCat");
+        this.gameOver = true;
+    }
 }
