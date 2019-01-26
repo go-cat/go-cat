@@ -33,10 +33,11 @@ class TreeLevel extends BaseLevelScene {
         const platforms = this.physics.add.staticGroup();
 
         // Create the ground
-        platforms.create(this.game.config.width/2, worldheight, 'ground').setScale(2).refreshBody();
+        this.ground = this.physics.add.image(this.game.config.width/2, worldheight, 'ground');
+        this.ground.body.setAllowGravity(0, 0);
 
         // Our goal
-        this.goal = this.physics.add.sprite(this.game.config.width-64, worldheight-100, 'goal');
+        this.goal = this.physics.add.image(this.game.config.width-64, worldheight-100, 'goal');
         this.goal.body.setAllowGravity(0, 0);
 
         // Create the branches
@@ -62,7 +63,7 @@ class TreeLevel extends BaseLevelScene {
         this.bird.body.allowGravity = false;
         this.bird.body.setCollideWorldBounds(false);
         this.bird.flying = false;
-        
+
         // Birds do poop
         this.birdpoops = this.physics.add.group();
 
@@ -77,20 +78,28 @@ class TreeLevel extends BaseLevelScene {
         });
 
         // Colide events
+        // The cat
         this.physics.add.collider(this.cat, platforms);
+        this.physics.add.collider(this.cat, this.ground)
         this.physics.add.collider(this.cat, this.mice, (cat, mouse) => {
             this.addScore();
             mouse.disableBody(true, true);
             this.cat.body.stop();
             this.sound.play("meow");
         });
-        this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.cat, this.birdpoops, () => {
             this.catDies(this.cat);
         });
         this.physics.add.collider(this.cat, this.goal, () => {
             this.addScore(100);
             this.startNextLevel();
+        });
+        // The mice
+        this.physics.add.collider(this.mice, platforms);
+        this.physics.add.collider(this.mice, this.ground);
+        // The ground
+        this.physics.add.collider(this.ground, this.birdpoops, (ground, poop) => {
+            poop.disableBody(true, true);
         });
 
         // should be called at the end to the HUD will be on top
