@@ -78,11 +78,11 @@ class StreetLevel extends BaseLevelScene {
         this.carsSprites = this.physics.add.group();
 
         let streets_y = [280, 565, 886, 1006, 1266, 1672, 1793, 2179];
-        let car_max = 20;
+        let car_max = 24;
 
         for (let i = 0; i < car_max; i++) {
             let random_x = Phaser.Math.FloatBetween(0, -200);
-            let random_y = Phaser.Utils.Array.GetRandom(streets_y);
+            let random_y = streets_y[i%streets_y.length];
             let sprite = this.physics.add.sprite(random_x, random_y + 50, 'car');
             this.carsSprites.add(sprite);
             sprite.body.setAllowGravity(0, 0);
