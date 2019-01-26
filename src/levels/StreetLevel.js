@@ -7,7 +7,7 @@ class StreetLevel extends BaseLevelScene {
 
     preload() {
         this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
-        this.load.image('car', 'assets/images/StreetLevel/car.png');
+        this.load.image('car', 'assets/images/car.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png')
     }
 
@@ -28,10 +28,18 @@ class StreetLevel extends BaseLevelScene {
         this.cat.body.setAllowGravity(0, 0);
         this.cameras.main.startFollow(this.cat);
 
-        this.car = this.physics.add.sprite(0, 50, 'car');
-        this.car.body.setAllowGravity(0, 0);
+        this.cars = this.physics.add.group({
+            key: 'car',
+            repeat: 20,
+            setXY: { x: 0, y: 50, stepY: 100 }
+        });
 
-        this.physics.add.collider(this.cat, this.car, ()=>{
+        this.cars.children.iterate(function (child) {
+            child.body.setAllowGravity(0, 0);
+            child.setVelocityX(Phaser.Math.FloatBetween(100, 200));
+        });
+
+        this.physics.add.collider(this.cat, this.cars, ()=>{
             this.scene.start('EndScene');
         });
 
@@ -42,11 +50,15 @@ class StreetLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
-        if (this.car.x >= 800) {
-            this.car.setVelocityX(-200);
-        } else if (this.car.x <= 0) {
-            this.car.setVelocityX(200);
-        }
+        this.cars.children.iterate(function (child) {
+            if (child.x >= 800) {
+                child.setVelocityX(Math.abs(child.body.velocity.x)*-1);
+                child.flipX = true;
+            } else if (child.x <= 0) {
+                child.setVelocityX(Math.abs(child.body.velocity.x));
+                child.flipX = false;
+            }
+        });
     }
 
     buttonPressedLeft(pressed) {
