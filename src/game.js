@@ -1,3 +1,5 @@
+"use strict"
+
 let config = {
     type: Phaser.AUTO,
     width: 800,
