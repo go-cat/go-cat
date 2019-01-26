@@ -10,13 +10,12 @@ class StreetLevel extends BaseLevelScene {
 
         this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
         this.load.image('car', 'assets/images/car.png');
-        this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
 
-        this.load.audio('backgroundmusic', 'assets/sounds//songs/Big_Rock.mp3');
+        this.load.audio('backgroundmusic', 'assets/sounds/songs/Big_Rock.mp3');
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
         this.load.audio('meow', 'assets/sounds/animals/cat_meow1.ogg');
     }
@@ -59,6 +58,7 @@ class StreetLevel extends BaseLevelScene {
         this.cat = this.physics.add.sprite(50, worldheight-49, 'animcat');
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0, 0);
+        this.cat.setSize(90, 90, true);
         this.cameras.main.startFollow(this.cat);
         this.anims.remove('walk');
         this.anims.create({
