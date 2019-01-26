@@ -35,6 +35,7 @@ class BaseLevelScene extends Phaser.Scene {
         this.load.audio('angry_cat', 'assets/sounds/animals/cat_angry.ogg');
 
         this.load.image('touch_arrow', 'assets/images/touch_arrow_right.png');
+        this.load.image('cat_lives', 'assets/images/cat_lives.png');
     }
 
     create() {
@@ -111,18 +112,15 @@ class BaseLevelScene extends Phaser.Scene {
         this.scoreText.setShadow(2, 2, '#ffffff', 2, true, false);
         this.scoreText.setScrollFactor(0);
 
-        this.livesText = this.add.text(10, 40, 'lives:' + BaseLevelScene.formatNumberToText(this.remainingLives), {
-            fontFamily: 'Monospace',
-            fontSize: 24,
-            color: '#000000',
-        });
-        this.livesText.setStroke('#ffffff', 2);
-        this.livesText.setShadow(2, 2, '#ffffff', 2, true, false);
-        this.livesText.setScrollFactor(0);
+        this.catLiveImages = [];
+        for (let i = 0; i < this.remainingLives; i++) {
+            this.catLiveImages[i] = this.add.image(800 - 32 - (i * (8 + 48)), 32, 'cat_lives');
+            this.catLiveImages[i].setScrollFactor(0);
+        }
 
         if (this.showTimer) {
             this.timeLeft = 120;
-            this.timerText = this.add.text(10, 70, 'time: ' + BaseLevelScene.formatNumberToText(this.timeLeft), {
+            this.timerText = this.add.text(10, 40, 'time: ' + BaseLevelScene.formatNumberToText(this.timeLeft), {
                 fontFamily: 'Monospace',
                 fontSize: 24,
                 color: '#000000',
@@ -295,7 +293,10 @@ class BaseLevelScene extends Phaser.Scene {
         }
 
         this.remainingLives--;
-        this.livesText.text = 'lives:' + BaseLevelScene.formatNumberToText(this.remainingLives);
+
+        for (let i = this.catLiveImages.length - 1; i >= 0; i--) {
+            this.catLiveImages[i].visible = (i < this.remainingLives);
+        }
     }
 
     catDies(cat) {
