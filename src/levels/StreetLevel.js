@@ -10,7 +10,8 @@ class StreetLevel extends BaseLevelScene {
 
         this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
         this.load.image('car', 'assets/images/car.png');
-        this.load.image('cat', 'assets/images/cat_walking_right.png')
+        this.load.image('cat', 'assets/images/cat_walking_right.png');
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
 
@@ -53,11 +54,28 @@ class StreetLevel extends BaseLevelScene {
         }
 
         // Add cat
-        this.cat = this.physics.add.sprite(50, worldheight-49, 'cat');
+        // this.cat = this.physics.add.sprite(50, worldheight-49, 'cat');
+        // this.cat.setCollideWorldBounds(true);
+        // this.cat.body.setAllowGravity(0, 0);
+        // this.cat.setSize(90, 90, true);
+        // this.cameras.main.startFollow(this.cat);
+        this.cat = this.physics.add.sprite(50, worldheight-49, 'animcat');
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0, 0);
-        this.cat.setSize(90, 90, true);
         this.cameras.main.startFollow(this.cat);
+        this.anims.remove('walk');
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.anims.remove('stand');
+        this.anims.create({
+            key: 'stand',
+            frames: [ { key: 'animcat', frame: 0 } ],
+            frameRate: 20,
+        });
 
         // Add goal
         this.goal = this.physics.add.sprite(this.game.config.width-64, 59, 'goal');
@@ -117,8 +135,10 @@ class StreetLevel extends BaseLevelScene {
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.cat.setVelocityX(-350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand');
         }
 
         if (this.cat.flipX === false) {
@@ -129,8 +149,10 @@ class StreetLevel extends BaseLevelScene {
     buttonPressedRight(pressed) {
         if (pressed) {
             this.cat.setVelocityX(350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand');
         }
 
         if (this.cat.flipX === true) {
@@ -141,16 +163,20 @@ class StreetLevel extends BaseLevelScene {
     buttonPressedUp(pressed) {
         if (pressed) {
             this.cat.setVelocityY(-350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityY(0);
+            this.cat.anims.play('stand');
         }
     }
 
     buttonPressedDown(pressed) {
         if (pressed) {
             this.cat.setVelocityY(350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityY(0);
+            this.cat.anims.play('stand');
         }
     }
 }
