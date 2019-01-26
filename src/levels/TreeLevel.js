@@ -18,7 +18,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/house_home_transparent.png');
 
         // Sound
-        this.load.audio('backgroundmusic', 'assets/sounds//songs/A_Mission.mp3');
+        this.load.audio('backgroundmusic', 'assets/sounds/songs/A_Mission.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
     }
 
@@ -78,7 +78,7 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 5500, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 5750, 'branch');
         platforms.create(Phaser.Math.Between(0, this.game.config.width), 6000, 'branch');
-        platforms.create(Phaser.Math.Between(0, this.game.config.width), 6200, 'branch');        
+        platforms.create(Phaser.Math.Between(0, this.game.config.width), 6200, 'branch');
 
         // Our cat
         this.cat = this.physics.add.sprite(100, 0, 'animcat');
@@ -120,13 +120,13 @@ class TreeLevel extends BaseLevelScene {
 
         // Mice
         this.mice = this.physics.add.group();
-	    for (let i = 0; i < 20; i++) {
-	    	let x = Phaser.Math.Between(0, this.game.config.width);
-	    	let y = Phaser.Math.Between(600, worldheight);
+        for (let i = 0; i < 20; i++) {
+            let x = Phaser.Math.Between(0, this.game.config.width);
+            let y = Phaser.Math.Between(600, worldheight);
             let mouse = this.mice.create(x, y, 'mouse');
             mouse.body.setCollideWorldBounds(true);
-	    }           
-        
+        }
+
 
         // Colide events
         // The cat
