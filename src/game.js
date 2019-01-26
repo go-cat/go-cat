@@ -15,6 +15,7 @@ let config = {
         GrassLevel,
         StreetLevel,
         TreeLevel,
+        SecretLevel,
         EndScene
     ]
 };

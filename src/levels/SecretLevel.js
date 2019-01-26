@@ -1,9 +1,11 @@
-class GrassLevel extends Phaser.Scene {
+class SecretLevel extends Phaser.Scene {
     constructor() {
-        super({ key: 'SecretLevel2' })
+        super({ key: 'SecretLevel' })
     }
 
     preload() {
+        this.load.tilemapTiledJSON("map","assets/maps/SecretLevel/world.json");
+        this.load.image('tiles',"assets/images/SecretLevel/spaceTileset.png");
         this.load.image('space', 'assets/images/SecretLevel/space.png');
         this.load.image('ground', 'assets/images/GrassLevel/bottom_green_60px.png');
         this.load.image('star', 'assets/images/GrassLevel/star.png');
@@ -16,10 +18,23 @@ class GrassLevel extends Phaser.Scene {
     }
 
     create() {
+        // layer and map for the Tilemap
+        const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
+        const tileset = map.addTilesetImage("spacetileset","tiles");
+
+        const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
+        const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        collisionLayer.setCollisionByProperty({ collides: true });
+
+
         this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 2400, 600);
+
+
+
+
         this.score=0;
-        this.add.image(0, 0, 'space').setOrigin(0, 0);
+        //this.add.image(0, 0, 'space').setOrigin(0, 0);
         //this.add.image(800, 0, 'space').setOrigin(0, 0)
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -27,15 +42,16 @@ class GrassLevel extends Phaser.Scene {
 
         //  Here we create the ground.
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
-        this.platforms.create(120, 120, 'ground').setScale(1).refreshBody();
+        //this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
+        //this.platforms.create(120, 120, 'ground').setScale(1).refreshBody();
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 450, 'dude');
+        this.player = this.physics.add.sprite(100, 600, 'dude');
 
         //  Player physics properties. Give the little guy a slight bounce.
-        this.player.setBounce(0.1);
+        this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
+        this.cameras.main.startFollow(this.player);
 
         //  Our player animations, turning, walking left and walking right.
         this.anims.create({
@@ -83,6 +99,8 @@ class GrassLevel extends Phaser.Scene {
         //  Collide the player and the stars with the platforms
         this.physics.add.collider(this.player, this.platforms);
         this.physics.add.collider(this.stars, this.platforms);
+        this.physics.add.collider(this.stars, collisionLayer);
+        this.physics.add.collider(this.player, collisionLayer);
         this.physics.add.collider(this.bombs, this.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
@@ -109,6 +127,18 @@ class GrassLevel extends Phaser.Scene {
             this.player.setVelocityX(160);
 
             this.player.anims.play('right', true);
+        }
+        else if (this.cursors.up.isDown)
+        {
+            this.player.setVelocityY(-160);
+
+            this.player.anims.play('up', true);
+        }
+        else if (this.cursors.down.isDown)
+        {
+            this.player.setVelocityY(160);
+
+            this.player.anims.play('down', true);
         }
         else
         {
