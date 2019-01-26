@@ -149,7 +149,7 @@ class SpaceLevel extends BaseLevelScene {
         //if (this.cat.y > 566){
          //   this.catDies(this.cat);
         //}
-        console.log("velocity", this.cat.);
+        console.log("velocity", this.cat);
         if (this.cat.velocity < 10){
             this.sound.play("land");
         }
