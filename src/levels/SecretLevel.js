@@ -14,6 +14,8 @@ class SecretLevel extends BaseLevelScene {
         // Audio
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
+        this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
+        this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
 
 
 
@@ -21,35 +23,41 @@ class SecretLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // layer and map for the Tilemap
         const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage("spacetileset","tiles");
 
         const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+
         collisionLayer.setCollisionByProperty({ collides: true });
+        console.log(map.objects);
 
 
+        // bounds
         this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 2400, 600);
 
         // Variables
         this.score=0;
         this.dogSpeed = 30;
-        this.dogSart = 400;
+        for(let i = 0; i < map.objects[0].objects.length; i++){
+            this.dogStart = map.objects[0].objects[i].x;
+            this.dogPath = map.objects[0].objects[i].width;
+        }
+
+        console.log(map.objects[0].objects[0].x);
         this.millis = 0;
 
 
-        // The player and its settings
-        this.player = this.physics.add.sprite(100, 400, 'cat');
-        this.player.setBounce(0.2);
-        this.player.setCollideWorldBounds(true);
-        this.cameras.main.startFollow(this.player);
-        this.player.body.gravity.y = 300;
-        this.player.scaleY=0.6;
-        this.player.scaleX=0.6;
+        // The cat and its settings
+        this.cat = this.physics.add.sprite(100, 400, 'cat');
+        this.cat.setBounce(0.2);
+        this.cat.setCollideWorldBounds(true);
+        this.cameras.main.startFollow(this.cat);
+        this.cat.body.gravity.y = 300;
+        this.cat.scaleY=0.6;
+        this.cat.scaleX=0.6;
 
 
         //  Create mice, bombs and a dog
@@ -71,6 +79,8 @@ class SecretLevel extends BaseLevelScene {
             child.setGravityY(1000);
             child.setVelocityX(Phaser.Math.FloatBetween(-40, 40));
 
+
+
         });
 
         this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
@@ -79,29 +89,35 @@ class SecretLevel extends BaseLevelScene {
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-        //  Collide the player and the mice with the platforms
+        //  Collide the cat and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
-        this.physics.add.collider(this.player, collisionLayer);
+        this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.dog, collisionLayer);
 
-        //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
-        this.physics.add.overlap(this.player, this.mice, this.collectmouse, null, this);
+        //  Checks to see if the cat overlaps with any of the mice, if he does call the collectmouse function
+        this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
-        this.physics.add.collider(this.player, this.bombs, this.hitbomb, null, this);
-        this.cameras.main.startFollow(this.player);
+        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
+        this.cameras.main.startFollow(this.cat);
+
+        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
+        this.cameras.main.startFollow(this.cat);
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         if (this.gameOver) {
             return null;
         }
-        if (this.dog.x > this.dogSart+200){
+        if (this.dog.x > this.dogStart+this.dogPath){
             this.dog.setVelocityX(-this.dogSpeed);
         }
-        if (this.dog.x < this.dogSart){
+        if (this.dog.x < this.dogStart){
             this.dog.setVelocityX(this.dogSpeed);
         }
         if (this.millis > Phaser.Math.Between(100, 8000)){
@@ -113,27 +129,35 @@ class SecretLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.player.setVelocityX(-160);
+            this.cat.setVelocityX(-160);
         } else {
-            this.player.setVelocityX(0);
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
         }
     }
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.player.setVelocityX(160);
+            this.cat.setVelocityX(160);
         } else {
-            this.player.setVelocityX(0);
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
         }
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.player.body.velocity.y) < 2) {
-            this.player.setVelocityY(-350);
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+            this.cat.setVelocityY(-350);
         }
     }
 
-    collectmouse (player, mouse)
+    collectmouse (cat, mouse)
     {
         mouse.disableBody(true, true);
         this.sound.play("meow");
@@ -152,7 +176,7 @@ class SecretLevel extends BaseLevelScene {
 
             });
 
-            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+            var x = (cat.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
             var bomb = this.bombs.create(x, 16, 'bomb');
             bomb.setBounce(1);
@@ -163,13 +187,22 @@ class SecretLevel extends BaseLevelScene {
         }
     }
 
-    hitbomb (player, bomb)
+    hitbomb (cat, bomb)
     {
         this.physics.pause();
 
-        player.setTint(0xff0000);
+        cat.setTint(0xff0000);
+
+        cat.anims.play('turn');
 
         this.gameOver = true;
     }
-
+    hitdog (cat, dog)
+    {
+        this.physics.pause();
+        cat.setTint(0xff0000);
+        this.sound.play("dogLong");
+        this.sound.play("angryCat");
+        this.gameOver = true;
+    }
 }

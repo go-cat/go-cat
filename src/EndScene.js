@@ -6,11 +6,9 @@ class EndScene extends BaseLevelScene {
     }
 
     preload() {
-
     }
 
     create() {
         super.create();
-
     }
 }
