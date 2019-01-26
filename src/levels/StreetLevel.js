@@ -14,8 +14,6 @@ class StreetLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // Set world and camera bounds
         const worldheight = this.game.config.height*4;
         this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);
