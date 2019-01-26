@@ -32,6 +32,8 @@ class BaseLevelScene extends Phaser.Scene {
     preload() {
         this.load.audio("falling", "assets/sounds/movement/falling2_sfx_sounds_falling4.wav");
         this.load.audio('angry_cat', 'assets/sounds/animals/cat_angry.ogg');
+
+        this.load.image('touch_arrow', 'assets/images/touch_arrow_right.png');
     }
 
     create() {
@@ -126,6 +128,51 @@ class BaseLevelScene extends Phaser.Scene {
             this.timerText.setStroke('#ffffff', 2);
             this.timerText.setShadow(2, 2, '#ffffff', 2, true, false);
             this.timerText.setScrollFactor(0);
+        }
+
+        if (this.deviceSupportsTouch()) {
+            this.leftTouchArrow = this.add.image(60, 540, 'touch_arrow');
+            this.leftTouchArrow.angle = 180;
+            this.leftTouchArrow.setInteractive();
+            this.leftTouchArrow.setScrollFactor(0);
+            this.leftTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedLeft(true);
+            });
+            this.leftTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedLeft(false);
+            });
+
+            this.rightTouchArrow = this.add.image(170, 540, 'touch_arrow');
+            this.rightTouchArrow.setInteractive();
+            this.rightTouchArrow.setScrollFactor(0);
+            this.rightTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedRight(true);
+            });
+            this.rightTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedRight(false);
+            });
+
+            this.downTouchArrow = this.add.image(740, 540, 'touch_arrow');
+            this.downTouchArrow.angle = 90;
+            this.downTouchArrow.setInteractive();
+            this.downTouchArrow.setScrollFactor(0);
+            this.downTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedDown(true);
+            });
+            this.downTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedDown(false);
+            });
+
+            this.upTouchArrow = this.add.image(740, 430, 'touch_arrow');
+            this.upTouchArrow.angle = 270;
+            this.upTouchArrow.setInteractive();
+            this.upTouchArrow.setScrollFactor(0);
+            this.upTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedUp(true);
+            });
+            this.upTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedUp(false);
+            });
         }
     }
 
@@ -264,6 +311,13 @@ class BaseLevelScene extends Phaser.Scene {
 
             this.startNextLevel(false, this.currentSceneIndex);
         }, 1000);
+    }
+
+    deviceSupportsTouch() {
+        return (
+            'ontouchstart' in window
+            || window.DocumentTouch && document instanceof DocumentTouch
+        );
     }
 
     buttonPressedLeft() {}

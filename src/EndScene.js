@@ -7,11 +7,4 @@ class EndScene extends BaseLevelScene {
             showTimer: false,
         });
     }
-
-    preload() {
-    }
-
-    create() {
-        super.create();
-    }
 }
