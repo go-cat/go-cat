@@ -74,14 +74,14 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(400, 3800, 'branch');
         platforms.create(300, 4000, 'branch');
         platforms.create(500, 4200, 'branch');
-        platforms.create(300, 4350, 'branch');        
+        platforms.create(300, 4350, 'branch');
         platforms.create(100, 4500, 'branch');
         platforms.create(400, 4600, 'branch');
-        platforms.create(200, 4750, 'branch');        
+        platforms.create(200, 4750, 'branch');
         platforms.create(300, 4900, 'branch');
         platforms.create(500, 5100, 'branch');
         platforms.create(200, 5200, 'branch');
-        platforms.create(50, 5400, 'branch');        
+        platforms.create(50, 5400, 'branch');
         platforms.create(300, 5500, 'branch');
         platforms.create(600, 5750, 'branch');
 
@@ -157,13 +157,13 @@ class TreeLevel extends BaseLevelScene {
         // The mice
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.mice, this.ground);
-        // The ground
-        this.physics.add.collider(this.ground, this.birdpoops, (ground, poop) => {
+        // The poop
+        this.physics.add.collider(this.birdpoops, this.ground, (poop, ground) => {
             poop.disableBody(true, true);
         });
-        // The poop
-        this.physics.add.collider(this.birdpoops, platforms);
-
+        this.physics.add.collider(this.birdpoops, platforms, (poop, ground) => {
+            poop.disableBody(true, true);
+        });
         // should be called at the end to the HUD will be on top
         super.create();
     }
