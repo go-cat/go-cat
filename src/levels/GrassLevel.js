@@ -140,7 +140,7 @@ class GrassLevel extends BaseLevelScene {
         mouse.disableBody(true, true);
         this.sound.play("meow");
 
-        this.addScore(10);
+        this.addScore();
 
         if (this.mice.countActive(true) === 0)
         {
