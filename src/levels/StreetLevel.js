@@ -14,9 +14,11 @@ class StreetLevel extends BaseLevelScene {
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
+        this.load.image('mouse', 'assets/images/mouse_left.png');
 
         this.load.audio('backgroundmusic', 'assets/sounds//songs/Big_Rock.mp3');
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
+        this.load.audio('meow', 'assets/sounds/animals/cat_meow1.ogg');
     }
 
     create() {
@@ -54,11 +56,6 @@ class StreetLevel extends BaseLevelScene {
         }
 
         // Add cat
-        // this.cat = this.physics.add.sprite(50, worldheight-49, 'cat');
-        // this.cat.setCollideWorldBounds(true);
-        // this.cat.body.setAllowGravity(0, 0);
-        // this.cat.setSize(90, 90, true);
-        // this.cameras.main.startFollow(this.cat);
         this.cat = this.physics.add.sprite(50, worldheight-49, 'animcat');
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0, 0);
@@ -75,6 +72,21 @@ class StreetLevel extends BaseLevelScene {
             key: 'stand',
             frames: [ { key: 'animcat', frame: 0 } ],
             frameRate: 20,
+        });
+
+        // Mice
+        this.mice = this.physics.add.group();
+        for (let i = 0; i < 20; i++) {
+            let x = Phaser.Math.Between(50, this.game.config.width-50);
+            let y = Phaser.Math.Between(50, worldheight-50);
+            let mouse = this.mice.create(x, y, 'mouse');
+            mouse.body.setAllowGravity(0, 0);
+        }
+
+        this.physics.add.overlap(this.cat, this.mice, (cat, mouse) => {
+            this.addScore();
+            mouse.disableBody(true, true);
+            this.sound.play('meow');
         });
 
         // Add goal
