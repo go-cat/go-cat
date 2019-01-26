@@ -9,7 +9,7 @@ let config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 100 },
-            debug: false
+            debug: false,
         }
     },
     scene: [
@@ -18,7 +18,7 @@ let config = {
         StreetLevel,
         TreeLevel,
         SecretLevel,
-        EndScene
+        EndScene,
     ]
 };
 
