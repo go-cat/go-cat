@@ -10,6 +10,7 @@ class TreeLevel extends BaseLevelScene {
 
         // Images
         this.load.image('cat', 'assets/images/cat_walking_right.png');
+        this.load.spritesheet('cat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/bird_flying_left.png');
@@ -19,10 +20,15 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/StreetLevel/house.png');
 
         // Sound
+        this.load.audio('backgroundmusic', 'assets/sounds//songs/A_Mission.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
     }
 
     create() {
+        // Music!
+        this.music = this.sound.add('backgroundmusic');
+        this.music.play();
+
         // This are the bounds of our world
         const worldheight = this.game.config.height*4;
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
@@ -59,6 +65,13 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('cat', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });         
+        //this.cat.anims.play('right', true);
 
         // Bird
         this.bird = this.physics.add.sprite(-100, -100, 'bird');
@@ -130,7 +143,7 @@ class TreeLevel extends BaseLevelScene {
         if (this.bird.flying) {
             /* should he poop? */
             if (Phaser.Math.Between(1, 100) < 3) {
-                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping');
+                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2).refreshBody();
                 birdpoop.setBounceY(0);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
