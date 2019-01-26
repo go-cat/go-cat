@@ -5,7 +5,6 @@ class BaseLevelScene extends Phaser.Scene {
 
     create() {
         this.input.keyboard.on('keydown', (event) => {
-            console.log(event.key);
             switch (event.key) {
                 case 'Escape':
                     this.scene.start('StartScene');
