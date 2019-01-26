@@ -34,21 +34,13 @@ class SecretLevel extends BaseLevelScene {
 
 
 
-
+        // Variables
         this.score=0;
-        //this.add.image(0, 0, 'space').setOrigin(0, 0);
-        //this.add.image(800, 0, 'space').setOrigin(0, 0)
+        this.dogSpeed = 30;
 
-        //  The platforms group contains the ground and the 2 ledges we can jump on
-        this.platforms = this.physics.add.staticGroup();
-
-        //  Here we create the ground.
-        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        //this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
-        //this.platforms.create(120, 120, 'ground').setScale(1).refreshBody();
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 600, 'dude');
+        this.player = this.physics.add.sprite(100, 500, 'dude');
 
         //  Player physics properties. Give the little guy a slight bounce.
         this.player.setBounce(0.2);
@@ -79,11 +71,16 @@ class SecretLevel extends BaseLevelScene {
         //  Input Events
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+        //  Create Stars, Bombs and a dog
         this.stars = this.physics.add.group({
             key: 'star',
             repeat: 11,
             setXY: { x: 12, y: 0, stepX: 70 }
+        });
+
+        this.bombs = this.physics.add.group({
+            key: 'bomb',
+            setXY: { x: 420, y: 0}
         });
 
         this.stars.children.iterate(function (child) {
@@ -93,17 +90,17 @@ class SecretLevel extends BaseLevelScene {
 
         });
 
-        this.bombs = this.physics.add.group();
+        this.dog = this.physics.add.sprite(300, 400, 'spacedog');
+        this.dog.setVelocityX(this.dogSpeed);
 
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         //  Collide the player and the stars with the platforms
-        this.physics.add.collider(this.player, this.platforms);
-        this.physics.add.collider(this.stars, this.platforms);
         this.physics.add.collider(this.stars, collisionLayer);
         this.physics.add.collider(this.player, collisionLayer);
-        this.physics.add.collider(this.bombs, this.platforms);
+        this.physics.add.collider(this.bombs, collisionLayer);
+        this.physics.add.collider(this.dog, collisionLayer);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
         this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
@@ -116,6 +113,12 @@ class SecretLevel extends BaseLevelScene {
         if (this.gameOver)
         {
             return;
+        }
+        if (this.dog.x > 500){
+            this.dog.setVelocityX(-this.dogSpeed);
+        }
+        if (this.dog.x < 300){
+            this.dog.setVelocityX(this.dogSpeed);
         }
 
         if (this.cursors.left.isDown)
@@ -130,7 +133,7 @@ class SecretLevel extends BaseLevelScene {
 
             this.player.anims.play('right', true);
         }
-        else if (this.cursors.up.isDown)
+        else if (this.cursors.up.isDown && Math.abs(this.player.body.velocity.y) < 2)
         {
             this.player.setVelocityY(-160);
 
@@ -149,10 +152,7 @@ class SecretLevel extends BaseLevelScene {
             this.player.anims.play('turn');
         }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down)
-        {
-            this.player.setVelocityY(-3000);
-        }
+
     }
 
     collectStar (player, star)
