@@ -6,6 +6,9 @@ class BaseLevelScene extends Phaser.Scene {
 
         this.xAxisGamepadPressed = false;
         this.yAxisGamepadPressed = false;
+
+        this.timeLeft = 0;
+        this.showTimer = config.hasOwnProperty('showTimer') ? config.showTimer : true;
     }
 
     create() {
@@ -65,9 +68,21 @@ class BaseLevelScene extends Phaser.Scene {
                     break;
             }
         });
+
+        if (this.showTimer) {
+            this.timeLeft = 120;
+            this.timerText = this.add.text(10, 10, BaseLevelScene.formatTime(this.timeLeft));
+        }
     }
 
-    update() {
+    static formatTime(time) {
+        let timeString = 'time: ' + Math.floor(time);
+        let padding = '000';
+
+        return padding.substring(0, padding.length - timeString.length) + timeString;
+    }
+
+    update(time, delta) {
         if (this.input.gamepad.total !== 0) {
             let pads = this.input.gamepad.gamepads;
             for (let i = 0; i < pads.length; i++) {
@@ -113,6 +128,14 @@ class BaseLevelScene extends Phaser.Scene {
                         break;
                 }
             }
+        }
+
+        if (this.showTimer) {
+            this.timeLeft -= delta / 1000;
+            if (this.timeLeft < 0) {
+                // TODO time is up
+            }
+            this.timerText.text = BaseLevelScene.formatTime(this.timeLeft);
         }
     }
 

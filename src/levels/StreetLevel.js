@@ -34,10 +34,13 @@ class StreetLevel extends BaseLevelScene {
         this.physics.add.collider(this.cat, this.car, ()=>{
             this.scene.start('EndScene');
         });
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         if (this.car.x >= 800) {
             this.car.setVelocityX(-200);

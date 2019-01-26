@@ -21,8 +21,6 @@ class SecretLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // layer and map for the Tilemap
         const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage("spacetileset","tiles");
@@ -43,13 +41,13 @@ class SecretLevel extends BaseLevelScene {
 
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 400, 'cat');
-        this.player.setBounce(0.2);
-        this.player.setCollideWorldBounds(true);
-        this.cameras.main.startFollow(this.player);
-        this.player.body.gravity.y = 300;
-        this.player.scaleY=0.6;
-        this.player.scaleX=0.6;
+        this.cat = this.physics.add.sprite(100, 400, 'cat');
+        this.cat.setBounce(0.2);
+        this.cat.setCollideWorldBounds(true);
+        this.cameras.main.startFollow(this.cat);
+        this.cat.body.gravity.y = 300;
+        this.cat.scaleY=0.6;
+        this.cat.scaleX=0.6;
 
 
         //  Create mice, bombs and a dog
@@ -81,19 +79,22 @@ class SecretLevel extends BaseLevelScene {
 
         //  Collide the player and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
-        this.physics.add.collider(this.player, collisionLayer);
+        this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.dog, collisionLayer);
 
         //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
-        this.physics.add.overlap(this.player, this.mice, this.collectmouse, null, this);
+        this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
-        this.physics.add.collider(this.player, this.bombs, this.hitbomb, null, this);
-        this.cameras.main.startFollow(this.player);
+        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
+        this.cameras.main.startFollow(this.cat);
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
-        super.update();
+    update(time, delta) {
+        super.update(time, delta);
 
         if (this.gameOver) {
             return null;
@@ -113,23 +114,31 @@ class SecretLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.player.setVelocityX(-160);
+            this.cat.setVelocityX(-160);
         } else {
-            this.player.setVelocityX(0);
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
         }
     }
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.player.setVelocityX(160);
+            this.cat.setVelocityX(160);
         } else {
-            this.player.setVelocityX(0);
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
         }
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.player.body.velocity.y) < 2) {
-            this.player.setVelocityY(-350);
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+            this.cat.setVelocityY(-350);
         }
     }
 
