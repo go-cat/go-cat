@@ -164,7 +164,7 @@ class TreeLevel extends BaseLevelScene {
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.mice, this.ground);
         // The poop
-        this.physics.add.collider(this.birdpoops, platforms, (poop, ground) => {
+        this.physics.add.collider(this.birdpoops, platforms, (poop, platform) => {
             poop.disableBody(true, true);
         });
 
