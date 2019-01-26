@@ -276,6 +276,11 @@ class BaseLevelScene extends Phaser.Scene {
             nextScene = this.scenes[index];
         }
 
+        if (this.currentSceneIndex === this.scenes.indexOf('EndScene')) {
+            this.score = 0;
+            this.remainingLives = 6;
+        }
+
         this.scene.start(nextScene, {
             score: this.score,
             remainingLives: this.remainingLives,
