@@ -64,6 +64,13 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('cat', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });         
+        this.cat.anims.play('left', true);
 
         // Bird
         this.bird = this.physics.add.sprite(-100, -100, 'bird');
