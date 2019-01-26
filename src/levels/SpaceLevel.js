@@ -119,7 +119,11 @@ class SpaceLevel extends BaseLevelScene {
         this.physics.add.collider(this.dogsSprites, collisionLayer);
 
         this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
-        this.physics.add.overlap(this.cat, this.safezone, this.startNextLevel, null, this);
+        this.physics.add.overlap(this.cat, this.safezone, () => {
+            this.addScore(100);
+            this.addScore(Math.floor(this.timeLeft));
+            this.startNextLevel();
+        }, null, this);
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
