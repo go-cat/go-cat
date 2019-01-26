@@ -56,11 +56,12 @@ class TreeLevel extends BaseLevelScene {
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
 
-        // Birds
+        // Bird
         this.bird = this.physics.add.sprite(100, 0, 'bird');
         this.bird.setBounceY(0);
         this.bird.body.allowGravity = false;
-        this.bird.body.setCollideWorldBounds(true);
+        this.bird.body.setCollideWorldBounds(false);
+        this.bird.setScrollFactor(0);
         this.bird.flying = false;
 
         // Mice
@@ -104,7 +105,12 @@ class TreeLevel extends BaseLevelScene {
         // Birds fly
         /* Do we have a bird? */
         if (this.bird.flying) {
-
+            /* should he poop? */
+            
+            /* bird is gone */
+            if (this.bird.x < 0 || this.bird.y > this.game.config.width) {
+                this.bird.flying = false;   
+            }
 
         } else if (Phaser.Math.Between(1, 100) < 2) {
             /* start the bird */
