@@ -112,20 +112,16 @@ class GrassLevel extends BaseLevelScene {
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.cat.setVelocityX(-160);
-            this.cat.anims.play('left', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('turn');
         }
     }
 
     buttonPressedRight(pressed) {
         if (pressed) {
             this.cat.setVelocityX(160);
-            this.cat.anims.play('right', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('turn');
         }
     }
 

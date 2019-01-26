@@ -33,6 +33,7 @@ class StreetLevel extends BaseLevelScene {
         this.goal.body.setAllowGravity(0, 0);
 
         this.physics.add.collider(this.cat, this.goal, ()=>{
+            this.addScore(100);
             this.startNextLevel();
         });
 
