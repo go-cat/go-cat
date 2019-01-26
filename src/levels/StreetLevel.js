@@ -13,6 +13,8 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('cat', 'assets/images/cat_walking_right.png')
         this.load.image('goal', 'assets/images/StreetLevel/house.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
+
+        this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
     }
 
     create() {
@@ -67,6 +69,7 @@ class StreetLevel extends BaseLevelScene {
         });
 
         this.physics.add.collider(this.cat, this.cars, () => {
+            this.sound.play('cat_hit');
             this.catDies(this.cat);
         });
 
