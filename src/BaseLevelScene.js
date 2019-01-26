@@ -162,7 +162,7 @@ class BaseLevelScene extends Phaser.Scene {
         }
     }
 
-    addScore(score) {
+    addScore(score = 10) {
         this.score += score;
         this.scoreText.text = 'score: ' + BaseLevelScene.formatNumberToText(this.score, 4);
     }

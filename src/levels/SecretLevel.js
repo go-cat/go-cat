@@ -159,7 +159,7 @@ class SecretLevel extends BaseLevelScene {
         this.sound.play("meow");
 
         //  Add and update the score
-        this.addScore(10);
+        this.addScore();
         if (this.mice.countActive(true) === 0)
         {
             //  A new batch of mice to collect
