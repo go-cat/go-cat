@@ -77,7 +77,10 @@ class TreeLevel extends BaseLevelScene {
         this.physics.add.collider(this.cat, platforms);
         this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); this.sound.play("meow"); });
         this.physics.add.collider(this.mice, platforms);
-        this.physics.add.collider(this.cat, this.goal, () => { this.startNextLevel(); });
+        this.physics.add.collider(this.cat, this.goal, () => {
+            this.addScore(100);
+            this.startNextLevel();
+        });
 
         // should be called at the end to the HUD will be on top
         super.create();
