@@ -1,4 +1,4 @@
-class SecretLevel extends BaseLevelScene {
+class SecretLevel extends Phaser.Scene {
     constructor() {
         super({ key: 'SecretLevel' })
     }
@@ -18,8 +18,6 @@ class SecretLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // layer and map for the Tilemap
         const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage("spacetileset","tiles");
@@ -42,10 +40,6 @@ class SecretLevel extends BaseLevelScene {
         //  The platforms group contains the ground and the 2 ledges we can jump on
         this.platforms = this.physics.add.staticGroup();
 
-        //  Here we create the ground.
-        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        //this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
-        //this.platforms.create(120, 120, 'ground').setScale(1).refreshBody();
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 600, 'dude');
@@ -54,6 +48,7 @@ class SecretLevel extends BaseLevelScene {
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.player);
+        this.player.body.setGravityY(300);
 
         //  Our player animations, turning, walking left and walking right.
         this.anims.create({
@@ -99,11 +94,9 @@ class SecretLevel extends BaseLevelScene {
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         //  Collide the player and the stars with the platforms
-        this.physics.add.collider(this.player, this.platforms);
-        this.physics.add.collider(this.stars, this.platforms);
         this.physics.add.collider(this.stars, collisionLayer);
         this.physics.add.collider(this.player, collisionLayer);
-        this.physics.add.collider(this.bombs, this.platforms);
+        this.physics.add.collider(this.bombs, collisionLayer);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
         this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
@@ -130,18 +123,18 @@ class SecretLevel extends BaseLevelScene {
 
             this.player.anims.play('right', true);
         }
-        else if (this.cursors.up.isDown)
-        {
-            this.player.setVelocityY(-160);
 
-            this.player.anims.play('up', true);
+        else if (this.cursors.up.isDown && Math.abs(this.player.body.velocity.y) < 2)
+        {
+            this.player.setVelocityY(-300);
         }
+
         else if (this.cursors.down.isDown)
         {
             this.player.setVelocityY(160);
-
-            this.player.anims.play('down', true);
         }
+
+        else if (this.ke)
         else
         {
             this.player.setVelocityX(0);
@@ -149,10 +142,7 @@ class SecretLevel extends BaseLevelScene {
             this.player.anims.play('turn');
         }
 
-        if (this.cursors.up.isDown && this.player.body.touching.down)
-        {
-            this.player.setVelocityY(-3000);
-        }
+
     }
 
     collectStar (player, star)
@@ -173,13 +163,7 @@ class SecretLevel extends BaseLevelScene {
 
             });
 
-            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-            var bomb = this.bombs.create(x, 16, 'bomb');
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            bomb.allowGravity = false;
 
         }
     }
