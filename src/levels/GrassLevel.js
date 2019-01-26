@@ -20,8 +20,6 @@ class GrassLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         this.physics.world.setBounds(0,0,3392,600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 3392, 600);
         this.score=0;
@@ -40,11 +38,11 @@ class GrassLevel extends BaseLevelScene {
         //this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 450, 'dude');
+        this.cat = this.physics.add.sprite(100, 450, 'dude');
 
         //  Player physics properties. Give the little guy a slight bounce.
-        this.player.setBounce(0.1);
-        this.player.setCollideWorldBounds(true);
+        this.cat.setBounce(0.1);
+        this.cat.setCollideWorldBounds(true);
 
         //  Our player animations, turning, walking left and walking right.
         this.anims.create({
@@ -87,18 +85,23 @@ class GrassLevel extends BaseLevelScene {
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         //  Collide the player and the stars with the platforms
-        this.physics.add.collider(this.player, this.platforms);
+        this.physics.add.collider(this.cat, this.platforms);
         this.physics.add.collider(this.stars, this.platforms);
         this.physics.add.collider(this.bombs, this.platforms);
 
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
+        this.physics.add.overlap(this.cat, this.stars, this.collectStar, null, this);
 
-        this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
-        this.cameras.main.startFollow(this.player);
+        this.physics.add.collider(this.cat, this.bombs, this.hitBomb, null, this);
+        this.cameras.main.startFollow(this.cat);
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
-    update() {
+    update(time, delta) {
+        super.update(time, delta);
+
         if (this.gameOver)
         {
             // TODO do something
@@ -109,27 +112,27 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
+            this.cat.setVelocityX(-160);
+            this.cat.anims.play('left', true);
         } else {
-            this.player.setVelocityX(0);
-            this.player.anims.play('turn');
+            this.cat.setVelocityX(0);
+            this.cat.anims.play('turn');
         }
     }
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
+            this.cat.setVelocityX(160);
+            this.cat.anims.play('right', true);
         } else {
-            this.player.setVelocityX(0);
-            this.player.anims.play('turn');
+            this.cat.setVelocityX(0);
+            this.cat.anims.play('turn');
         }
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.player.body.velocity.y) < 2) {
-            this.player.setVelocityY(-350);
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+            this.cat.setVelocityY(-350);
         }
     }
 

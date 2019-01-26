@@ -23,11 +23,10 @@ class SecretLevel extends BaseLevelScene {
     }
 
     create() {
-        super.create();
-
         // layer and map for the Tilemap
         const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         const tileset = map.addTilesetImage("spacetileset","tiles");
+
         const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
 
@@ -52,13 +51,13 @@ class SecretLevel extends BaseLevelScene {
 
 
         // The player and its settings
-        this.player = this.physics.add.sprite(100, 400, 'cat');
-        this.player.setBounce(0.2);
-        this.player.setCollideWorldBounds(true);
-        this.cameras.main.startFollow(this.player);
-        this.player.body.gravity.y = 300;
-        this.player.scaleY=0.6;
-        this.player.scaleX=0.6;
+        this.cat = this.physics.add.sprite(100, 400, 'cat');
+        this.cat.setBounce(0.2);
+        this.cat.setCollideWorldBounds(true);
+        this.cameras.main.startFollow(this.cat);
+        this.cat.body.gravity.y = 300;
+        this.cat.scaleY=0.6;
+        this.cat.scaleX=0.6;
 
 
         //  Create mice, bombs and a dog
@@ -73,13 +72,9 @@ class SecretLevel extends BaseLevelScene {
             setXY: { x: 420, y: 0}
         });
 
-
-        // Platform-Arrays
-        this.dogPlatforms = [];
-        this.micePlatforms = [];
-
-        // Iterate Mice
         this.mice.children.iterate(function (child) {
+
+            //  Give each mouse a slightly different bounce
             child.setBounceY(0);
             child.setGravityY(1000);
             child.setVelocityX(Phaser.Math.FloatBetween(-40, 40));
@@ -88,32 +83,31 @@ class SecretLevel extends BaseLevelScene {
 
         });
 
-        this.dog = this.physics.add.sprite(this.dogStart, 200, 'spacedog');
+        this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
         this.dog.setVelocityX(this.dogSpeed);
-
-
-
-
-
 
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         //  Collide the player and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
-        this.physics.add.collider(this.player, collisionLayer);
+        this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.dog, collisionLayer);
 
         //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
-        this.physics.add.overlap(this.player, this.mice, this.collectmouse, null, this);
+        this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
+
+        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
+        this.cameras.main.startFollow(this.cat);
 
         this.physics.add.collider(this.player, this.bombs, this.hitbomb, null, this);
-        this.physics.add.collider(this.player, this.dog, this.hitdog, null, this);
         this.cameras.main.startFollow(this.player);
     }
 
-    update() {
+    update(time, delta) {
+        super.update(time, delta);
+
         if (this.gameOver) {
             return null;
         }
@@ -132,28 +126,31 @@ class SecretLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
+            this.cat.setVelocityX(-160);
         } else {
-            this.player.setVelocityX(0);
-            this.player.anims.play('turn');
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
         }
     }
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
+            this.cat.setVelocityX(160);
         } else {
-            this.player.setVelocityX(0);
-            this.player.anims.play('turn');
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
         }
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.player.body.velocity.y) < 2) {
-            this.player.setVelocityY(-350);
-            this.player.anims.play('up', true);
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+            this.cat.setVelocityY(-350);
         }
     }
 
