@@ -11,6 +11,15 @@ class BaseLevelScene extends Phaser.Scene {
         this.showTimer = config.hasOwnProperty('showTimer') ? config.showTimer : true;
 
         this.score = 0;
+
+        this.scenes = [
+            'StartScene',
+            'TreeLevel',
+            'GrassLevel',
+            'StreetLevel',
+            'SecretLevel',
+        ];
+        this.currentSceneIndex = this.scenes.indexOf(config.key);
     }
 
     init(data) {
@@ -21,19 +30,19 @@ class BaseLevelScene extends Phaser.Scene {
         this.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
                 case 'Escape':
-                    this.scene.start('StartScene', { score: this.score });
+                    this.startNextLevel(false, 0);
                     break;
                 case '1':
-                    this.scene.start('TreeLevel', { score: this.score });
+                    this.startNextLevel(false, 1);
                     break;
                 case '2':
-                    this.scene.start('GrassLevel', { score: this.score });
+                    this.startNextLevel(false, 2);
                     break;
                 case '3':
-                    this.scene.start('StreetLevel', { score: this.score });
+                    this.startNextLevel(false, 3);
                     break;
                 case '4':
-                    this.scene.start('SecretLevel', { score: this.score });
+                    this.startNextLevel(false, 4);
                     break;
                 case 'ArrowUp':
                 case 'w':
@@ -149,6 +158,17 @@ class BaseLevelScene extends Phaser.Scene {
                         }
                         break;
                 }
+
+                for (let b = 0; b < pad.buttons.length; b++) {
+                    if (pad.buttons[b].value === 1) {
+                        if (this.scenes[this.currentSceneIndex] === 'StartScene') {
+                            this.startNextLevel();
+                        }
+                        if (this.scenes[this.currentSceneIndex] === 'EndScene') {
+                            this.startNextLevel(false, 0);
+                        }
+                    }
+                }
             }
         }
 
@@ -165,6 +185,21 @@ class BaseLevelScene extends Phaser.Scene {
     addScore(score = 10) {
         this.score += score;
         this.scoreText.text = 'score: ' + BaseLevelScene.formatNumberToText(this.score, 4);
+    }
+
+    startNextLevel(next = true, sceneIndex) {
+        let index = this.currentSceneIndex + 1;
+        if (next === false) {
+            index = sceneIndex;
+        }
+
+
+        let nextScene = 'EndScene';
+        if (index < this.scenes.length) {
+            nextScene = this.scenes[index];
+        }
+
+        this.scene.start(nextScene, { score: this.score });
     }
 
     buttonPressedLeft() {}

@@ -31,7 +31,7 @@ class StartScene extends BaseLevelScene {
         });
         this.startButton.on('pointerup', (event) => {
             this.startButton.setScale(1);
-            this.scene.start('TreeLevel');
+            this.startNextLevel();
         });
 
         super.create();
