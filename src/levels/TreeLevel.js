@@ -13,7 +13,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('cathump', 'assets/images/cats_hump.png');
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
-        this.load.image('bird', 'assets/images/bird_flying_left.png');
+        this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
@@ -46,7 +46,7 @@ class TreeLevel extends BaseLevelScene {
         this.ground.body.immovable = true;
 
         // Our goal
-        this.goal = this.physics.add.image(this.game.config.width-64, worldheight-50, 'goal');
+        this.goal = this.physics.add.image(this.game.config.width-64, worldheight-75, 'goal');
         this.goal.body.setAllowGravity(0, 0);
 
         // Create the branches
@@ -72,6 +72,13 @@ class TreeLevel extends BaseLevelScene {
         this.bird.body.allowGravity = false;
         this.bird.body.setCollideWorldBounds(false);
         this.bird.flying = false;
+        this.anims.create({
+            key: 'fly',
+            frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });         
+        this.bird.anims.play('fly');
 
         // Birds do poop
         this.birdpoops = this.physics.add.group();
