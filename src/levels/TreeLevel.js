@@ -13,7 +13,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('bird', 'assets/images/bird_flying_left.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
-        this.load.image('birddroppings', 'assets/images/birddroppings.png');
+        this.load.image('birddropping', 'assets/images/birddroppings.png');
         this.load.image('goal', 'assets/images/StreetLevel/house.png');
 
         // Sound
@@ -57,12 +57,17 @@ class TreeLevel extends BaseLevelScene {
         this.cat.body.gravity.y = 300;
 
         // Bird
-        this.bird = this.physics.add.sprite(100, 0, 'bird');
+        this.bird = this.physics.add.sprite(-100, -100, 'bird');
         this.bird.setBounceY(0);
         this.bird.body.allowGravity = false;
         this.bird.body.setCollideWorldBounds(false);
-        this.bird.setScrollFactor(0);
         this.bird.flying = false;
+
+        // Bird dropping
+        this.birddropping = this.physics.add.sprite(-100, -100, 'birddropping');
+        this.birddropping.setBounceY(0);
+        this.birddropping.body.allowGravity = true;
+        this.birddropping.body.setCollideWorldBounds(false);
 
         // Mice
         this.mice = this.physics.add.group({
@@ -76,8 +81,16 @@ class TreeLevel extends BaseLevelScene {
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
-        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); this.sound.play("meow"); });
+        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => {
+            this.addScore();
+            mouse.disableBody(true, true);
+            this.cat.body.stop();
+            this.sound.play("meow");
+        });
         this.physics.add.collider(this.mice, platforms);
+        this.physics.add.collider(this.cat, this.birddropping, () => {
+
+        });
         this.physics.add.collider(this.cat, this.goal, () => {
             this.addScore(100);
             this.startNextLevel();
@@ -106,21 +119,23 @@ class TreeLevel extends BaseLevelScene {
         /* Do we have a bird? */
         if (this.bird.flying) {
             /* should he poop? */
-            
-            /* bird is gone */
-            if (this.bird.x < 0 || this.bird.y > this.game.config.width) {
-                this.bird.flying = false;   
-            }
 
-        } else if (Phaser.Math.Between(1, 100) < 2) {
+            /* bird is gone */
+            if (this.bird.x < 0 || this.bird.x > this.game.config.width) {
+                this.bird.flying = false;
+            }
+        } else if (Phaser.Math.Between(1, 100) < 10) {
             /* start the bird */
             if (Phaser.Math.Between(1, 2) == 1) {
                 this.bird.x = 0;
-                this.bird.setVelocityX(100);
+                this.bird.y = this.cameras.main.scrollY + Phaser.Math.Between(10, 300);
+                this.bird.setVelocityX(400);
+                this.bird.flipX = true;
             } else {
                 this.bird.x = this.game.config.width;
-                this.bird.x = 0;
-                this.bird.setVelocityX(-100);
+                this.bird.y = this.cameras.main.scrollY + Phaser.Math.Between(10, 300);
+                this.bird.setVelocityX(-400);
+                this.bird.flipX = false;
             }
             this.bird.flying = true;
         }
