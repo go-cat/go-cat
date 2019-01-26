@@ -78,12 +78,14 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
+        this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
             frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1,
         });
+        this.anims.remove('stand');
         this.anims.create({
             key: 'stand',
             frames: [ { key: 'animcat', frame: 0 } ],
@@ -96,6 +98,7 @@ class TreeLevel extends BaseLevelScene {
         this.bird.body.allowGravity = false;
         this.bird.body.setCollideWorldBounds(false);
         this.bird.flying = false;
+        this.anims.remove('fly');
         this.anims.create({
             key: 'fly',
             frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 1 }),
@@ -155,7 +158,7 @@ class TreeLevel extends BaseLevelScene {
         if (this.bird.flying) {
             /* should he poop? */
             if (Phaser.Math.Between(1, 100) < 3 && this.bird.y > 250) {
-                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2).refreshBody();
+                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2);
                 birdpoop.setBounceY(0);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
