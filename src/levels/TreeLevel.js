@@ -8,13 +8,16 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/TreeLevel/bird.png');
+        this.load.image('mice', 'assets/images/TreeLevel/mice.png');
+        this.load.image('wool', 'assets/images/TreeLevel/wool.png');
     }
 
     create() {
         super.create();
 
         // This are the bounds of our world
-        this.physics.world.setBounds(0, 0, this.game.config.width, this.game.config.height*4, true, true, true, true);
+        let worldheight = this.game.config.height*4;
+        this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
 
         // Background
         this.cameras.main.setBackgroundColor('#89C0FF');
@@ -23,7 +26,7 @@ class TreeLevel extends BaseLevelScene {
         let platforms = this.physics.add.staticGroup();
 
         // Create the ground
-        platforms.create(this.game.config.width/2, this.game.config.height*4, 'ground').setScale(2).refreshBody();
+        platforms.create(this.game.config.width/2, worldheight, 'ground').setScale(2).refreshBody();
 
         // Create the branches
         platforms.create(20, 100, 'branch');
@@ -37,17 +40,17 @@ class TreeLevel extends BaseLevelScene {
 
         // End of world...
         // left
-        let rect = new Phaser.Geom.Rectangle(-800, -400, 800, this.game.config.height*6);
+        let rect = new Phaser.Geom.Rectangle(-800, -400, 800, worldheight + 1200);
         let graphics = this.add.graphics({ fillStyle: { color: 0x000000 } });
         graphics.fillRectShape(rect);
 
         // right
-        rect = new Phaser.Geom.Rectangle(this.game.config.width, -400, 800, this.game.config.height*6);
+        rect = new Phaser.Geom.Rectangle(this.game.config.width, -400, 800, worldheight + 1200);
         graphics = this.add.graphics({ fillStyle: { color: 0x000000 } });
         graphics.fillRectShape(rect);
 
         // down
-        rect = new Phaser.Geom.Rectangle(-400, this.game.config.height*4, this.game.config.width+400, 400);
+        rect = new Phaser.Geom.Rectangle(-400, worldheight, this.game.config.width+400, 400);
         graphics = this.add.graphics({ fillStyle: { color: 0x000000 } });
         graphics.fillRectShape(rect);
 
