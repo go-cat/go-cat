@@ -48,7 +48,7 @@ class StreetLevel extends BaseLevelScene {
         }
 
         // Add cat
-        this.cat = this.physics.add.sprite(0, worldheight, 'cat');
+        this.cat = this.physics.add.sprite(50, worldheight-49, 'cat');
         this.cat.setCollideWorldBounds(true);
         this.cat.body.setAllowGravity(0, 0);
         this.cat.setSize(90, 90, true);
