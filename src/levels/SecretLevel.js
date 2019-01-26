@@ -34,18 +34,10 @@ class SecretLevel extends BaseLevelScene {
 
 
 
-
+        // Variables
         this.score=0;
-        //this.add.image(0, 0, 'space').setOrigin(0, 0);
-        //this.add.image(800, 0, 'space').setOrigin(0, 0)
+        this.dogSpeed = 30;
 
-        //  The platforms group contains the ground and the 2 ledges we can jump on
-        this.platforms = this.physics.add.staticGroup();
-
-        //  Here we create the ground.
-        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        //this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
-        //this.platforms.create(120, 120, 'ground').setScale(1).refreshBody();
 
         // The player and its settings
         this.player = this.physics.add.sprite(100, 500, 'dude');
@@ -99,10 +91,8 @@ class SecretLevel extends BaseLevelScene {
         });
 
         this.dog = this.physics.add.sprite(300, 400, 'spacedog');
-        /*for(let i = 0; i<100; i++){
-            this.dog.setXY(this.dog.X, 400+i);
-        }
-*/
+        this.dog.setVelocityX(this.dogSpeed);
+
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
@@ -123,6 +113,12 @@ class SecretLevel extends BaseLevelScene {
         if (this.gameOver)
         {
             return;
+        }
+        if (this.dog.x > 500){
+            this.dog.setVelocityX(-this.dogSpeed);
+        }
+        if (this.dog.x < 300){
+            this.dog.setVelocityX(this.dogSpeed);
         }
 
         if (this.cursors.left.isDown)
