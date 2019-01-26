@@ -50,7 +50,7 @@ class SecretLevel extends BaseLevelScene {
         this.millis = 0;
 
 
-        // The player and its settings
+        // The cat and its settings
         this.cat = this.physics.add.sprite(100, 400, 'cat');
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
@@ -89,20 +89,23 @@ class SecretLevel extends BaseLevelScene {
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-        //  Collide the player and the mice with the platforms
+        //  Collide the cat and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.dog, collisionLayer);
 
-        //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
+        //  Checks to see if the cat overlaps with any of the mice, if he does call the collectmouse function
         this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.cameras.main.startFollow(this.cat);
 
-        this.physics.add.collider(this.player, this.bombs, this.hitbomb, null, this);
-        this.cameras.main.startFollow(this.player);
+        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
+        this.cameras.main.startFollow(this.cat);
+
+        // should be called at the end to the HUD will be on top
+        super.create();
     }
 
     update(time, delta) {
@@ -154,7 +157,7 @@ class SecretLevel extends BaseLevelScene {
         }
     }
 
-    collectmouse (player, mouse)
+    collectmouse (cat, mouse)
     {
         mouse.disableBody(true, true);
         this.sound.play("meow");
@@ -173,7 +176,7 @@ class SecretLevel extends BaseLevelScene {
 
             });
 
-            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+            var x = (cat.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
             var bomb = this.bombs.create(x, 16, 'bomb');
             bomb.setBounce(1);
@@ -184,20 +187,20 @@ class SecretLevel extends BaseLevelScene {
         }
     }
 
-    hitbomb (player, bomb)
+    hitbomb (cat, bomb)
     {
         this.physics.pause();
 
-        player.setTint(0xff0000);
+        cat.setTint(0xff0000);
 
-        player.anims.play('turn');
+        cat.anims.play('turn');
 
         this.gameOver = true;
     }
-    hitdog (player, dog)
+    hitdog (cat, dog)
     {
         this.physics.pause();
-        player.setTint(0xff0000);
+        cat.setTint(0xff0000);
         this.sound.play("dogLong");
         this.sound.play("angryCat");
         this.gameOver = true;
