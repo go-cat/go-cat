@@ -84,14 +84,6 @@ class GrassLevel extends BaseLevelScene {
         super.create();
     }
 
-    update(time, delta) {
-        super.update(time, delta);
-
-        if (this.gameOver) {
-            return null;
-        }
-    }
-
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.cat.setVelocityX(-160);
@@ -151,11 +143,7 @@ class GrassLevel extends BaseLevelScene {
 
     hitbomb (player, bomb)
     {
-        this.physics.pause();
-
-        player.setTint(0xff0000);
-
-        this.gameOver = true;
+        this.catDies(player);
     }
 
 }

@@ -11,6 +11,7 @@ class BaseLevelScene extends Phaser.Scene {
         this.showTimer = config.hasOwnProperty('showTimer') ? config.showTimer : true;
 
         this.score = 0;
+        this.remainingLives = 7;
 
         this.scenes = [
             'StartScene',
@@ -25,6 +26,7 @@ class BaseLevelScene extends Phaser.Scene {
 
     init(data) {
         this.score = data.hasOwnProperty('score') ? data.score : 0;
+        this.remainingLives = data.hasOwnProperty('remainingLives') ? data.remainingLives : 7;
     }
 
     create() {
@@ -88,18 +90,6 @@ class BaseLevelScene extends Phaser.Scene {
             }
         });
 
-        if (this.showTimer) {
-            this.timeLeft = 120;
-            this.timerText = this.add.text(10, 40, 'time:   ' + BaseLevelScene.formatNumberToText(this.timeLeft, 3), {
-                fontFamily: 'Monospace',
-                fontSize: 24,
-                color: '#000000',
-            });
-            this.timerText.setStroke('#ffffff', 2);
-            this.timerText.setShadow(2, 2, '#ffffff', 2, true, false);
-            this.timerText.setScrollFactor(0);
-        }
-
         this.scoreText = this.add.text(10, 10, 'score: ' + BaseLevelScene.formatNumberToText(this.score, 4), {
             fontFamily: 'Monospace',
             fontSize: 24,
@@ -108,6 +98,27 @@ class BaseLevelScene extends Phaser.Scene {
         this.scoreText.setStroke('#ffffff', 2);
         this.scoreText.setShadow(2, 2, '#ffffff', 2, true, false);
         this.scoreText.setScrollFactor(0);
+
+        this.livesText = this.add.text(10, 40, 'lives:    ' + this.remainingLives, {
+            fontFamily: 'Monospace',
+            fontSize: 24,
+            color: '#000000',
+        });
+        this.livesText.setStroke('#ffffff', 2);
+        this.livesText.setShadow(2, 2, '#ffffff', 2, true, false);
+        this.livesText.setScrollFactor(0);
+
+        if (this.showTimer) {
+            this.timeLeft = 120;
+            this.timerText = this.add.text(10, 70, 'time:   ' + BaseLevelScene.formatNumberToText(this.timeLeft, 3), {
+                fontFamily: 'Monospace',
+                fontSize: 24,
+                color: '#000000',
+            });
+            this.timerText.setStroke('#ffffff', 2);
+            this.timerText.setShadow(2, 2, '#ffffff', 2, true, false);
+            this.timerText.setScrollFactor(0);
+        }
     }
 
     static formatNumberToText(number, length) {
@@ -166,9 +177,11 @@ class BaseLevelScene extends Phaser.Scene {
                 for (let b = 0; b < pad.buttons.length; b++) {
                     if (pad.buttons[b].value === 1) {
                         if (this.scenes[this.currentSceneIndex] === 'StartScene') {
+                            this.catLoosesLive();
                             this.startNextLevel();
                         }
                         if (this.scenes[this.currentSceneIndex] === 'EndScene') {
+                            this.remainingLives = 7;
                             this.startNextLevel(false, 0);
                         }
                     }
@@ -203,7 +216,33 @@ class BaseLevelScene extends Phaser.Scene {
             nextScene = this.scenes[index];
         }
 
-        this.scene.start(nextScene, { score: this.score });
+        this.scene.start(nextScene, {
+            score: this.score,
+            remainingLives: this.remainingLives,
+        });
+    }
+
+    catLoosesLive() {
+        if (this.remainingLives === 0) {
+            this.startNextLevel(false, this.scenes.indexOf('EndScene'));
+        }
+
+        this.remainingLives--;
+        this.livesText.text = 'lives:    ' + this.remainingLives;
+    }
+
+    catDies(cat) {
+        this.catLoosesLive();
+
+        this.physics.pause();
+        cat.setTint(0xff0000);
+
+        setTimeout(() => {
+            cat.setTint(0xffffff);
+            this.physics.resume();
+
+            this.startNextLevel(false, this.currentSceneIndex);
+        }, 1000);
     }
 
     buttonPressedLeft() {}

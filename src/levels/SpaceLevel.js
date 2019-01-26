@@ -16,7 +16,7 @@ class SpaceLevel extends BaseLevelScene {
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
         this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
-        
+
     }
 
     create() {
@@ -130,17 +130,14 @@ class SpaceLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
-        if (this.gameOver) {
-            return null;
-        }
-       for(let i =0; i<this.dogs.length; i++){
-           let currentDog = this.dogs[i];
-           if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
-               currentDog["sprite"].setVelocityX(-currentDog["speed"]);
-           }
-           if (currentDog["sprite"].x < currentDog["startX"]){
-               currentDog["sprite"].setVelocityX(currentDog["speed"]);
-       }
+        for(let i =0; i<this.dogs.length; i++){
+            let currentDog = this.dogs[i];
+            if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
+                currentDog["sprite"].setVelocityX(-currentDog["speed"]);
+            }
+            if (currentDog["sprite"].x < currentDog["startX"]){
+                currentDog["sprite"].setVelocityX(currentDog["speed"]);
+            }
         }
         //if (this.dog.x < this.dogStartX){
          //   this.dog.setVelocityX(this.dogSpeed);
@@ -211,20 +208,14 @@ class SpaceLevel extends BaseLevelScene {
 
     hitbomb (cat, bomb)
     {
-        this.physics.pause();
-
-        cat.setTint(0xff0000);
-
-        cat.anims.play('turn');
-
-        this.gameOver = true;
+        this.catDies(cat);
     }
+
     hitdog (cat, dog)
     {
-        this.physics.pause();
-        cat.setTint(0xff0000);
         this.sound.play("dogLong");
         this.sound.play("angryCat");
-        this.gameOver = true;
+
+        this.catDies(cat);
     }
 }
