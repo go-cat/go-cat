@@ -7,11 +7,11 @@ class GrassLevel extends BaseLevelScene {
         super.preload();
 
         this.load.tilemapTiledJSON("grass_map","assets/maps/GrassLevel/world.json");
-        this.load.image('grass_tiles',"assets/images/GrassLevel/sprites.png");
+        this.load.image('grass_tiles',"assets/images/GrassLevel/sprites_grass.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('empty', 'assets/images/GrassLevel/empty.png');
-        this.load.image('cat', 'assets/images/cat_walking_right.png');
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('grass_goal', 'assets/images/house_home_transparent.png');
 
         // Audio
@@ -47,14 +47,26 @@ class GrassLevel extends BaseLevelScene {
 
 
         // The player and its settings
-        this.cat = this.physics.add.sprite(100, 400, 'cat');
+        this.cat = this.physics.add.sprite(100, 400, 'animcat');
+        this.cameras.main.startFollow(this.cat);
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
-        this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
-
+        this.anims.remove('walk');
+        this.anims.create({
+            key: 'walk',
+            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+        this.anims.remove('stand');
+        this.anims.create({
+            key: 'stand',
+            frames: [ { key: 'animcat', frame: 0 } ],
+            frameRate: 20,
+        });
 
         // Create pits
 
@@ -81,10 +93,26 @@ class GrassLevel extends BaseLevelScene {
         this.spawnObject(31,8,'mouse', this.mice);
 
         // Create bomb
-        this.bombs = this.physics.add.group({
-            key: 'bomb',
-            setXY: { x: 420, y: 0}
-        });
+        this.bombs = this.physics.add.group();
+
+        this.spawnObject(31,14, 'bomb', this.bombs);
+        this.spawnObject(56,14, 'bomb', this.bombs);
+        this.spawnObject(68,10, 'bomb', this.bombs);
+        this.spawnObject(79,10, 'bomb', this.bombs);
+        this.spawnObject(99,14, 'bomb', this.bombs);
+        this.spawnObject(126,14, 'bomb', this.bombs);
+        this.spawnObject(127,14, 'bomb', this.bombs);
+        this.spawnObject(130,14, 'bomb', this.bombs);
+        this.spawnObject(131,14, 'bomb', this.bombs);
+        this.spawnObject(149,14, 'bomb', this.bombs);
+        this.spawnObject(178,14, 'bomb', this.bombs);
+        this.spawnObject(181,10, 'bomb', this.bombs);
+        this.spawnObject(182,10, 'bomb', this.bombs);
+
+        this.bombs.children.iterate(function (bomb) {
+            bomb.scaleX = 2;
+            bomb.scaleY = 2;
+        })
 
         // Add goal
         this.goal = this.physics.add.sprite(204*32,0,'grass_goal');
@@ -127,9 +155,11 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(-220);
+            this.cat.setVelocityX(-350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand');
         }
 
         if (this.cat.flipX === false) {
@@ -139,9 +169,11 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(220);
+            this.cat.setVelocityX(350);
+            this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
+            this.cat.anims.play('stand');
         }
 
         if (this.cat.flipX === true) {
