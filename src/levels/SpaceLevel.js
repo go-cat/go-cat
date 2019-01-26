@@ -18,6 +18,9 @@ class SpaceLevel extends BaseLevelScene {
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
         this.load.audio("angryCat", "assets/sounds/animals/cat_angry.ogg");
+        this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
+        this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
+        this.load.audio("walk", "assets/sounds/movement/walking_sfx_movement_footstepsloop4_slow.wav");
 
     }
 
@@ -122,6 +125,7 @@ class SpaceLevel extends BaseLevelScene {
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
+        //console.log("collision",this.physics.world.checkCollision)
 
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
@@ -141,9 +145,15 @@ class SpaceLevel extends BaseLevelScene {
                 currentDog["sprite"].setVelocityX(currentDog["speed"]);
             }
         }
-        //if (this.dog.x < this.dogStartX){
-         //   this.dog.setVelocityX(this.dogSpeed);
+
+        //if (this.cat.y > 566){
+         //   this.catDies(this.cat);
         //}
+        console.log("velocity", this.cat.);
+        if (this.cat.velocity < 10){
+            this.sound.play("land");
+        }
+
         if (this.millis > Phaser.Math.Between(100, 8000)){
             this.sound.play("bark");
             this.millis = 0;
@@ -154,6 +164,7 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedLeft(pressed) {
         if (pressed) {
             this.cat.setVelocityX(-160);
+            this.sound.play("walk");
         } else {
             this.cat.setVelocityX(0);
         }
@@ -166,6 +177,7 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedRight(pressed) {
         if (pressed) {
             this.cat.setVelocityX(160);
+            this.sound.play("walk");
         } else {
             this.cat.setVelocityX(0);
         }
@@ -178,6 +190,7 @@ class SpaceLevel extends BaseLevelScene {
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-400);
+            this.sound.play("jump");
         }
     }
 
