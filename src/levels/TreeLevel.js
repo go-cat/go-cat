@@ -96,6 +96,16 @@ class TreeLevel extends BaseLevelScene {
         super.update();
 
         // Mice run
+        this.mice.children.iterate(function (mouse) {
+            let x = Phaser.Math.Between(1, 3);
+            if (x === 1) {
+                mouse.setVelocityX(0);
+            } else if (x === 2) {
+                mouse.setVelocityX(-500);
+            } else {
+                mouse.setVelocityX(500);
+            }
+        });        
 
         // Birds fly
 
@@ -124,4 +134,10 @@ class TreeLevel extends BaseLevelScene {
             this.cat.flipX = false;
         }
     }
+    
+    buttonPressedUp(pressed) {
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+            this.cat.setVelocityY(-350);
+        }
+    }    
 }
