@@ -36,6 +36,9 @@ class BaseLevelScene extends Phaser.Scene {
                     this.startNextLevel(false, 0);
                     break;
                 case '1':
+                case 'Enter':
+                case ' ':
+                    this.catLoosesLive();
                     this.startNextLevel(false, 1);
                     break;
                 case '2':
@@ -90,7 +93,7 @@ class BaseLevelScene extends Phaser.Scene {
             }
         });
 
-        this.scoreText = this.add.text(10, 10, 'score: ' + BaseLevelScene.formatNumberToText(this.score, 4), {
+        this.scoreText = this.add.text(10, 10, 'score:' + BaseLevelScene.formatNumberToText(this.score), {
             fontFamily: 'Monospace',
             fontSize: 24,
             color: '#000000',
@@ -99,7 +102,7 @@ class BaseLevelScene extends Phaser.Scene {
         this.scoreText.setShadow(2, 2, '#ffffff', 2, true, false);
         this.scoreText.setScrollFactor(0);
 
-        this.livesText = this.add.text(10, 40, 'lives:    ' + this.remainingLives, {
+        this.livesText = this.add.text(10, 40, 'lives:' + BaseLevelScene.formatNumberToText(this.remainingLives), {
             fontFamily: 'Monospace',
             fontSize: 24,
             color: '#000000',
@@ -110,7 +113,7 @@ class BaseLevelScene extends Phaser.Scene {
 
         if (this.showTimer) {
             this.timeLeft = 120;
-            this.timerText = this.add.text(10, 70, 'time:   ' + BaseLevelScene.formatNumberToText(this.timeLeft, 3), {
+            this.timerText = this.add.text(10, 70, 'time: ' + BaseLevelScene.formatNumberToText(this.timeLeft), {
                 fontFamily: 'Monospace',
                 fontSize: 24,
                 color: '#000000',
@@ -121,9 +124,9 @@ class BaseLevelScene extends Phaser.Scene {
         }
     }
 
-    static formatNumberToText(number, length) {
+    static formatNumberToText(number, length = 5) {
         let string = '' + Math.floor(number);
-        let padding = '0'.repeat(length - string.length);
+        let padding = ' '.repeat(length - string.length);
 
         return padding + string;
     }
@@ -190,18 +193,20 @@ class BaseLevelScene extends Phaser.Scene {
         }
 
         if (this.showTimer) {
-            this.timeLeft -= delta / 1000;
-            if (this.timeLeft < 0) {
-                this.timeLeft = 0;
-                // TODO time is up
+            if (this.timeLeft > 0) {
+                this.timeLeft -= delta / 1000;
+                if (this.timeLeft < 0) {
+                    this.timeLeft = 0;
+                    this.catDies(this.timerText);
+                }
             }
-            this.timerText.text = 'time:   ' + BaseLevelScene.formatNumberToText(this.timeLeft, 3);
+            this.timerText.text = 'time: ' + BaseLevelScene.formatNumberToText(this.timeLeft);
         }
     }
 
     addScore(score = 10) {
         this.score += score;
-        this.scoreText.text = 'score: ' + BaseLevelScene.formatNumberToText(this.score, 4);
+        this.scoreText.text = 'score:' + BaseLevelScene.formatNumberToText(this.score);
     }
 
     startNextLevel(next = true, sceneIndex) {
@@ -209,7 +214,6 @@ class BaseLevelScene extends Phaser.Scene {
         if (next === false) {
             index = sceneIndex;
         }
-
 
         let nextScene = 'EndScene';
         if (index < this.scenes.length) {
@@ -228,7 +232,7 @@ class BaseLevelScene extends Phaser.Scene {
         }
 
         this.remainingLives--;
-        this.livesText.text = 'lives:    ' + this.remainingLives;
+        this.livesText.text = 'lives:' + BaseLevelScene.formatNumberToText(this.remainingLives);
     }
 
     catDies(cat) {
