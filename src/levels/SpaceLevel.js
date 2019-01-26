@@ -12,6 +12,7 @@ class SpaceLevel extends BaseLevelScene {
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
+        this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
@@ -24,11 +25,11 @@ class SpaceLevel extends BaseLevelScene {
 
     create() {
         // layer and map for the Tilemap
-        const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
-        const tileset = map.addTilesetImage("spacetileset","tiles");
+        let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
+        let tileset = map.addTilesetImage("spacetileset","tiles");
 
-        const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
-        const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        let dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
+        let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
 
         collisionLayer.setCollisionByProperty({ collides: true });
 
@@ -45,7 +46,7 @@ class SpaceLevel extends BaseLevelScene {
 
 
         // The cat and its settings
-        this.cat = this.physics.add.sprite(2000, 400, 'cat');
+        this.cat = this.physics.add.sprite(1600, 300, 'cat');
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
@@ -81,6 +82,9 @@ class SpaceLevel extends BaseLevelScene {
         this.spawnLayer =  map.objects.filter((maplayer)=> {
             return maplayer.name == "boxes";
         })[0];
+        this.groundLayer =  map.objects.filter((maplayer)=> {
+            return maplayer.name == "ground";
+        })[0];
         this.safezoneLayer =  map.objects.filter((maplayer)=> {
             return maplayer.name == "safezone";
         })[0];
@@ -91,6 +95,7 @@ class SpaceLevel extends BaseLevelScene {
             let dogPath = this.spawnLayer.objects[i].width;
             let dogSpeed = 30;
             let sprite = this.physics.add.sprite(dogStartX, dogStartY,"dogImage");
+            sprite.setSize(sprite.width*0.8, sprite.height*0.8);
             this.dogsSprites.add(sprite);
             sprite.setVelocityX(dogSpeed);
             sprite.scaleY=0.6;
@@ -100,15 +105,19 @@ class SpaceLevel extends BaseLevelScene {
         }
 
 
-
-        //this.dog = this.physics.add.sprite(this.dogStartX, this.dogStartY,"dogImage");
-
         let lay = this.safezoneLayer.objects[0];
-        this.safezone = this.physics.add.image(lay.x, lay.y + lay.height/2,"safe");
+        this.safezone = this.physics.add.image(lay.x + lay.width/2 , lay.y + lay.height/2 ,"home");
         this.safezone.body.allowGravity = false;
-        this.safezone.width=lay.width;
-        this.safezone.height=lay.height;
-        this.safezone.visible = false;
+        this.safezone.displayHeight = lay.height;
+        this.safezone.displayWidth = lay.width;
+
+        let lay2 = this.groundLayer.objects[0];
+        this.ground = this.physics.add.image(lay2.x + lay2.width/2 , lay2.y + lay2.height/2 ,"ff");
+        this.ground.body.allowGravity = false;
+        this.ground.displayHeight = lay2.height;
+        this.ground.displayWidth = lay2.width;
+        this.ground.visible = false;
+
 
 
         //  Collide the cat and the mice with the platforms
@@ -126,7 +135,8 @@ class SpaceLevel extends BaseLevelScene {
 
         this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
-        //console.log("collision",this.physics.world.checkCollision)
+        //this.physics.add.collider(this.cat, this.ground, this.catDies(this.cat), null, this);
+
 
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top

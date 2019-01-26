@@ -11,7 +11,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('bg', 'assets/images/StreetLevel/street_background.png');
         this.load.image('car', 'assets/images/car.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png')
-        this.load.image('goal', 'assets/images/house_home.png');
+        this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
 
         this.load.audio('backgroundmusic', 'assets/sounds//songs/Big_Rock.mp3');

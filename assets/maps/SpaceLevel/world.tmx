@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="75" height="19" tilewidth="32" tileheight="32" infinite="0" nextobjectid="12">
+<map version="1.0" tiledversion="1.1.1" orientation="orthogonal" renderorder="right-down" width="75" height="19" tilewidth="32" tileheight="32" infinite="0" nextobjectid="14">
  <tileset firstgid="1" name="spacetileset" tilewidth="32" tileheight="32" tilecount="100" columns="10">
   <image source="../../images/SecretLevel/spaceTileset.png" width="320" height="320"/>
   <tile id="60">
@@ -52,6 +52,9 @@
  </layer>
  <objectgroup name="safezone">
   <object id="9" x="1718.67" y="5.33333" width="68" height="86.6667"/>
+ </objectgroup>
+ <objectgroup name="ground">
+  <object id="13" x="-2" y="602" width="2408" height="10"/>
  </objectgroup>
  <objectgroup name="boxes">
   <object id="6" x="671.333" y="321.333" width="190" height="32"/>
