@@ -120,7 +120,7 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(-160);
+            this.cat.setVelocityX(-220);
         } else {
             this.cat.setVelocityX(0);
         }
@@ -132,7 +132,7 @@ class GrassLevel extends BaseLevelScene {
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(1600);
+            this.cat.setVelocityX(220);
         } else {
             this.cat.setVelocityX(0);
         }
