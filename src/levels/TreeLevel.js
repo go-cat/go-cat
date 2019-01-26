@@ -69,6 +69,14 @@ class TreeLevel extends BaseLevelScene {
             setXY: { x: 12, y: 0, stepX: 70 },
             body: { allowGravity: false },
         });
+        
+        // Mice
+        const mices = this.physics.add.group({
+            key: 'mice',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 },
+            body: { allowGravity: false },
+        });        
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
