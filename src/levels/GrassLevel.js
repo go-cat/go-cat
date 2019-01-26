@@ -6,8 +6,8 @@ class GrassLevel extends BaseLevelScene {
     preload() {
         super.preload();
 
-        this.load.tilemapTiledJSON("map","assets/maps/GrassLevel/world.json");
-        this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
+        this.load.tilemapTiledJSON("grass_map","assets/maps/GrassLevel/world.json");
+        this.load.image('grass_tiles',"assets/images/GrassLevel/sprites.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('empty', 'assets/images/GrassLevel/empty.png');
@@ -24,11 +24,11 @@ class GrassLevel extends BaseLevelScene {
         super.create();
 
         // layer and map for the Tilemap
-        const map = this.make.tilemap({ key: "map", tileWidth: 32, tileHeight: 32 });
-        const tileset = map.addTilesetImage("grassTileset","tiles");
+        let map = this.make.tilemap({ key: "grass_map", tileWidth: 32, tileHeight: 32 });
+        let tileset = map.addTilesetImage("grassTileset","grass_tiles");
 
-        const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
-        const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        let dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
+        let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
 
         this.physics.world.setBounds(0,0,6784,576, true, true, true, true);
