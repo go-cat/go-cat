@@ -14,6 +14,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
+        this.load.image('cat_lives', 'assets/images/cat_lives.png');
 
         this.load.audio('backgroundmusic', 'assets/sounds/songs/Big_Rock.mp3');
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
@@ -31,8 +32,9 @@ class StreetLevel extends BaseLevelScene {
 
         // Set world and camera bounds
         const worldheight = this.game.config.height*4;
-        this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);
-        this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
+        const real_worldheight = 2962;
+        this.cameras.main.setBounds(0, 0, this.game.config.width, real_worldheight);
+        this.physics.world.setBounds(0, 0, this.game.config.width, real_worldheight, true, true, true, true);
 
         // Add background (with streets)
         this.add.image(0, 0, 'bg').setOrigin(0, 0);
@@ -136,6 +138,24 @@ class StreetLevel extends BaseLevelScene {
                 console.log('no audio possible');
             }
             this.catDies(this.cat);
+        });
+
+        // Add wall in front of hidden room
+        this.hiddenwall = this.physics.add.image((800-105)/2, worldheight+150, 'asdf');
+        this.hiddenwall.displayHeight = 300;
+        this.hiddenwall.displayWidth = 800-105;
+        this.hiddenwall.body.allowGravity = false;
+        this.hiddenwall.setImmovable();
+        this.hiddenwall.visible = false;
+        this.physics.add.collider(this.cat, this.hiddenwall);
+
+        // Add hidden extra lives
+        this.extra_lives = this.physics.add.sprite(this.game.config.width/2, real_worldheight-131, 'cat_lives');
+        this.extra_lives.body.setAllowGravity(0, 0);
+
+        this.physics.add.overlap(this.cat, this.extra_lives, ()=>{
+            // TODO this should be a cape or something, also sound
+            this.addScore(1000);
         });
 
         // should be called at the end to the HUD will be on top
