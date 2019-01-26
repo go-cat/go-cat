@@ -23,6 +23,43 @@ class BaseLevelScene extends Phaser.Scene {
                 case '4':
                     this.scene.start('SecretLevel');
                     break;
+                case 'ArrowUp':
+                case 'w':
+                    this.buttonPressedUp(true);
+                    break;
+                case 'ArrowDown':
+                case 's':
+                    this.buttonPressedDown(true);
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                    this.buttonPressedLeft(true);
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                    this.buttonPressedRight(true);
+                    break;
+            }
+        });
+
+        this.input.keyboard.on('keyup', (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                case 'w':
+                    this.buttonPressedUp(false);
+                    break;
+                case 'ArrowDown':
+                case 's':
+                    this.buttonPressedDown(false);
+                    break;
+                case 'ArrowLeft':
+                case 'a':
+                    this.buttonPressedLeft(false);
+                    break;
+                case 'ArrowRight':
+                case 'd':
+                    this.buttonPressedRight(false);
+                    break;
             }
         });
     }

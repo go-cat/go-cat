@@ -64,33 +64,33 @@ class TreeLevel extends BaseLevelScene {
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
-
-        /* Initialize the keys */
-        this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-
     }
 
     update() {
 
-        /* react to key presses */
-        if (this.leftKey.isDown) {
-            this.cat.x -= 10;
-            
-            if (this.cat.flipX == false) {
-                this.cat.flipX = true;
-            }            
+    }
+
+    buttonPressedLeft(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(-500);
+        } else {
+            this.cat.setVelocityX(0);
         }
 
-        if (this.rightKey.isDown) {
-            this.cat.x += 10;
-            
-            if (this.cat.flipX == true) {
-                this.cat.flipX = false;
-            }              
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
         }
-        
+    }
 
+    buttonPressedRight(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(500);
+        } else {
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
+        }
     }
 }
