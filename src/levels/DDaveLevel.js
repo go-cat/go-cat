@@ -7,8 +7,8 @@ class DDaveLevel extends BaseLevelScene {
     preload() {
         super.preload();
 
-        this.load.tilemapTiledJSON("map","assets/maps/DDaveLevel/dave.json");
-        this.load.image('tiles',"assets/images/DDaveLevel/DDaveTileset.png");
+        this.load.tilemapTiledJSON("mapDave","assets/maps/DDaveLevel/dave.json");
+        this.load.image('tilesDave',"assets/images/DDaveLevel/DDaveTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
@@ -34,11 +34,11 @@ class DDaveLevel extends BaseLevelScene {
             console.log('no audio possible');
         }
 
-        // layer and map for the Tilemap
-        let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
-        let tileset = map.addTilesetImage("dave","tiles");
+        // layer and mapDave for the TilemapDave
+        let mapDave = this.make.tilemap({ key: "mapDave", tileWidth: 16, tileHeight: 16 });
+        let tileset = mapDave.addTilesetImage("dave","tilesDave");
 
-        let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        let collisionLayer = mapDave.createStaticLayer("obstacles", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
 
         // bounds
@@ -76,14 +76,14 @@ class DDaveLevel extends BaseLevelScene {
         });
 
         // "Read" the Object-Layers
-        this.dogSpawnLayer =  map.objects.filter((maplayer)=> {
-            return maplayer.name == "dogspawn";
+        this.dogSpawnLayer =  mapDave.objects.filter((mapDavelayer)=> {
+            return mapDavelayer.name == "dogspawn";
         })[0];
-        this.miceSpawnLayer =  map.objects.filter((maplayer)=> {
-            return maplayer.name == "micespawn";
+        this.miceSpawnLayer =  mapDave.objects.filter((mapDavelayer)=> {
+            return mapDavelayer.name == "micespawn";
         })[0];
-        this.safezoneLayer =  map.objects.filter((maplayer)=> {
-            return maplayer.name == "safezone";
+        this.safezoneLayer =  mapDave.objects.filter((mapDavelayer)=> {
+            return mapDavelayer.name == "safezone";
         })[0];
 
         // Create a Dogs-Object-Array
@@ -167,7 +167,7 @@ class DDaveLevel extends BaseLevelScene {
                 console.log('no audio possible');
             }
             this.millis = 0;
-            this.timeout = Phaser.Math.Between(800, 8000);
+            this.timeout = Phaser.Math.Between(400, 4000);
         }
         this.millis +=1;
 
