@@ -192,35 +192,14 @@ class SecretLevel extends BaseLevelScene {
 
     hitbomb (cat, bomb)
     {
-        this.catLoosesLive();
-
-        cat.anims.play('turn');
-
-        this.physics.pause();
-        cat.setTint(0xff0000);
-
-        setTimeout(() => {
-            cat.setTint(0xffffff);
-            this.physics.resume();
-
-            this.startNextLevel(false, this.currentSceneIndex);
-        }, 1000);
+        this.catDies(cat);
     }
 
     hitdog (cat, dog)
     {
-        this.catLoosesLive();
-
         this.sound.play("dogLong");
         this.sound.play("angryCat");
 
-        this.physics.pause();
-        cat.setTint(0xff0000);
-        setTimeout(() => {
-            cat.setTint(0xffffff);
-            this.physics.resume();
-
-            this.startNextLevel(false, this.currentSceneIndex);
-        }, 1000);
+        this.catDies(cat);
     }
 }

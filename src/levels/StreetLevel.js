@@ -65,16 +65,7 @@ class StreetLevel extends BaseLevelScene {
         });
 
         this.physics.add.collider(this.cat, this.cars, () => {
-            this.catLoosesLive();
-
-            this.physics.pause();
-            this.cat.setTint(0xff0000);
-            setTimeout(() => {
-                this.cat.setTint(0xffffff);
-                this.physics.resume();
-
-                this.startNextLevel(false, this.currentSceneIndex);
-            }, 1000);
+            this.catDies(this.cat);
         });
 
         // should be called at the end to the HUD will be on top

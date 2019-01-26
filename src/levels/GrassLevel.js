@@ -143,17 +143,7 @@ class GrassLevel extends BaseLevelScene {
 
     hitbomb (player, bomb)
     {
-        this.catLoosesLive();
-
-        this.physics.pause();
-        player.setTint(0xff0000);
-
-        setTimeout(() => {
-            player.setTint(0xffffff);
-            this.physics.resume();
-
-            this.startNextLevel(false, this.currentSceneIndex);
-        }, 1000);
+        this.catDies(player);
     }
 
 }

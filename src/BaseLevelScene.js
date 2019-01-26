@@ -231,6 +231,20 @@ class BaseLevelScene extends Phaser.Scene {
         this.livesText.text = 'lives:    ' + this.remainingLives;
     }
 
+    catDies(cat) {
+        this.catLoosesLive();
+
+        this.physics.pause();
+        cat.setTint(0xff0000);
+
+        setTimeout(() => {
+            cat.setTint(0xffffff);
+            this.physics.resume();
+
+            this.startNextLevel(false, this.currentSceneIndex);
+        }, 1000);
+    }
+
     buttonPressedLeft() {}
     buttonPressedRight() {}
     buttonPressedUp() {}
