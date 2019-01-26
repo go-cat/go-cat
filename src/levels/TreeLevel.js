@@ -10,7 +10,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/TreeLevel/bird.png');
-        this.load.image('mice', 'assets/images/TreeLevel/mice.png');
+        this.load.image('mouse', 'assets/images/TreeLevel/mouse.png');
         this.load.image('wool', 'assets/images/TreeLevel/wool.png');
     }
 
@@ -71,8 +71,8 @@ class TreeLevel extends BaseLevelScene {
         });
         
         // Mice
-        const mices = this.physics.add.group({
-            key: 'mice',
+        const mice = this.physics.add.group({
+            key: 'mouse',
             repeat: 11,
             setXY: { x: 12, y: 0, stepX: 70 },
             body: { allowGravity: false },
