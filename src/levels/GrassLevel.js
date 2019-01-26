@@ -1,98 +1,93 @@
-"use strict";
-
 class GrassLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'GrassLevel' })
     }
 
     preload() {
-        this.load.image('sky', 'assets/images/GrassLevel/sky.png');
-        this.load.image('ground', 'assets/images/GrassLevel/bottom_green_60px.png');
-        this.load.image('star', 'assets/images/GrassLevel/star.png');
+        this.load.tilemapTiledJSON("map","assets/maps/GrassLevel/world.json");
+        this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
+        this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
-        this.load.spritesheet('dude',
-            'assets/images/GrassLevel/dude.png',
-            { frameWidth: 32, frameHeight: 48 }
-        );
+        this.load.image('spacedog', 'assets/images/SecretLevel/dog.jpg');
+        this.load.image('cat', 'assets/images/cat_walking_right.png');
 
-        this.load.tilemapTiledJSON('map', 'assets/maps/GrassLevel/level.json');
-        this.load.image('tiles1', 'assets/images/GrassLevel/sprites.png');
+        // Audio
+        this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
+        this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
+
+
+
+
     }
 
     create() {
-        this.physics.world.setBounds(0,0,3392,600, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 3392, 600);
+        super.create();
+
+        // layer and map for the Tilemap
+        const map = this.make.tilemap({ key: "map", tileWidth: 32, tileHeight: 32 });
+        const tileset = map.addTilesetImage("grassTileset","tiles");
+
+        const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
+        const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        collisionLayer.setCollisionByProperty({ collides: true });
+
+
+        this.physics.world.setBounds(0,0,2400,576, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 2400, 576);
+
+        // Variables
         this.score=0;
-        this.add.image(0, 0, 'sky').setOrigin(0, 0);
-        this.add.image(800, 0, 'sky').setOrigin(0, 0);
+        this.dogSpeed = 30;
+        this.dogSart = 400;
+        this.millis = 0;
 
-        var map = this.make.tilemap({ key: 'map' });
-        var tileset = map.addTilesetImage('SuperMarioBros-World1-1', 'tiles1');
-        var layer = map.createStaticLayer('World1', tileset, 0, 0);
-
-        //  The platforms group contains the ground and the 2 ledges we can jump on
-        //this.platforms = this.physics.add.staticGroup();
-
-        //  Here we create the ground.
-        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        //this.platforms.create(600, 568, 'ground').setScale(3).refreshBody();
 
         // The player and its settings
-        this.cat = this.physics.add.sprite(100, 450, 'dude');
-
-        //  Player physics properties. Give the little guy a slight bounce.
-        this.cat.setBounce(0.1);
+        this.cat = this.physics.add.sprite(100, 400, 'cat');
+        this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
+        this.cameras.main.startFollow(this.cat);
+        this.cat.body.gravity.y = 300;
+        this.cat.scaleY=0.6;
+        this.cat.scaleX=0.6;
 
-        //  Our player animations, turning, walking left and walking right.
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
+
+        //  Create mice, bombs and a dog
+        this.mice = this.physics.add.group({
+            key: 'mouse',
+            repeat: 20,
+            setXY: { x: 50, y: 0, stepX: 100 }
         });
 
-        this.anims.create({
-            key: 'turn',
-            frames: [ { key: 'dude', frame: 4 } ],
-            frameRate: 20
+        this.bombs = this.physics.add.group({
+            key: 'bomb',
+            setXY: { x: 420, y: 0}
         });
 
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
-            repeat: -1
-        });
+        this.mice.children.iterate(function (child) {
 
-        //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
-        this.stars = this.physics.add.group({
-            key: 'star',
-            repeat: 11,
-            setXY: { x: 12, y: 0, stepX: 70 }
-        });
-
-        this.stars.children.iterate(function (child) {
-
-            //  Give each star a slightly different bounce
-            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            //  Give each mouse a slightly different bounce
+            child.setBounceY(0);
+            child.setGravityY(1000);
+            child.setVelocityX(Phaser.Math.FloatBetween(-40, 40));
 
         });
 
-        this.bombs = this.physics.add.group();
+        this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
+        this.dog.setVelocityX(this.dogSpeed);
 
         //  The score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-        //  Collide the player and the stars with the platforms
-        this.physics.add.collider(this.cat, this.platforms);
-        this.physics.add.collider(this.stars, this.platforms);
-        this.physics.add.collider(this.bombs, this.platforms);
+        //  Collide the player and the mice with the platforms
+        this.physics.add.collider(this.mice, collisionLayer);
+        this.physics.add.collider(this.cat, collisionLayer);
+        this.physics.add.collider(this.bombs, collisionLayer);
 
-        //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        this.physics.add.overlap(this.cat, this.stars, this.collectStar, null, this);
+        //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
+        this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
 
-        this.physics.add.collider(this.cat, this.bombs, this.hitBomb, null, this);
+        this.physics.add.collider(this.cat, this.bombs, this.hitbomb, null, this);
         this.cameras.main.startFollow(this.cat);
 
         // should be called at the end to the HUD will be on top
@@ -102,12 +97,20 @@ class GrassLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
-        if (this.gameOver)
-        {
-            // TODO do something
-
+        if (this.gameOver) {
             return null;
         }
+        if (this.dog.x > this.dogSart+200){
+            this.dog.setVelocityX(-this.dogSpeed);
+        }
+        if (this.dog.x < this.dogSart){
+            this.dog.setVelocityX(this.dogSpeed);
+        }
+        if (this.millis > Phaser.Math.Between(100, 8000)){
+            this.sound.play("bark");
+            this.millis = 0;
+        }
+        this.millis +=1;
     }
 
     buttonPressedLeft(pressed) {
@@ -136,19 +139,20 @@ class GrassLevel extends BaseLevelScene {
         }
     }
 
-    collectStar (player, star)
+    collectmouse (player, mouse)
     {
-        star.disableBody(true, true);
+        mouse.disableBody(true, true);
+        this.sound.play("meow");
 
         //  Add and update the score
         this.score += 10;
         console.log(this.score);
         this.scoreText.setText('Score: ' + this.score);
 
-        if (this.stars.countActive(true) === 0)
+        if (this.mice.countActive(true) === 0)
         {
-            //  A new batch of stars to collect
-            this.stars.children.iterate(function (child) {
+            //  A new batch of mice to collect
+            this.mice.children.iterate(function (child) {
 
                 child.enableBody(true, child.x, 0, true, true);
 
@@ -165,13 +169,11 @@ class GrassLevel extends BaseLevelScene {
         }
     }
 
-    hitBomb (player, bomb)
+    hitbomb (player, bomb)
     {
         this.physics.pause();
 
         player.setTint(0xff0000);
-
-        player.anims.play('turn');
 
         this.gameOver = true;
     }
