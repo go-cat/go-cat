@@ -308,18 +308,14 @@ class BaseLevelScene extends Phaser.Scene {
 
         this.sound.play('angry_cat');
 
-        /*
         setTimeout(() => {
-        */
             this.sound.play('falling');
 
             cat.setTint(0xffffff);
             this.physics.resume();
 
             this.startNextLevel(false, this.currentSceneIndex);
-        /*
         }, 1000);
-        */
     }
 
     deviceSupportsTouch() {
