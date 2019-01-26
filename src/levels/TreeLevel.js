@@ -49,7 +49,7 @@ class TreeLevel extends BaseLevelScene {
         this.birds = this.physics.add.group({
             key: 'bird',
             repeat: 11,
-            setXY: { x: 12, y: -10, stepX: 70 },
+            setXY: { x: 12, y: 0, stepX: 70 },
         });
         this.birds.children.iterate(function (bird) {
             bird.setBounceY(0);
@@ -61,7 +61,7 @@ class TreeLevel extends BaseLevelScene {
         this.mice = this.physics.add.group({
             key: 'mouse',
             repeat: 11,
-            setXY: { x: 12, y: 0, stepX: 120 },
+            setXY: { x: 12, y: 20, stepX: 120 },
         });
         this.mice.children.iterate(function (mouse) {
             mouse.body.setCollideWorldBounds(true);
@@ -70,7 +70,7 @@ class TreeLevel extends BaseLevelScene {
         // Colide events
         this.physics.add.collider(this.cat, platforms);
 
-        this.physics.add.collider(this.cat, this.mice);
+        this.physics.add.collider(this.cat, this.mice, (cat, mouse) => { this.addScore(); mouse.disableBody(true, true); mouse.disableBody(true, true); } );
         this.physics.add.collider(this.cat, this.birds);
         this.physics.add.collider(this.mice, platforms);
         this.physics.add.collider(this.birds, platforms);
