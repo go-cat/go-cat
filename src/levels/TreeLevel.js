@@ -23,6 +23,7 @@ class TreeLevel extends BaseLevelScene {
 
         // Background
         this.cameras.main.setBackgroundColor('#89C0FF');
+        this.cameras.main.setBounds(0, 0, this.game.config.width, worldheight);
 
         // Our platforms and ground, all static in a group
         const platforms = this.physics.add.staticGroup();
@@ -39,22 +40,6 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(200, 1600, 'branch');
         platforms.create(700, 1900, 'branch');
         platforms.create(100, 2200, 'branch');
-
-        // End of world...
-        // left
-        let rect = new Phaser.Geom.Rectangle(-800, -400, 800, worldheight + 1200);
-        let graphics = this.add.graphics({ fillStyle: { color: 0x000000 } });
-        graphics.fillRectShape(rect);
-
-        // right
-        rect = new Phaser.Geom.Rectangle(this.game.config.width, -400, 800, worldheight + 1200);
-        graphics = this.add.graphics({ fillStyle: { color: 0x000000 } });
-        graphics.fillRectShape(rect);
-
-        // down
-        rect = new Phaser.Geom.Rectangle(-400, worldheight, this.game.config.width+400, 400);
-        graphics = this.add.graphics({ fillStyle: { color: 0x000000 } });
-        graphics.fillRectShape(rect);
 
         // Our cat
         this.cat = this.physics.add.sprite(100, 0, 'cat');
