@@ -1,4 +1,5 @@
 class DDaveLevel extends BaseLevelScene {
+
     constructor() {
         super({ key: 'DDaveLevel' })
     }
@@ -13,6 +14,7 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('home', 'assets/images/house_home_transparent.png');
+        this.load.image('wool', 'assets/images/ball_wool.png');
 
         // Audio
         this.load.audio('backgroundmusidave', 'assets/sounds/songs/Industrial_Cinematic.mp3');
@@ -46,6 +48,9 @@ class DDaveLevel extends BaseLevelScene {
         // Variables
         this.millis = 0;
         this.timeout = 1000;
+        this.shootFlag = false;
+        this.shootMillis = 0;
+        this.shootDirection = 1;
 
         // The cat and its settings
         this.cat = this.physics.add.sprite(200, 3000, 'cat');
@@ -114,6 +119,7 @@ class DDaveLevel extends BaseLevelScene {
         this.physics.add.collider(this.dogsSprites, collisionLayer);
         this.physics.add.collider(this.cat, this.dogsSprites, this.hitDog, null, this);
 
+
         this.physics.add.overlap(this.cat, this.miceSprites, this.collectMouse, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
             this.addScore(100);
@@ -165,6 +171,12 @@ class DDaveLevel extends BaseLevelScene {
         }
         this.millis +=1;
 
+        if (this.shootMillis > 50){
+            this.shootFlag = false;
+            this.shootMillis = 0;
+        }
+        this.shootMillis += 1;
+
         // kill dogs older than 20 sec
         for(let i = 0; i < this.dogs.length; i++) {
             let currentDog = this.dogs[i];
@@ -178,8 +190,9 @@ class DDaveLevel extends BaseLevelScene {
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(-160);
+            this.cat.setVelocityX(-260);
             this.cat.anims.play('walk', true);
+            this.shootDirection = -1;
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand');
@@ -192,8 +205,9 @@ class DDaveLevel extends BaseLevelScene {
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(160);
+            this.cat.setVelocityX(260);
             this.cat.anims.play('walk', true);
+            this.shootDirection = 1;
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand', true);
@@ -214,6 +228,10 @@ class DDaveLevel extends BaseLevelScene {
             }
         }
     }
+    buttonPressedDown(pressed) {
+        this.shoot();
+    }
+
 
     collectMouse(cat, mouse) {
         mouse.disableBody(true, true);
@@ -239,7 +257,6 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     createDogs() {
-        console.log ("dogs created")
         for (let i = 0; i < this.dogSpawnLayer.objects.length; i++) {
             let dogStartX = this.dogSpawnLayer.objects[i].x;
             let dogStartY = this.dogSpawnLayer.objects[i].y - 40;
@@ -258,5 +275,23 @@ class DDaveLevel extends BaseLevelScene {
             sprite.scaleX = 0.6;
             this.dogs.push({"sprite": sprite, "startX": dogStartX, "speed": dogSpeed, "time" : 40000});
         }
+        console.log ("dogs created FINISH")
+    }
+
+    shoot(){
+        if (!this.shootFlag){
+            this.wool = this.physics.add.sprite(this.cat.x,this.cat.y,"wool");
+            this.wool.body.allowGravity = false;
+            this.wool.setVelocityX (1000*this.shootDirection);//this.cat.velocityX*10);
+            this.wool.setVelocityY = this.cat.velocityY*10;
+            this.shootFlag = true;
+            this.physics.add.overlap(this.wool, this.dogsSprites, this.woolHitDog, null, this);
+        }
+    }
+
+    woolHitDog(wool, dog){
+        dog.disableBody(true, true);
+        wool.disableBody(true, true);
+        this.shootFlag = false;
     }
 }
