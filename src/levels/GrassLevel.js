@@ -8,7 +8,6 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
-        this.load.image('spacedog', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
 
         // Audio
@@ -47,7 +46,7 @@ class GrassLevel extends BaseLevelScene {
         this.cat.scaleX=0.6;
 
 
-        //  Create mice, bombs and a dog
+        //  Create mice and a bomb
         this.mice = this.physics.add.group();
         this.spawnObject(28,8,'mouse', this.mice);
 
@@ -62,9 +61,6 @@ class GrassLevel extends BaseLevelScene {
             child.setBounceY(0);
             child.setGravityY(1000);
         });
-
-        this.dog = this.physics.add.sprite(this.dogSart, 200, 'spacedog');
-        this.dog.setVelocityX(this.dogSpeed);
 
         //  Collide the player and the mice with the platforms
         this.physics.add.collider(this.mice, collisionLayer);
