@@ -18,14 +18,14 @@ class TreeLevel extends BaseLevelScene {
         super.create();
 
         // This are the bounds of our world
-        let worldheight = this.game.config.height*4;
+        const worldheight = this.game.config.height*4;
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
 
         // Background
         this.cameras.main.setBackgroundColor('#89C0FF');
 
         // Our platforms and ground, all static in a group
-        let platforms = this.physics.add.staticGroup();
+        const platforms = this.physics.add.staticGroup();
 
         // Create the ground
         platforms.create(this.game.config.width/2, worldheight, 'ground').setScale(2).refreshBody();
@@ -61,6 +61,14 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
+        
+        // Birds
+        const birds = this.physics.add.group({
+            key: 'bird',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 },
+            body: { allowGravity: false },
+        });     
 
         // Colide events
         this.physics.add.collider(this.cat, platforms);
@@ -78,7 +86,7 @@ class TreeLevel extends BaseLevelScene {
         if (this.leftKey.isDown) {
             this.cat.x -= 10;
             
-            if (this.cat.flipX == false) {
+            if (this.cat.flipX === false) {
                 this.cat.flipX = true;
             }            
         }
@@ -86,7 +94,7 @@ class TreeLevel extends BaseLevelScene {
         if (this.rightKey.isDown) {
             this.cat.x += 10;
             
-            if (this.cat.flipX == true) {
+            if (this.cat.flipX === true) {
                 this.cat.flipX = false;
             }              
         }
