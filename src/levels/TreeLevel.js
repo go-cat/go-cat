@@ -10,7 +10,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/TreeLevel/bird.png');
-        this.load.image('mice', 'assets/images/TreeLevel/mice.png');
+        this.load.image('mouse', 'assets/images/TreeLevel/mouse.png');
         this.load.image('wool', 'assets/images/TreeLevel/wool.png');
     }
 
@@ -18,14 +18,14 @@ class TreeLevel extends BaseLevelScene {
         super.create();
 
         // This are the bounds of our world
-        let worldheight = this.game.config.height*4;
+        const worldheight = this.game.config.height*4;
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
 
         // Background
         this.cameras.main.setBackgroundColor('#89C0FF');
 
         // Our platforms and ground, all static in a group
-        let platforms = this.physics.add.staticGroup();
+        const platforms = this.physics.add.staticGroup();
 
         // Create the ground
         platforms.create(this.game.config.width/2, worldheight, 'ground').setScale(2).refreshBody();
@@ -62,35 +62,51 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
 
+        // Birds
+        const birds = this.physics.add.group({
+            key: 'bird',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 },
+            body: { allowGravity: false },
+        });
+        
+        // Mice
+        const mice = this.physics.add.group({
+            key: 'mouse',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 },
+            body: { allowGravity: false },
+        });        
+
         // Colide events
         this.physics.add.collider(this.cat, platforms);
-
-        /* Initialize the keys */
-        this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-
-
     }
 
     update() {
 
-        /* react to key presses */
-        if (this.leftKey.isDown) {
-            this.cat.x -= 10;
-            
-            if (this.cat.flipX == false) {
-                this.cat.flipX = true;
-            }            
+    }
+
+    buttonPressedLeft(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(-500);
+        } else {
+            this.cat.setVelocityX(0);
         }
 
-        if (this.rightKey.isDown) {
-            this.cat.x += 10;
-            
-            if (this.cat.flipX == true) {
-                this.cat.flipX = false;
-            }              
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
         }
-        
+    }
 
+    buttonPressedRight(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(500);
+        } else {
+            this.cat.setVelocityX(0);
+        }
+
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
+        }
     }
 }
