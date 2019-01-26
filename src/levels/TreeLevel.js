@@ -9,9 +9,7 @@ class TreeLevel extends BaseLevelScene {
         super.preload();
 
         // Images
-        this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
-        this.load.image('cathump', 'assets/images/cats_hump.png');
         this.load.image('branch', 'assets/images/TreeLevel/branch.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
