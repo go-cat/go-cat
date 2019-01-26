@@ -15,14 +15,14 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('house', 'assets/images/StreetLevel/house.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
 
-        this.load.audio('backgroundmusic', 'assets/sounds/songs/Big_Rock.mp3');
+        this.load.audio('backgroundmusicstreet', 'assets/sounds/songs/Big_Rock.mp3');
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
         this.load.audio('meow', 'assets/sounds/animals/cat_meow1.ogg');
     }
 
     create() {
         // Music!
-        this.music = this.sound.add('backgroundmusic');
+        this.music = this.sound.add('backgroundmusicstreet');
         try {
             this.music.play();
         } catch {
