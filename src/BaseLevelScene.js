@@ -308,6 +308,9 @@ class BaseLevelScene extends Phaser.Scene {
 
         try {
             this.sound.play('angry_cat');
+        } 
+        catch {
+            console.log('no audio possible');
         }
 
         setTimeout(() => {
