@@ -8,6 +8,8 @@ class TreeLevel extends Phaser.Scene {
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/TreeLevel/bird.png');
+        this.load.image('mice', 'assets/images/TreeLevel/mice.png');
+        this.load.image('wool', 'assets/images/TreeLevel/wool.png');
     }
 
     create() {
