@@ -161,6 +161,8 @@ class TreeLevel extends BaseLevelScene {
         this.physics.add.collider(this.ground, this.birdpoops, (ground, poop) => {
             poop.disableBody(true, true);
         });
+        // The poop
+        this.physics.add.collider(this.birdpoops, platforms);
 
         // should be called at the end to the HUD will be on top
         super.create();
