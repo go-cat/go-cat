@@ -10,14 +10,14 @@ class TreeLevel extends BaseLevelScene {
 
         // Images
         this.load.image('cat', 'assets/images/cat_walking_right.png');
-        this.load.spritesheet('cat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
+        this.load.image('cathump', 'assets/images/cats_hump.png');
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/bird_flying_left.png');
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
-        this.load.image('goal', 'assets/images/StreetLevel/house.png');
+        this.load.image('goal', 'assets/images/house_home_transparent.png');
 
         // Sound
         this.load.audio('backgroundmusic', 'assets/sounds//songs/A_Mission.mp3');
@@ -65,13 +65,6 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('cat', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });         
-        //this.cat.anims.play('right', true);
 
         // Bird
         this.bird = this.physics.add.sprite(-100, -100, 'bird');

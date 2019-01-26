@@ -25,11 +25,11 @@ class SpaceLevel extends BaseLevelScene {
 
     create() {
         // layer and map for the Tilemap
-        const map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
-        const tileset = map.addTilesetImage("spacetileset","tiles");
+        let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
+        let tileset = map.addTilesetImage("spacetileset","tiles");
 
-        const dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
-        const collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        let dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
+        let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
 
         collisionLayer.setCollisionByProperty({ collides: true });
 
