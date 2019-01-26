@@ -4,6 +4,8 @@ class SpaceLevel extends BaseLevelScene {
     }
 
     preload() {
+        super.preload();
+
         this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
         this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');

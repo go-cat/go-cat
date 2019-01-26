@@ -4,6 +4,8 @@ class GrassLevel extends BaseLevelScene {
     }
 
     preload() {
+        super.preload();
+
         this.load.tilemapTiledJSON("map","assets/maps/GrassLevel/world.json");
         this.load.image('tiles',"assets/images/GrassLevel/sprites.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');

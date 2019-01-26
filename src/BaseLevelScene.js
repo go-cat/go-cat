@@ -29,6 +29,10 @@ class BaseLevelScene extends Phaser.Scene {
         this.remainingLives = data.hasOwnProperty('remainingLives') ? data.remainingLives : 7;
     }
 
+    preload() {
+        this.load.audio("falling", "assets/sounds/movement/falling2_sfx_sounds_falling4.wav");
+    }
+
     create() {
         this.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
@@ -240,6 +244,8 @@ class BaseLevelScene extends Phaser.Scene {
 
         this.physics.pause();
         cat.setTint(0xff0000);
+
+        this.sound.play('falling');
 
         setTimeout(() => {
             cat.setTint(0xffffff);
