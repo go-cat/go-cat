@@ -21,7 +21,6 @@ class DDaveLevel extends BaseLevelScene {
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
-
     }
 
     create() {
@@ -37,12 +36,8 @@ class DDaveLevel extends BaseLevelScene {
         let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
         let tileset = map.addTilesetImage("dave","tiles");
 
-
-
         let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
-
-
 
         // bounds
         this.physics.world.setBounds(0,0,3200,3200, true, true, true, true);
@@ -51,7 +46,6 @@ class DDaveLevel extends BaseLevelScene {
         // Variables
         this.millis = 0;
         this.timeout = 1000;
-
 
         // The cat and its settings
         this.cat = this.physics.add.sprite(200, 3000, 'cat');
@@ -76,7 +70,6 @@ class DDaveLevel extends BaseLevelScene {
             frameRate: 20,
         });
 
-
         // "Read" the Object-Layers
         this.dogSpawnLayer =  map.objects.filter((maplayer)=> {
             return maplayer.name == "dogspawn";
@@ -88,12 +81,10 @@ class DDaveLevel extends BaseLevelScene {
             return maplayer.name == "safezone";
         })[0];
 
-
         // Create a Dogs-Object-Array
         this.dogs = [];
         this.dogsSprites = this.physics.add.group();
         this.createDogs();
-
 
         // Create a Mice-Object-Array
         this.mice = [];
@@ -111,42 +102,32 @@ class DDaveLevel extends BaseLevelScene {
             this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
-
         let lay = this.safezoneLayer.objects[0];
         this.safezone = this.physics.add.image(lay.x + lay.width/2 , lay.y + lay.height/2 ,"home");
         this.safezone.body.allowGravity = false;
         this.safezone.displayHeight = lay.height;
         this.safezone.displayWidth = lay.width;
 
-
-
         //  Collide the cat and the mice with the platforms
-
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.miceSprites, collisionLayer);
         this.physics.add.collider(this.dogsSprites, collisionLayer);
-        this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
+        this.physics.add.collider(this.cat, this.dogsSprites, this.hitDog, null, this);
 
-
-        this.physics.add.overlap(this.cat, this.miceSprites, this.collectmouse, null, this);
+        this.physics.add.overlap(this.cat, this.miceSprites, this.collectMouse, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
             this.addScore(100);
             this.addScore(Math.floor(this.timeLeft));
             this.startNextLevel();
         }, null, this);
 
-
-
-
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
         super.create();
-
     }
 
     update(time, delta) {
         super.update(time, delta);
-
 
         for(let i =0; i<this.mice.length; i++){
             let currentMouse = this.mice[i];
@@ -225,8 +206,7 @@ class DDaveLevel extends BaseLevelScene {
         }
     }
 
-    collectmouse (cat, mouse)
-    {
+    collectMouse(cat, mouse) {
         mouse.disableBody(true, true);
         try {
             this.sound.play("meow");
@@ -238,8 +218,7 @@ class DDaveLevel extends BaseLevelScene {
     }
 
 
-    hitdog (cat, dog)
-    {
+    hitDog(cat, dog) {
         try {
             this.sound.play("dogLong");
             this.sound.play("angry_cat");
@@ -269,6 +248,5 @@ class DDaveLevel extends BaseLevelScene {
             sprite.scaleX = 0.6;
             this.dogs.push({"sprite": sprite, "startX": dogStartX, "speed": dogSpeed});
         }
-
     }
 }

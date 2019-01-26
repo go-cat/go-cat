@@ -45,7 +45,6 @@ class GrassLevel extends BaseLevelScene {
         this.dogSart = 400;
         this.millis = 0;
 
-
         // The player and its settings
         this.cat = this.physics.add.sprite(100, 400, 'cat');
         this.cat.setBounce(0.2);
@@ -55,30 +54,28 @@ class GrassLevel extends BaseLevelScene {
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
 
-
         // Create pits
-
         this.pits = this.physics.add.group();
-        this.spawnObject(92,17,'empty', this.pits);
-        this.spawnObject(93,17,'empty', this.pits);
-        this.spawnObject(94,17,'empty', this.pits);
-        this.spawnObject(95,17,'empty', this.pits);
-        this.spawnObject(106,17,'empty', this.pits);
-        this.spawnObject(107,17,'empty', this.pits);
-        this.spawnObject(108,17,'empty', this.pits);
-        this.spawnObject(139,17,'empty', this.pits);
-        this.spawnObject(140,17,'empty', this.pits);
-        this.spawnObject(141,17,'empty', this.pits);
-        this.spawnObject(152,17,'empty', this.pits);
-        this.spawnObject(153,17,'empty', this.pits);
+        GrassLevel.spawnObject(92,17,'empty', this.pits);
+        GrassLevel.spawnObject(93,17,'empty', this.pits);
+        GrassLevel.spawnObject(94,17,'empty', this.pits);
+        GrassLevel.spawnObject(95,17,'empty', this.pits);
+        GrassLevel.spawnObject(106,17,'empty', this.pits);
+        GrassLevel.spawnObject(107,17,'empty', this.pits);
+        GrassLevel.spawnObject(108,17,'empty', this.pits);
+        GrassLevel.spawnObject(139,17,'empty', this.pits);
+        GrassLevel.spawnObject(140,17,'empty', this.pits);
+        GrassLevel.spawnObject(141,17,'empty', this.pits);
+        GrassLevel.spawnObject(152,17,'empty', this.pits);
+        GrassLevel.spawnObject(153,17,'empty', this.pits);
 
 
         //  Create mice
         this.mice = this.physics.add.group();
-        this.spawnObject(28,8,'mouse', this.mice);
-        this.spawnObject(29,8,'mouse', this.mice);
-        this.spawnObject(30,8,'mouse', this.mice);
-        this.spawnObject(31,8,'mouse', this.mice);
+        GrassLevel.spawnObject(28,8,'mouse', this.mice);
+        GrassLevel.spawnObject(29,8,'mouse', this.mice);
+        GrassLevel.spawnObject(30,8,'mouse', this.mice);
+        GrassLevel.spawnObject(31,8,'mouse', this.mice);
 
         // Create bomb
         this.bombs = this.physics.add.group({
@@ -114,8 +111,8 @@ class GrassLevel extends BaseLevelScene {
         this.physics.add.collider(this.bombs, collisionLayer);
         this.physics.add.collider(this.pits, collisionLayer);
 
-        //  Checks to see if the player overlaps with any of the mice, if he does call the collectmouse function
-        this.physics.add.overlap(this.cat, this.mice, this.collectmouse, null, this);
+        //  Checks to see if the player overlaps with any of the mice, if he does call the collectMouse function
+        this.physics.add.overlap(this.cat, this.mice, this.collectMouse, null, this);
 
         this.physics.add.collider(this.cat, this.pits, this.receiveHit, null, this);
         this.physics.add.collider(this.cat, this.bombs, this.receiveHit, null, this);
@@ -155,8 +152,7 @@ class GrassLevel extends BaseLevelScene {
         }
     }
 
-    collectmouse (player, mouse)
-    {
+    collectMouse(player, mouse) {
         mouse.disableBody(true, true);
         try {
             this.sound.play("meow");
@@ -167,13 +163,11 @@ class GrassLevel extends BaseLevelScene {
         this.addScore();
     }
 
-    receiveHit (player, sender)
-    {
+    receiveHit(player, sender) {
         this.catDies(player);
     }
 
-    spawnObject (x, y, sprite, group){
+    static spawnObject(x, y, sprite, group){
         group.create(x*32+16, y*32, sprite);
     }
-
 }

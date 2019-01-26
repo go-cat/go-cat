@@ -147,14 +147,14 @@ class SpaceLevel extends BaseLevelScene {
         this.physics.add.collider(this.dogsSprites, collisionLayer);
         this.physics.add.collider(this.miceSprites, collisionLayer);
 
-        this.physics.add.overlap(this.cat, this.miceSprites, this.collectmouse, null, this);
+        this.physics.add.overlap(this.cat, this.miceSprites, this.collectMouse, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
             this.addScore(100);
             this.addScore(Math.floor(this.timeLeft));
             this.startNextLevel();
         }, null, this);
 
-        this.physics.add.collider(this.cat, this.dogsSprites, this.hitdog, null, this);
+        this.physics.add.collider(this.cat, this.dogsSprites, this.hitDog, null, this);
         this.physics.add.collider(this.cat, this.ground, ()=>{this.catDies(this.cat);}, null, this);
 
 
@@ -257,8 +257,7 @@ class SpaceLevel extends BaseLevelScene {
         }
     }
 
-    collectmouse (cat, mouse)
-    {
+    collectMouse(cat, mouse) {
         mouse.disableBody(true, true);
         try {
             this.sound.play("meow");
@@ -269,9 +268,7 @@ class SpaceLevel extends BaseLevelScene {
         this.addScore();
     }
 
-
-    hitdog (cat, dog)
-    {
+    hitDog(cat, dog) {
         try {
             this.sound.play("dogLong");
             this.sound.play("angry_cat");
