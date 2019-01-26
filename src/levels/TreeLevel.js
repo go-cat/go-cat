@@ -10,6 +10,7 @@ class TreeLevel extends BaseLevelScene {
 
         // Images
         this.load.image('cat', 'assets/images/cat_walking_right.png');
+        this.load.spritesheet('cat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('branch', 'assets/images/TreeLevel/branch_20px.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.image('bird', 'assets/images/bird_flying_left.png');
@@ -65,12 +66,12 @@ class TreeLevel extends BaseLevelScene {
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
         this.anims.create({
-            key: 'left',
+            key: 'right',
             frames: this.anims.generateFrameNumbers('cat', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1
         });         
-        this.cat.anims.play('left', true);
+        //this.cat.anims.play('right', true);
 
         // Bird
         this.bird = this.physics.add.sprite(-100, -100, 'bird');
