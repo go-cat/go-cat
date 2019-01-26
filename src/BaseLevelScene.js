@@ -32,6 +32,8 @@ class BaseLevelScene extends Phaser.Scene {
     preload() {
         this.load.audio("falling", "assets/sounds/movement/falling2_sfx_sounds_falling4.wav");
         this.load.audio('angry_cat', 'assets/sounds/animals/cat_angry.ogg');
+
+        this.load.image('touch_arrow', 'assets/images/touch_arrow_right.png');
     }
 
     create() {
@@ -127,6 +129,51 @@ class BaseLevelScene extends Phaser.Scene {
             this.timerText.setShadow(2, 2, '#ffffff', 2, true, false);
             this.timerText.setScrollFactor(0);
         }
+
+        if (this.deviceSupportsTouch()) {
+            this.leftTouchArrow = this.add.image(60, 540, 'touch_arrow');
+            this.leftTouchArrow.angle = 180;
+            this.leftTouchArrow.setInteractive();
+            this.leftTouchArrow.setScrollFactor(0);
+            this.leftTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedLeft(true);
+            });
+            this.leftTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedLeft(false);
+            });
+
+            this.rightTouchArrow = this.add.image(170, 540, 'touch_arrow');
+            this.rightTouchArrow.setInteractive();
+            this.rightTouchArrow.setScrollFactor(0);
+            this.rightTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedRight(true);
+            });
+            this.rightTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedRight(false);
+            });
+
+            this.downTouchArrow = this.add.image(740, 540, 'touch_arrow');
+            this.downTouchArrow.angle = 90;
+            this.downTouchArrow.setInteractive();
+            this.downTouchArrow.setScrollFactor(0);
+            this.downTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedDown(true);
+            });
+            this.downTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedDown(false);
+            });
+
+            this.upTouchArrow = this.add.image(740, 430, 'touch_arrow');
+            this.upTouchArrow.angle = 270;
+            this.upTouchArrow.setInteractive();
+            this.upTouchArrow.setScrollFactor(0);
+            this.upTouchArrow.on('pointerdown', (event) => {
+                this.buttonPressedUp(true);
+            });
+            this.upTouchArrow.on('pointerup', (event) => {
+                this.buttonPressedUp(false);
+            });
+        }
     }
 
     static formatNumberToText(number, length = 5) {
@@ -215,6 +262,10 @@ class BaseLevelScene extends Phaser.Scene {
     }
 
     startNextLevel(next = true, sceneIndex) {
+        if (this.music && this.music.isPlaying) {
+            this.music.stop();
+        }
+
         let index = this.currentSceneIndex + 1;
         if (next === false) {
             index = sceneIndex;
@@ -223,6 +274,11 @@ class BaseLevelScene extends Phaser.Scene {
         let nextScene = 'EndScene';
         if (index < this.scenes.length) {
             nextScene = this.scenes[index];
+        }
+
+        if (this.currentSceneIndex === this.scenes.indexOf('EndScene')) {
+            this.score = 0;
+            this.remainingLives = 6;
         }
 
         this.scene.start(nextScene, {
@@ -241,21 +297,40 @@ class BaseLevelScene extends Phaser.Scene {
     }
 
     catDies(cat) {
+        if (this.music && this.music.isPlaying) {
+            this.music.stop();
+        }
+
         this.catLoosesLive();
 
         this.physics.pause();
         cat.setTint(0xff0000);
 
-        this.sound.play('angry_cat');
+        try {
+            this.sound.play('angry_cat');
+        } catch { 
+            console.log('no audio possible');
+        }
 
         setTimeout(() => {
-            this.sound.play('falling');
+            try {
+                this.sound.play('falling');
+            } catch {
+                console.log('no audio possible');
+            }                
 
             cat.setTint(0xffffff);
             this.physics.resume();
 
             this.startNextLevel(false, this.currentSceneIndex);
         }, 1000);
+    }
+
+    deviceSupportsTouch() {
+        return (
+            'ontouchstart' in window
+            || window.DocumentTouch && document instanceof DocumentTouch
+        );
     }
 
     buttonPressedLeft() {}

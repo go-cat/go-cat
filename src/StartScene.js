@@ -9,7 +9,9 @@ class StartScene extends BaseLevelScene {
     }
 
     preload() {
-        this.load.image('logo', 'assets/images/go_cat_icon_transparent.png');
+        super.preload();
+
+        this.load.image('logo', 'assets/images/go_cat_start_transparent_color.png');
         this.load.image('start_button', 'assets/images/go_cat_startbutton_brown.png');
         this.load.image('background', 'assets/images/go_cat_start_background_brown.png');
     }
