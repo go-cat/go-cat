@@ -30,12 +30,6 @@ class StreetLevel extends BaseLevelScene {
         this.target.x=800;
         this.target.y=50;
         this.physics.moveToObject(this.car, this.target, 200);
-
-        /* Initialize the keys */
-        this.leftKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        this.rightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
-        this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        this.downKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
     }
 
     update() {
@@ -55,29 +49,45 @@ class StreetLevel extends BaseLevelScene {
                 this.car.body.y = 50;
             }
         }
+    }
 
-        /* react to key presses */
-        if (this.leftKey.isDown) {
-            this.cat.x -= 5;
-
-            if (this.cat.flipX == false) {
-                this.cat.flipX = true;
-            }
+    buttonPressedLeft(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(-350);
+        } else {
+            this.cat.setVelocityX(0);
         }
 
-        if (this.rightKey.isDown) {
-            this.cat.x += 5;
+        if (this.cat.flipX === false) {
+            this.cat.flipX = true;
+        }
+    }
 
-            if (this.cat.flipX == true) {
-                this.cat.flipX = false;
-            }
+    buttonPressedRight(pressed) {
+        if (pressed) {
+            this.cat.setVelocityX(350);
+        } else {
+            this.cat.setVelocityX(0);
         }
 
-        if (this.upKey.isDown) {
-            this.cat.y -= 5;
+        if (this.cat.flipX === true) {
+            this.cat.flipX = false;
         }
-        if (this.downKey.isDown) {
-            this.cat.y += 5;
+    }
+
+    buttonPressedUp(pressed) {
+        if (pressed) {
+            this.cat.setVelocityY(-350);
+        } else {
+            this.cat.setVelocityY(0);
+        }
+    }
+
+    buttonPressedDown(pressed) {
+        if (pressed) {
+            this.cat.setVelocityY(350);
+        } else {
+            this.cat.setVelocityY(0);
         }
     }
 }
