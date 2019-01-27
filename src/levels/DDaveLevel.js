@@ -222,7 +222,6 @@ class DDaveLevel extends BaseLevelScene {
             currentDog.time -= delta;
             if (currentDog.time < 0) {
                 currentDog.sprite.disableBody(true, true);
-                console.log ("dogs killed")
             }
         }
     }
