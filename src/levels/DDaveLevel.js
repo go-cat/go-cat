@@ -190,11 +190,11 @@ class DDaveLevel extends BaseLevelScene {
                 // Delete all woolimages
                 this.woolimages.forEach( (woolimage) => { woolimage.visible = false; } );
                 // Show a green wool
-                let greenwoolimage = this.add.image(800 - 32, 96, 'wool');
+                let greenwoolimage = this.add.image(800 - 20, 78, 'wool');
                 greenwoolimage.setTint(0x00ff00);
                 greenwoolimage.setScrollFactor(0);
-                greenwoolimage.scaleY = 2;
-                greenwoolimage.scaleX = 2;
+                greenwoolimage.scaleY = 1.5;
+                greenwoolimage.scaleX = 1.5;
             }
         }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
@@ -233,11 +233,6 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         if (this.capeMode) {
-            if (this.cat.body.velocity.x == 0) {
-                this.cape.visible = false;
-            } else {
-                this.cape.visible = true;
-            }
             this.cape.anims.play('cape', true);
             this.cape.setX(-this.shootDirection * 13 + this.cat.x);
             this.cape.setY(this.cat.y - 2);
@@ -286,7 +281,7 @@ class DDaveLevel extends BaseLevelScene {
                 // Create pictures of wool
                 this.woolimages = [];
                 for (let i = 0; i < this.ammo; i++) {
-                    this.woolimages[i] = this.add.image(800 - 16 - (i * (8 + 24)), 64, 'wool');
+                    this.woolimages[i] = this.add.image(800 - 16 - (i * (8 + 24)), 68, 'wool');
                     this.woolimages[i].setScrollFactor(0);
                 }
             }
@@ -298,11 +293,17 @@ class DDaveLevel extends BaseLevelScene {
             this.cat.setVelocityX(-this.catSpeed);
             this.cat.anims.play('walk', true);
             this.shootDirection = -1;
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('idle', true);
             if (!(this.inAir)){
                 this.cat.anims.play('stand');
+                if (this.capeMode) {
+                    this.cape.visible = false;
+                }
             }
 
         }
@@ -318,11 +319,17 @@ class DDaveLevel extends BaseLevelScene {
             this.cat.setVelocityX(this.catSpeed);
             this.cat.anims.play('walk', true);
             this.shootDirection = 1;
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('idle', true);
             if (!(this.inAir)){
                 this.cat.anims.play('stand');
+                if (this.capeMode) {
+                    this.cape.visible = false;
+                }
             }
         }
 
