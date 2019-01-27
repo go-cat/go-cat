@@ -8,7 +8,7 @@ class GrassLevel extends BaseLevelScene {
 
         this.load.tilemapTiledJSON("grass_map","assets/maps/GrassLevel/world.json");
         this.load.image('grass_tiles',"assets/images/GrassLevel/sprites_grass.png");
-        this.load.image('mouse', 'assets/images/mouse_left.png');
+        this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
         this.load.image('bomb', 'assets/images/GrassLevel/bomb.png');
         this.load.image('empty', 'assets/images/GrassLevel/empty.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
@@ -66,6 +66,13 @@ class GrassLevel extends BaseLevelScene {
             frames: [ { key: 'animcat', frame: 0 } ],
             frameRate: 20,
         });
+        this.anims.remove('mousewalk');
+        this.anims.create({
+            key: 'mousewalk',
+            frames: this.anims.generateFrameNumbers('animmouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
 
         // Create pits
 
@@ -86,10 +93,10 @@ class GrassLevel extends BaseLevelScene {
 
         //  Create mice
         this.mice = this.physics.add.group();
-        this.spawnObject(28,8,'mouse', this.mice);
-        this.spawnObject(29,8,'mouse', this.mice);
-        this.spawnObject(30,8,'mouse', this.mice);
-        this.spawnObject(31,8,'mouse', this.mice);
+        this.spawnObject(28,7,'mouse', this.mice);
+        this.spawnObject(29,7,'mouse', this.mice);
+        this.spawnObject(30,7,'mouse', this.mice);
+        this.spawnObject(31,7,'mouse', this.mice);
         this.spawnObject(53,7,'mouse', this.mice);
         this.spawnObject(54,7,'mouse', this.mice);
         this.spawnObject(55,7,'mouse', this.mice);
@@ -153,11 +160,17 @@ class GrassLevel extends BaseLevelScene {
             this.startNextLevel();
         });
 
+        let i = 0;
         this.mice.children.iterate(function (child) {
 
+            i++;
             //  Give each mouse a slightly different bounce
             child.setBounceY(0);
             child.setGravityY(1000);
+            child.anims.play('mousewalk');
+            if (i%2 === 0) {
+                child.flipX = true;
+            }
         });
 
         this.pits.children.iterate(function (child) {
