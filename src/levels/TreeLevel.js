@@ -13,12 +13,13 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('branch', 'assets/images/TreeLevel/branch.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
-        this.load.image('mouse', 'assets/images/mouse_left.png');
+        this.load.spritesheet('mouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
         this.load.image('goal', 'assets/images/house_home_transparent.png');
 
         // Sound
         this.load.audio('backgroundmusictree', 'assets/sounds/songs/A_Mission.ogg');
+        this.load.audio("catjump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("poopsound", "assets/sounds/animals/birdpoop.ogg");
     }
@@ -27,7 +28,7 @@ class TreeLevel extends BaseLevelScene {
         let numOfMice = 20;
 
         // Music!
-        this.music = this.sound.add('backgroundmusictree');
+        this.music = this.sound.add('backgroundmusictree', {volume: 0.5});
         try {
             this.music.play();
         } catch {
@@ -57,18 +58,21 @@ class TreeLevel extends BaseLevelScene {
         // Create the branches
         platforms.create(50, 100, 'branch');
         platforms.create(300, 200, 'branch').flipX = true;
+        platforms.create(700, 400, 'branch').flipX = true;
         platforms.create(500, 500, 'branch');
         platforms.create(300, 700, 'branch');
         platforms.create(100, 800, 'branch').flipX = true;
+        platforms.create(300, 900, 'branch');
         platforms.create(650, 1000, 'branch');
         platforms.create(200, 1100, 'branch');
         platforms.create(400, 1300, 'branch').flipX = true;
         platforms.create(750, 1400, 'branch');
         platforms.create(50, 1550, 'branch');
-        platforms.create(100, 1700, 'branch');
+        platforms.create(300, 1700, 'branch');
         platforms.create(750, 1800, 'branch').flipX = true;
         platforms.create(500, 2000, 'branch').flipX = true;
         platforms.create(400, 2150, 'branch');
+        platforms.create(100, 2250, 'branch').flipX = true;
         platforms.create(200, 2300, 'branch');
         platforms.create(700, 2400, 'branch');
         platforms.create(300, 2500, 'branch').flipX = true;
@@ -79,6 +83,7 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(50, 3250, 'branch');
         platforms.create(700, 3300, 'branch').flipX = true;
         platforms.create(300, 3400, 'branch');
+        platforms.create(50, 3650, 'branch');
         platforms.create(400, 3800, 'branch').flipX = true;
         platforms.create(300, 4000, 'branch');
         platforms.create(500, 4200, 'branch').flipX = true;
@@ -100,10 +105,11 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
+        this.cat.setSize(50, 50, true);
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -134,13 +140,23 @@ class TreeLevel extends BaseLevelScene {
 
         // Mice
         this.mice = this.physics.add.group();
+        this.anims.remove('mousewalk');
+        this.anims.create({
+            key: 'mousewalk',
+            frames: this.anims.generateFrameNumbers('mouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
         for (let i = 0; i <= numOfMice; i++) {
             let x = Phaser.Math.Between(0, this.game.config.width);
             let y = Phaser.Math.Between(600, worldheight-100);
             let mouse = this.mice.create(x, y, 'mouse');
             mouse.body.setCollideWorldBounds(true);
+            mouse.anims.play('mousewalk');
+            if (i%2 == 0) {
+                mouse.flipX = true;
+            }
         }
-
 
         // Colide events
         // The cat
@@ -180,15 +196,18 @@ class TreeLevel extends BaseLevelScene {
 
         // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
         let poopiness = 20;
+        // How big is a poop hitbox?
+        let poopsize = 15;
 
         // Birds fly
         /* Do we have a bird? */
         if (this.bird.flying) {
             /* should he poop? */
             if (Phaser.Math.Between(1, 1000) <= poopiness && this.bird.y > 250) {
-                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2);
+                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(3);
                 birdpoop.setBounceY(0);
                 birdpoop.setMass(0.1);
+                birdpoop.setSize(poopsize, poopsize, true);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
 
@@ -248,8 +267,13 @@ class TreeLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+        if (pressed && this.cat.body.touching.down) {
             this.cat.setVelocityY(-350);
+            try {
+                this.sound.play("catjump");
+            }    catch {
+                console.log('no audio possible');
+            }
         }
     }
 }

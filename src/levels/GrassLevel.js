@@ -56,7 +56,7 @@ class GrassLevel extends BaseLevelScene {
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -181,7 +181,7 @@ class GrassLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+        if (pressed && this.cat.body.touching.down) {
             this.cat.setVelocityY(-350);
         }
     }

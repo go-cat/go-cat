@@ -13,10 +13,12 @@ class StreetLevel extends BaseLevelScene {
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
-        this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('cat_lives', 'assets/images/cat_lives.png');
+        this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
+        this.load.image('cape', 'assets/images/cape.png');
+        this.load.spritesheet('animcape', 'assets/images/capeSprite.png', { frameWidth: 64, frameHeight: 64});
 
         this.load.audio('backgroundmusicstreet', 'assets/sounds/songs/Big_Rock.ogg');
+        this.load.audio('backgroundmusicstreetcape', 'assets/sounds/songs/Pixel_Peeker_Polka.ogg');
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
         this.load.audio('meow', 'assets/sounds/animals/cat_meow1.ogg');
     }
@@ -69,7 +71,7 @@ class StreetLevel extends BaseLevelScene {
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -82,11 +84,22 @@ class StreetLevel extends BaseLevelScene {
 
         // Mice
         this.mice = this.physics.add.group();
+        this.anims.remove('mousewalk');
+        this.anims.create({
+            key: 'mousewalk',
+            frames: this.anims.generateFrameNumbers('animmouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
         for (let i = 0; i < 20; i++) {
             let x = Phaser.Math.Between(50, this.game.config.width-50);
             let y = Phaser.Math.Between(50, worldheight-50);
-            let mouse = this.mice.create(x, y, 'mouse');
+            let mouse = this.mice.create(x, y, 'animmouse');
             mouse.body.setAllowGravity(0, 0);
+            mouse.anims.play('mousewalk');
+            if (i%2 == 0) {
+                mouse.flipX = true;
+            }
         }
 
         this.physics.add.overlap(this.cat, this.mice, (cat, mouse) => {
@@ -140,6 +153,20 @@ class StreetLevel extends BaseLevelScene {
             this.catDies(this.cat);
         });
 
+        // Cape
+        this.anims.remove('cape');
+        this.anims.create({
+            key: 'cape',
+            frames: this.anims.generateFrameNumbers('animcape', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+
+        // Create HiddenCape
+        this.cape = this.physics.add.sprite(this.game.config.width/2, real_worldheight-131, 'cape');
+        this.cape.body.allowGravity = false;
+        this.capeMode = false
+
         // Add wall in front of hidden room
         this.hiddenwall = this.physics.add.image((800-105)/2, worldheight+150, 'asdf');
         this.hiddenwall.displayHeight = 300;
@@ -149,14 +176,21 @@ class StreetLevel extends BaseLevelScene {
         this.hiddenwall.visible = false;
         this.physics.add.collider(this.cat, this.hiddenwall);
 
-        // Add hidden extra lives
-        this.extra_lives = this.physics.add.sprite(this.game.config.width/2, real_worldheight-131, 'cat_lives');
-        this.extra_lives.body.setAllowGravity(0, 0);
-
-        this.physics.add.overlap(this.cat, this.extra_lives, ()=>{
-            // TODO this should be a cape or something, also sound
-            this.addScore(1000);
-        });
+        this.physics.add.overlap(this.cat, this.cape, ()=>{
+            if(!this.capeMode) {
+                this.capeMode = true;
+                this.cape.displayWidth = 96;
+                this.cape.displayHeight = 96;
+                // Music!
+                this.music.stop();
+                this.music = this.sound.add('backgroundmusicstreetcape');
+                try {
+                    this.music.play();
+                } catch {
+                    console.log('no audio possible');
+                }
+            }
+        }, null, this);
 
         // should be called at the end to the HUD will be on top
         super.create();
@@ -165,6 +199,7 @@ class StreetLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
+        // Turn around cars
         for (var i = 0; i < this.cars.length; i++) {
             if (this.cars[i].x >= this.game.config.width) {
                 this.cars[i].setVelocityX(Math.abs(this.cars[i].body.velocity.x)*-1);
@@ -173,6 +208,18 @@ class StreetLevel extends BaseLevelScene {
                 this.cars[i].setVelocityX(Math.abs(this.cars[i].body.velocity.x));
                 this.cars[i].flipX = false;
             }
+        }
+
+        // Cape Mode!
+        if (this.capeMode){
+            this.cape.anims.play('cape', true);
+            let cat_direction = -1;
+            if (this.cat.flipX === true) {
+                cat_direction = 1;
+            }
+            // round to solve issues with subpixel movement
+            this.cape.setX(Math.round(cat_direction * 12 + this.cat.x));
+            this.cape.setY(this.cat.y-5);
         }
     }
 
@@ -187,6 +234,7 @@ class StreetLevel extends BaseLevelScene {
 
         if (this.cat.flipX === false) {
             this.cat.flipX = true;
+            this.cape.flipX = false;
         }
     }
 
@@ -201,6 +249,7 @@ class StreetLevel extends BaseLevelScene {
 
         if (this.cat.flipX === true) {
             this.cat.flipX = false;
+            this.cape.flipX = true;
         }
     }
 

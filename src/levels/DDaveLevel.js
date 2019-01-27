@@ -10,11 +10,12 @@ class DDaveLevel extends BaseLevelScene {
         this.load.tilemapTiledJSON("mapDave","assets/maps/DDaveLevel/dave.json");
         this.load.image('tilesDave',"assets/images/DDaveLevel/DDaveTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
+        this.load.image('spaceDogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('cape', 'assets/images/cape.png');
         this.load.spritesheet('animcape', 'assets/images/capeSprite.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
         this.load.image('home', 'assets/images/house_home_transparent.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
 
@@ -53,8 +54,11 @@ class DDaveLevel extends BaseLevelScene {
         this.cameras.main.setBounds(0, 0, 3200, 3200);
 
         // Variables
+        this.catGravity = 500;
+        this.catJump = 400;
+        this.catSpeed = 260;
         this.millis = 0;
-        this.timeout = 1000;
+        this.timeout = 2000;
         this.shootFlag = false;
         this.shootMillis = 0;
         this.shootDirection = 1;
@@ -65,14 +69,14 @@ class DDaveLevel extends BaseLevelScene {
         this.cat.setBounce(0.1);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
-        this.cat.body.gravity.y = 500;
+        this.cat.body.gravity.y = this.catGravity;
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
 
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -81,6 +85,13 @@ class DDaveLevel extends BaseLevelScene {
             key: 'stand',
             frames: [ { key: 'animcat', frame: 0 } ],
             frameRate: 20,
+        });
+        this.anims.remove('mouseWalk');
+        this.anims.create({
+            key: 'mouseWalk',
+            frames: this.anims.generateFrameNumbers('animouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1,
         });
 
         // Cape
@@ -110,7 +121,7 @@ class DDaveLevel extends BaseLevelScene {
 
 
         // Create HiddenCape
-        this.cape = this.physics.add.sprite(95*32,96*32,"cape");
+        this.cape = this.physics.add.sprite(95*32,96*32,"cape"); //200,2850,"cape");
         this.cape.body.allowGravity = false;
         this.capeMode = false
 
@@ -127,6 +138,7 @@ class DDaveLevel extends BaseLevelScene {
             sprite.body.gravity.y=1000;
             this.miceSprites.add(sprite);
             sprite.setVelocityX(mouseSpeed);
+            sprite.anims.play('mouseWalk', true);
             this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
@@ -145,14 +157,20 @@ class DDaveLevel extends BaseLevelScene {
 
         this.physics.add.overlap(this.cat, this.miceSprites, this.collectMouse, null, this);
         this.physics.add.overlap(this.cat, this.cape, () =>{
-            this.capeMode = true;
-            // Music!
-            this.music.stop();
-            this.music = this.sound.add('backgroundmusidavecape');
-            try {
-                this.music.play();
-            } catch {
-                console.log('no audio possible');
+            if(!this.capeMode) {
+                this.capeMode = true;
+                // Music!
+                this.music.stop();
+                this.music = this.sound.add('backgroundmusidavecape');
+                try {
+                    this.music.play();
+                } catch {
+                    console.log('no audio possible');
+                }
+                this.ammo = 100;
+                this.cat.body.gravity.set(0, 200);
+                this.catSpeed = 350;
+                ;
             }
             }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
@@ -187,8 +205,8 @@ class DDaveLevel extends BaseLevelScene {
 
         if (this.capeMode){
             this.cape.anims.play('cape', true);
-            this.cape.setX(-this.shootDirection * 12 +this.cat.x);
-            this.cape.setY(this.cat.y-5);
+            this.cape.setX(-this.shootDirection * 13 +this.cat.x);
+            this.cape.setY(this.cat.y-2);
         }
         if (this.cat.velocity < 10){
             try {
@@ -197,7 +215,7 @@ class DDaveLevel extends BaseLevelScene {
                 console.log('no audio possible');
             }
         }
-
+        // console.log ("millis: ", this.millis, "timeout: ", this.timeout, "delta", delta, "dog time: ", this.dogs[0].time);
         if (this.millis > this.timeout){
             this.createDogs();
             try {
@@ -206,7 +224,7 @@ class DDaveLevel extends BaseLevelScene {
                 console.log('no audio possible');
             }
             this.millis = 0;
-            this.timeout = Phaser.Math.Between(400, 4000);
+            this.timeout = Phaser.Math.Between(400, 2000);
         }
         this.millis +=1;
 
@@ -217,18 +235,21 @@ class DDaveLevel extends BaseLevelScene {
         this.shootMillis += 1;
 
         // kill dogs older than 20 sec
-        for(let i = 0; i < this.dogs.length; i++) {
-            let currentDog = this.dogs[i];
-            currentDog.time -= delta;
-            if (currentDog.time < 0) {
-                currentDog.sprite.disableBody(true, true);
+        if (this.dogs.length > 0) {
+            for (let i = 0; i < this.dogs.length; i++) {
+                let currentDog = this.dogs[i];
+                currentDog.time -= delta;
+                if (currentDog.time < 0) {
+                    currentDog.sprite.disableBody(true, true);
+                    this.dogs.splice(i, 1);
+                }
             }
         }
     }
 
     buttonPressedLeft(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(-260);
+            this.cat.setVelocityX(-this.catSpeed);
             this.cat.anims.play('walk', true);
             this.shootDirection = -1;
         } else {
@@ -244,7 +265,7 @@ class DDaveLevel extends BaseLevelScene {
 
     buttonPressedRight(pressed) {
         if (pressed) {
-            this.cat.setVelocityX(260);
+            this.cat.setVelocityX(this.catSpeed);
             this.cat.anims.play('walk', true);
             this.shootDirection = 1;
         } else {
@@ -259,8 +280,8 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
-            this.cat.setVelocityY(-400);
+        if (pressed && this.cat.body.touching.down) {
+            this.cat.setVelocityY(-this.catJump);
             try {
                 this.sound.play("jump");
             } catch {
@@ -300,22 +321,21 @@ class DDaveLevel extends BaseLevelScene {
         for (let i = 0; i < this.dogSpawnLayer.objects.length; i++) {
             let dogStartX = this.dogSpawnLayer.objects[i].x;
             let dogStartY = this.dogSpawnLayer.objects[i].y - 40;
-            let dogSpeed = Phaser.Math.Between(30, 100);
-            let sprite = this.physics.add.sprite(dogStartX, dogStartY, "dogImage");
+            let dogSpeed = Phaser.Math.Between(60, 200);
+            let sprite = this.physics.add.sprite(dogStartX, dogStartY, "spaceDogImage");
             let dogDirection = 1;
             if (this.dogSpawnLayer.objects[i].properties.left === true) {
                 dogDirection = -1;
                 sprite.flipX = true;
             }
             sprite.setSize(sprite.width * 0.8, sprite.height * 0.8);
-            sprite.body.gravity.y = 1000;
+            sprite.body.gravity.set(0,800);
             this.dogsSprites.add(sprite);
             sprite.setVelocityX(dogSpeed * dogDirection);
             sprite.scaleY = 0.6;
             sprite.scaleX = 0.6;
             this.dogs.push({"sprite": sprite, "startX": dogStartX, "speed": dogSpeed, "time" : 40000});
         }
-        console.log ("dogs created FINISH")
     }
 
     shoot(){
