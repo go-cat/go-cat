@@ -19,6 +19,7 @@ class TreeLevel extends BaseLevelScene {
 
         // Sound
         this.load.audio('backgroundmusictree', 'assets/sounds/songs/A_Mission.ogg');
+        this.load.audio("catjump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("poopsound", "assets/sounds/animals/birdpoop.ogg");
     }
@@ -27,7 +28,7 @@ class TreeLevel extends BaseLevelScene {
         let numOfMice = 20;
 
         // Music!
-        this.music = this.sound.add('backgroundmusictree');
+        this.music = this.sound.add('backgroundmusictree', {volume: 0.5});
         try {
             this.music.play();
         } catch {
@@ -265,6 +266,11 @@ class TreeLevel extends BaseLevelScene {
     buttonPressedUp(pressed) {
         if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-350);
+        }
+        try {
+            this.sound.play("catjump");
+        } catch {
+            console.log('no audio possible');
         }
     }
 }
