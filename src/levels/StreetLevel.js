@@ -15,7 +15,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('house', 'assets/images/StreetLevel/house.png');
         this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
         this.load.image('cape', 'assets/images/cape.png');
-        this.load.spritesheet('animcape', 'assets/images/capeSprite.png', { frameWidth: 64, frameHeight: 64});
+        this.load.spritesheet('animcape', 'assets/images/StreetLevel/cape_red_Sprite_streetlevel.png', { frameWidth: 87, frameHeight: 65, spacing: 14});
 
         this.load.audio('backgroundmusicstreet', 'assets/sounds/songs/Big_Rock.ogg');
         this.load.audio('backgroundmusicstreetcape', 'assets/sounds/songs/Pixel_Peeker_Polka.ogg');
@@ -179,8 +179,6 @@ class StreetLevel extends BaseLevelScene {
         this.physics.add.overlap(this.cat, this.cape, ()=>{
             if(!this.capeMode) {
                 this.capeMode = true;
-                this.cape.displayWidth = 96;
-                this.cape.displayHeight = 96;
                 // Music!
                 this.music.stop();
                 this.music = this.sound.add('backgroundmusicstreetcape');
@@ -218,8 +216,8 @@ class StreetLevel extends BaseLevelScene {
                 cat_direction = 1;
             }
             // round to solve issues with subpixel movement
-            this.cape.setX(Math.round(cat_direction * 12 + this.cat.x));
-            this.cape.setY(this.cat.y-5);
+            this.cape.setX(Math.round(cat_direction * 14 + this.cat.x));
+            this.cape.setY(this.cat.y);
         }
     }
 
