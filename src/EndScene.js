@@ -20,9 +20,8 @@ class EndScene extends BaseLevelScene {
 
     create() {
         // Music!
-        this.music = this.sound.add('cat_purr', { loop: true });
+        this.music = this.sound.add('cat_purr', {loop: true});
         try {
-            console.log(this.music);
             this.music.play();
         } catch {
             console.log('no audio possible');

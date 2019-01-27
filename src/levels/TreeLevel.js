@@ -2,18 +2,18 @@
 
 class TreeLevel extends BaseLevelScene {
     constructor() {
-        super({ key: 'TreeLevel' })
+        super({key: 'TreeLevel'})
     }
 
     preload() {
         super.preload();
 
         // Images
-        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', {frameWidth: 97, frameHeight: 101});
         this.load.image('branch', 'assets/images/TreeLevel/branch.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
-        this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
-        this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
+        this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', {frameWidth: 30, frameHeight: 30});
+        this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
         this.load.image('birdhouse', 'assets/images/bird_house.png');
         this.load.image('goal', 'assets/images/house_home_transparent.png');
@@ -37,7 +37,7 @@ class TreeLevel extends BaseLevelScene {
         }
 
         // This are the bounds of our world
-        const worldheight = this.game.config.height*10;
+        const worldheight = this.game.config.height * 10;
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
 
         // Background
@@ -48,12 +48,12 @@ class TreeLevel extends BaseLevelScene {
         const platforms = this.physics.add.staticGroup();
 
         // Create the ground
-        this.ground = this.physics.add.image(this.game.config.width/2, worldheight, 'ground');
+        this.ground = this.physics.add.image(this.game.config.width / 2, worldheight, 'ground');
         this.ground.body.setAllowGravity(0, 0);
         this.ground.body.immovable = true;
 
         // Our goal
-        this.goal = this.physics.add.image(this.game.config.width-64, worldheight-75, 'goal');
+        this.goal = this.physics.add.image(this.game.config.width - 64, worldheight - 75, 'goal');
         this.goal.body.setAllowGravity(0, 0);
 
         // Create the branches, sometimes with birdhouses
@@ -128,14 +128,14 @@ class TreeLevel extends BaseLevelScene {
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 4}),
             frameRate: 10,
             repeat: -1,
         });
         this.anims.remove('stand');
         this.anims.create({
             key: 'stand',
-            frames: [ { key: 'animcat', frame: 0 } ],
+            frames: [{key: 'animcat', frame: 0}],
             frameRate: 20,
         });
 
@@ -148,7 +148,7 @@ class TreeLevel extends BaseLevelScene {
         this.anims.remove('fly');
         this.anims.create({
             key: 'fly',
-            frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('bird', {start: 0, end: 1}),
             frameRate: 10,
             repeat: -1
         });
@@ -162,17 +162,17 @@ class TreeLevel extends BaseLevelScene {
         this.anims.remove('mousewalk');
         this.anims.create({
             key: 'mousewalk',
-            frames: this.anims.generateFrameNumbers('animmouse', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('animmouse', {start: 0, end: 1}),
             frameRate: 10,
             repeat: -1
         });
         for (let i = 0; i <= numOfMice; i++) {
             let x = Phaser.Math.Between(0, this.game.config.width);
-            let y = Phaser.Math.Between(600, worldheight-100);
+            let y = Phaser.Math.Between(600, worldheight - 100);
             let mouse = this.mice.create(x, y, 'mouse');
             mouse.body.setCollideWorldBounds(true);
             mouse.anims.play('mousewalk');
-            if (i%2 == 0) {
+            if (i % 2 == 0) {
                 mouse.flipX = true;
             }
         }
@@ -290,7 +290,7 @@ class TreeLevel extends BaseLevelScene {
             this.cat.setVelocityY(-350);
             try {
                 this.sound.play("catjump");
-            }    catch {
+            } catch {
                 console.log('no audio possible');
             }
         }
