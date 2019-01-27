@@ -60,14 +60,18 @@ class TreeLevel extends BaseLevelScene {
         let birdhouse;
         platforms.create(50, 100, 'branch');
         platforms.create(300, 200, 'branch').flipX = true;
-        birdhouse = this.physics.add.image(400, 150, 'birdhouse');
+        birdhouse = this.physics.add.image(425, 179, 'birdhouse');
         birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(700, 400, 'branch').flipX = true;
         platforms.create(500, 500, 'branch');
         platforms.create(300, 700, 'branch');
         platforms.create(100, 800, 'branch').flipX = true;
         platforms.create(300, 900, 'branch');
         platforms.create(650, 1000, 'branch');
+        birdhouse = this.physics.add.image(525, 979, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(200, 1100, 'branch');
         platforms.create(400, 1300, 'branch').flipX = true;
         platforms.create(750, 1400, 'branch');
@@ -75,6 +79,9 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(300, 1700, 'branch');
         platforms.create(750, 1800, 'branch').flipX = true;
         platforms.create(500, 2000, 'branch').flipX = true;
+        birdhouse = this.physics.add.image(625, 1979, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(400, 2150, 'branch');
         platforms.create(100, 2250, 'branch').flipX = true;
         platforms.create(200, 2300, 'branch');
@@ -84,6 +91,9 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(200, 2750, 'branch').flipX = true;
         platforms.create(600, 3000, 'branch');
         platforms.create(500, 3100, 'branch');
+        birdhouse = this.physics.add.image(375, 3079, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(50, 3250, 'branch');
         platforms.create(700, 3300, 'branch').flipX = true;
         platforms.create(300, 3400, 'branch');
@@ -94,6 +104,9 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(300, 4350, 'branch').flipX = true;
         platforms.create(100, 4500, 'branch');
         platforms.create(400, 4600, 'branch');
+        birdhouse = this.physics.add.image(275, 4579, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(200, 4750, 'branch');
         platforms.create(700, 4800, 'branch').flipX = true;
         platforms.create(300, 4900, 'branch').flipX = true;
@@ -102,6 +115,8 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(50, 5400, 'branch').flipX = true;
         platforms.create(300, 5500, 'branch');
         platforms.create(600, 5750, 'branch');
+        birdhouse = this.physics.add.image(475, 5729, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
 
         // Our cat
         this.cat = this.physics.add.sprite(100, 0, 'animcat');
