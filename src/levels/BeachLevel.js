@@ -76,7 +76,7 @@ class BeachLevel extends BaseLevelScene {
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 3 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -180,7 +180,7 @@ class BeachLevel extends BaseLevelScene {
         super.update(time, delta);
 
         this.inAir = false;
-        if (Math.abs(this.cat.body.velocity.y) > 1) {
+        if (Math.abs(this.cat.body.velocity.y) > 2) {
             this.inAir = true;
         }
         for (let i = 0; i < this.dogs.length; i++) {
