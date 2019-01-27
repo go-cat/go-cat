@@ -7,9 +7,9 @@ class BeachLevel extends BaseLevelScene {
         super.preload();
 
         this.load.tilemapTiledJSON("beachMap","assets/maps/BeachLevel/BeachLevel.json");
-        this.load.image('cliffTiles',"assets/images/BeachLevel/CliffTilset.png");
-        this.load.image('groundTiles',"assets/images/BeachLevel/GroundTileset.png");
-        this.load.image('waterTiles',"assets/images/BeachLevel/WaterTileset.png");
+        this.load.image('Cliff',"assets/images/BeachLevel/CliffTilset.png");
+        this.load.image('Ground',"assets/images/BeachLevel/GroundTileset.png");
+        this.load.image('Water',"assets/images/BeachLevel/WaterTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('dogImage', 'assets/images/BeachLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
@@ -38,14 +38,14 @@ class BeachLevel extends BaseLevelScene {
 
         // layer and map for the Tilemap
         let beachMap = this.make.tilemap({ key: "beachMap", tileWidth: 16, tileHeight: 16 });
-        let tileset1 = beachMap.addTilesetImage("beachtileset","cliffTiles");
-        let tileset2 = beachMap.addTilesetImage("beachtileset","groundTiles");
-        let tileset3 = beachMap.addTilesetImage("beachtileset","waterTiles");
+        let tileset1 = beachMap.addTilesetImage("beachtileset","Cliff");
+        let tileset2 = beachMap.addTilesetImage("beachtileset","Ground");
+        let tileset3 = beachMap.addTilesetImage("beachtileset","Water");
 
         //let dynamicLayer = beachMap.createDynamicLayer("background", tileset, 0, 0);
-        let collisionLayer = beachMap.createStaticLayer("obstacles", tileset1, 0, 0);
+        let collisionLayer2 = beachMap.createStaticLayer("obstacles", tileset1, 0, 0);
         let collisionLayer = beachMap.createStaticLayer("obstacles", tileset2, 0, 0);
-        let collisionLayer = beachMap.createStaticLayer("obstacles", tileset3, 0, 0);
+        let collisionLayer3 = beachMap.createStaticLayer("obstacles", tileset3, 0, 0);
 
         collisionLayer.setCollisionByProperty({ collides: true });
 
