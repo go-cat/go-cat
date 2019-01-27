@@ -15,7 +15,7 @@ class BeachLevel extends BaseLevelScene {
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
-        this.load.spritesheet('doganim', 'assets/images/SpaceLevel/dog_sprites.png', {frameWidth: 146, frameHeight: 135});
+        this.load.spritesheet('beach_doganim', 'assets/images/SpaceLevel/dog_sprites.png', {frameWidth: 146, frameHeight: 135});
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
@@ -70,7 +70,7 @@ class BeachLevel extends BaseLevelScene {
         this.anims.remove('dogWalk');
         this.anims.create({
             key: 'dogWalk',
-            frames: this.anims.generateFrameNumbers('doganim', {start: 0, end: 2}),
+            frames: this.anims.generateFrameNumbers('beach_doganim', {start: 0, end: 2}),
             frameRate: 10,
             repeat: -1,
         });
