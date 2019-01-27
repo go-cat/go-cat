@@ -216,7 +216,7 @@ class TreeLevel extends BaseLevelScene {
         // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
         let poopiness = 20;
         // How big is a poop hitbox?
-        let poopsize = 15;
+        let poopsize = 5;
 
         // Birds fly
         /* Do we have a bird? */
