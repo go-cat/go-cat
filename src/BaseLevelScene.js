@@ -324,6 +324,7 @@ class BaseLevelScene extends Phaser.Scene {
         // magic numbers, don't change!
         hump_cat.displayWidth = cat.displayWidth * 0.9175257731958763;
         hump_cat.displayHeight = cat.displayHeight * 0.8514851485148515;
+        hump_cat.setTint(0xff0000);
 
         try {
             this.sound.play('angry_cat');
