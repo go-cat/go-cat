@@ -26,6 +26,9 @@ class DDaveLevel extends BaseLevelScene {
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
         this.load.audio("whining", "assets/sounds/animals/dog_whining.ogg");
+        this.load.audio("spit","assets/sounds/FX/spit2_sfx_wpn_punch4.wav");
+        this.load.audio("nospit","assets/sounds/FX/spit1_sfx_wpn_punch2.wav");
+        this.load.audio("hit", "assets/sounds/FX/hit2_sfx_weapon_shotgun3.wav")
     }
 
     create() {
@@ -317,8 +320,18 @@ class DDaveLevel extends BaseLevelScene {
                 this.shootFlag = true;
                 this.physics.add.overlap(this.wool, this.dogsSprites, this.woolHitDog, null, this);
                 this.ammo -= 1;
+                try {
+                    this.sound.play("spit");
+                } catch {
+                    console.log('no audio possible');
+                }
             }
             else{
+                try {
+                    this.sound.play("nospit");
+                } catch {
+                    console.log('no audio possible');
+                }
                 // TODO: print something like OUT OF AMMO
                 // TODO: Maybe show an ammo-counter
             }
@@ -328,6 +341,7 @@ class DDaveLevel extends BaseLevelScene {
     woolHitDog(wool, dog){
         try {
             this.sound.play("whining");
+            this.sound.play("hit");
         } catch {
             console.log('no audio possible');
         }
