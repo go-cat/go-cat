@@ -22,6 +22,7 @@ class LowTreeLevel extends BaseLevelScene {
         // Spritesheet
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', {frameWidth: 97, frameHeight: 101});
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', {frameWidth: 30, frameHeight: 30});
+        this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
 
         // Audio
         this.load.audio('backgroundmusiclowtree', 'assets/sounds/songs/Iron_Horse.mp3');
@@ -101,6 +102,15 @@ class LowTreeLevel extends BaseLevelScene {
             frameRate: 20,
         });
 
+        // Mouse animation
+        this.anims.remove('mouseWalk');
+        this.anims.create({
+            key: 'mouseWalk',
+            frames: this.anims.generateFrameNumbers('animouse', {start: 0, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
+
         // Flying Birds
         this.birds = this.physics.add.group();
         this.birdAreas = [];
@@ -149,6 +159,7 @@ class LowTreeLevel extends BaseLevelScene {
             sprite.setGravityY(1000);
             this.miceSprites.add(sprite);
             sprite.setVelocityX(mouseSpeed);
+            sprite.anims.play('mouseWalk', true);
             this.mice.push({"sprite": sprite, "path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
