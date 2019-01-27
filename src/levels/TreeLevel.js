@@ -153,6 +153,9 @@ class TreeLevel extends BaseLevelScene {
             let mouse = this.mice.create(x, y, 'mouse');
             mouse.body.setCollideWorldBounds(true);
             mouse.anims.play('mousewalk');
+            if (i%2 == 0) {
+                mouse.flipX = true;
+            }
         }
 
         // Colide events
