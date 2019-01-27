@@ -57,18 +57,21 @@ class TreeLevel extends BaseLevelScene {
         // Create the branches
         platforms.create(50, 100, 'branch');
         platforms.create(300, 200, 'branch').flipX = true;
+        platforms.create(700, 400, 'branch').flipX = true;
         platforms.create(500, 500, 'branch');
         platforms.create(300, 700, 'branch');
         platforms.create(100, 800, 'branch').flipX = true;
+        platforms.create(300, 900, 'branch');
         platforms.create(650, 1000, 'branch');
         platforms.create(200, 1100, 'branch');
         platforms.create(400, 1300, 'branch').flipX = true;
         platforms.create(750, 1400, 'branch');
         platforms.create(50, 1550, 'branch');
-        platforms.create(100, 1700, 'branch');
+        platforms.create(300, 1700, 'branch');
         platforms.create(750, 1800, 'branch').flipX = true;
         platforms.create(500, 2000, 'branch').flipX = true;
         platforms.create(400, 2150, 'branch');
+        platforms.create(100, 2250, 'branch').flipX = true;
         platforms.create(200, 2300, 'branch');
         platforms.create(700, 2400, 'branch');
         platforms.create(300, 2500, 'branch').flipX = true;
@@ -79,6 +82,7 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(50, 3250, 'branch');
         platforms.create(700, 3300, 'branch').flipX = true;
         platforms.create(300, 3400, 'branch');
+        platforms.create(50, 3650, 'branch');
         platforms.create(400, 3800, 'branch').flipX = true;
         platforms.create(300, 4000, 'branch');
         platforms.create(500, 4200, 'branch').flipX = true;
@@ -100,6 +104,7 @@ class TreeLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
+        this.cat.setSize(50, 50, true);
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
@@ -187,15 +192,18 @@ class TreeLevel extends BaseLevelScene {
 
         // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
         let poopiness = 20;
+        // How big is a poop hitbox?
+        let poopsize = 15;
 
         // Birds fly
         /* Do we have a bird? */
         if (this.bird.flying) {
             /* should he poop? */
             if (Phaser.Math.Between(1, 1000) <= poopiness && this.bird.y > 250) {
-                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2);
+                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(3);
                 birdpoop.setBounceY(0);
                 birdpoop.setMass(0.1);
+                birdpoop.setSize(poopsize, poopsize, true);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
 
