@@ -2,18 +2,18 @@
 
 class TreeLevel extends BaseLevelScene {
     constructor() {
-        super({ key: 'TreeLevel' })
+        super({key: 'TreeLevel'})
     }
 
     preload() {
         super.preload();
 
         // Images
-        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', {frameWidth: 97, frameHeight: 101});
         this.load.image('branch', 'assets/images/TreeLevel/branch.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
-        this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
-        this.load.spritesheet('mouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
+        this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', {frameWidth: 30, frameHeight: 30});
+        this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
         this.load.image('birdhouse', 'assets/images/bird_house.png');
         this.load.image('goal', 'assets/images/house_home_transparent.png');
@@ -26,6 +26,7 @@ class TreeLevel extends BaseLevelScene {
     }
 
     create() {
+        this.inAir = false;
         let numOfMice = 20;
 
         // Music!
@@ -37,7 +38,7 @@ class TreeLevel extends BaseLevelScene {
         }
 
         // This are the bounds of our world
-        const worldheight = this.game.config.height*10;
+        const worldheight = this.game.config.height * 10;
         this.physics.world.setBounds(0, 0, this.game.config.width, worldheight, true, true, true, true);
 
         // Background
@@ -48,26 +49,30 @@ class TreeLevel extends BaseLevelScene {
         const platforms = this.physics.add.staticGroup();
 
         // Create the ground
-        this.ground = this.physics.add.image(this.game.config.width/2, worldheight, 'ground');
+        this.ground = this.physics.add.image(this.game.config.width / 2, worldheight, 'ground');
         this.ground.body.setAllowGravity(0, 0);
         this.ground.body.immovable = true;
 
         // Our goal
-        this.goal = this.physics.add.image(this.game.config.width-64, worldheight-75, 'goal');
+        this.goal = this.physics.add.image(this.game.config.width - 64, worldheight - 75, 'goal');
         this.goal.body.setAllowGravity(0, 0);
 
         // Create the branches, sometimes with birdhouses
         let birdhouse;
         platforms.create(50, 100, 'branch');
         platforms.create(300, 200, 'branch').flipX = true;
-        birdhouse = this.physics.add.image(400, 150, 'birdhouse');
+        birdhouse = this.physics.add.image(425, 179, 'birdhouse');
         birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(700, 400, 'branch').flipX = true;
         platforms.create(500, 500, 'branch');
         platforms.create(300, 700, 'branch');
         platforms.create(100, 800, 'branch').flipX = true;
         platforms.create(300, 900, 'branch');
         platforms.create(650, 1000, 'branch');
+        birdhouse = this.physics.add.image(525, 979, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(200, 1100, 'branch');
         platforms.create(400, 1300, 'branch').flipX = true;
         platforms.create(750, 1400, 'branch');
@@ -75,6 +80,9 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(300, 1700, 'branch');
         platforms.create(750, 1800, 'branch').flipX = true;
         platforms.create(500, 2000, 'branch').flipX = true;
+        birdhouse = this.physics.add.image(625, 1979, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(400, 2150, 'branch');
         platforms.create(100, 2250, 'branch').flipX = true;
         platforms.create(200, 2300, 'branch');
@@ -84,6 +92,9 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(200, 2750, 'branch').flipX = true;
         platforms.create(600, 3000, 'branch');
         platforms.create(500, 3100, 'branch');
+        birdhouse = this.physics.add.image(375, 3079, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(50, 3250, 'branch');
         platforms.create(700, 3300, 'branch').flipX = true;
         platforms.create(300, 3400, 'branch');
@@ -94,6 +105,9 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(300, 4350, 'branch').flipX = true;
         platforms.create(100, 4500, 'branch');
         platforms.create(400, 4600, 'branch');
+        birdhouse = this.physics.add.image(275, 4579, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
         platforms.create(200, 4750, 'branch');
         platforms.create(700, 4800, 'branch').flipX = true;
         platforms.create(300, 4900, 'branch').flipX = true;
@@ -102,6 +116,8 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(50, 5400, 'branch').flipX = true;
         platforms.create(300, 5500, 'branch');
         platforms.create(600, 5750, 'branch');
+        birdhouse = this.physics.add.image(475, 5729, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
 
         // Our cat
         this.cat = this.physics.add.sprite(100, 0, 'animcat');
@@ -110,17 +126,24 @@ class TreeLevel extends BaseLevelScene {
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
         this.cat.setSize(50, 50, true);
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 4}),
             frameRate: 10,
             repeat: -1,
         });
         this.anims.remove('stand');
         this.anims.create({
             key: 'stand',
-            frames: [ { key: 'animcat', frame: 0 } ],
+            frames: [{key: 'animcat', frame: 0}],
             frameRate: 20,
         });
 
@@ -133,7 +156,7 @@ class TreeLevel extends BaseLevelScene {
         this.anims.remove('fly');
         this.anims.create({
             key: 'fly',
-            frames: this.anims.generateFrameNumbers('bird', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('bird', {start: 0, end: 1}),
             frameRate: 10,
             repeat: -1
         });
@@ -147,17 +170,17 @@ class TreeLevel extends BaseLevelScene {
         this.anims.remove('mousewalk');
         this.anims.create({
             key: 'mousewalk',
-            frames: this.anims.generateFrameNumbers('mouse', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('animmouse', {start: 0, end: 1}),
             frameRate: 10,
             repeat: -1
         });
         for (let i = 0; i <= numOfMice; i++) {
             let x = Phaser.Math.Between(0, this.game.config.width);
-            let y = Phaser.Math.Between(600, worldheight-100);
+            let y = Phaser.Math.Between(600, worldheight - 100);
             let mouse = this.mice.create(x, y, 'mouse');
             mouse.body.setCollideWorldBounds(true);
             mouse.anims.play('mousewalk');
-            if (i%2 == 0) {
+            if (i % 2 == 0) {
                 mouse.flipX = true;
             }
         }
@@ -198,10 +221,15 @@ class TreeLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 3) {
+            this.inAir = true;
+        }
+
         // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
         let poopiness = 20;
         // How big is a poop hitbox?
-        let poopsize = 15;
+        let poopsize = 5;
 
         // Birds fly
         /* Do we have a bird? */
@@ -248,7 +276,10 @@ class TreeLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -262,7 +293,10 @@ class TreeLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {
@@ -275,7 +309,7 @@ class TreeLevel extends BaseLevelScene {
             this.cat.setVelocityY(-350);
             try {
                 this.sound.play("catjump");
-            }    catch {
+            } catch {
                 console.log('no audio possible');
             }
         }

@@ -1,18 +1,21 @@
+"use strict";
+
 class SpaceLevel extends BaseLevelScene {
     constructor() {
-        super({ key: 'SpaceLevel' })
+        super({key: 'SpaceLevel'})
     }
 
     preload() {
         super.preload();
 
-        this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
-        this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
+        this.load.tilemapTiledJSON("map", "assets/maps/SpaceLevel/world.json");
+        this.load.image('tiles', "assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('dogImage', 'assets/images/SpaceLevel/space_dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
-        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
-        this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', {frameWidth: 97, frameHeight: 101});
+        this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
+        this.load.spritesheet('doganim', 'assets/images/SpaceLevel/space_dog_sprites.png', {frameWidth: 146, frameHeight: 135});
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
@@ -22,10 +25,10 @@ class SpaceLevel extends BaseLevelScene {
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
-
     }
 
     create() {
+        this.inAir = false;
         // Music!
         this.music = this.sound.add('backgroundmusicspace');
         try {
@@ -35,25 +38,20 @@ class SpaceLevel extends BaseLevelScene {
         }
 
         // layer and map for the Tilemap
-        let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
-        let tileset = map.addTilesetImage("spacetileset","tiles");
+        let map = this.make.tilemap({key: "map", tileWidth: 16, tileHeight: 16});
+        let tileset = map.addTilesetImage("spacetileset", "tiles");
 
         let dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
 
-        collisionLayer.setCollisionByProperty({ collides: true });
-
-
+        collisionLayer.setCollisionByProperty({collides: true});
 
         // bounds
-        this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
+        this.physics.world.setBounds(0, 0, 2400, 600, true, true, true, true);
         this.cameras.main.setBounds(0, 0, 2400, 600);
 
         // Variables
-
-
         this.millis = 0;
-
 
         // The cat and its settings
         this.cat = this.physics.add.sprite(100, 300, 'cat');
@@ -61,97 +59,107 @@ class SpaceLevel extends BaseLevelScene {
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
-        this.cat.scaleY=0.6;
-        this.cat.scaleX=0.6;
+        this.cat.scaleY = 0.6;
+        this.cat.scaleX = 0.6;
 
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 4}),
             frameRate: 10,
             repeat: -1,
         });
         this.anims.remove('mouseWalk');
         this.anims.create({
             key: 'mouseWalk',
-            frames: this.anims.generateFrameNumbers('animouse', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('animouse', {start: 0, end: 1}),
             frameRate: 10,
             repeat: -1,
         });
         this.anims.remove('stand');
         this.anims.create({
             key: 'stand',
-            frames: [ { key: 'animcat', frame: 0 } ],
+            frames: [{key: 'animcat', frame: 0}],
             frameRate: 20,
         });
-
+        this.anims.remove('spacedogWalk');
+        this.anims.create({
+            key: 'spacedogWalk',
+            frames: this.anims.generateFrameNumbers('doganim', {start: 0, end: 2}),
+            frameRate: 10,
+            repeat: -1,
+        });
 
         // "Read" the Object-Layers
-        this.dogSpawnLayer =  map.objects.filter((maplayer)=> {
+        this.dogSpawnLayer = map.objects.filter((maplayer) => {
             return maplayer.name == "dogspawn";
         })[0];
-        this.miceSpawnLayer =  map.objects.filter((maplayer)=> {
+        this.miceSpawnLayer = map.objects.filter((maplayer) => {
             return maplayer.name == "micespawn";
         })[0];
-        this.groundLayer =  map.objects.filter((maplayer)=> {
+        this.groundLayer = map.objects.filter((maplayer) => {
             return maplayer.name == "ground";
         })[0];
-        this.safezoneLayer =  map.objects.filter((maplayer)=> {
+        this.safezoneLayer = map.objects.filter((maplayer) => {
             return maplayer.name == "safezone";
         })[0];
 
         // Create a Dogs-Object-Array
         this.dogs = [];
         this.dogsSprites = this.physics.add.group();
-        for(let i = 0; i < this.dogSpawnLayer.objects.length; i++){
+        for (let i = 0; i < this.dogSpawnLayer.objects.length; i++) {
             let dogStartX = this.dogSpawnLayer.objects[i].x;
-            let dogStartY = this.dogSpawnLayer.objects[i].y-40;
+            let dogStartY = this.dogSpawnLayer.objects[i].y - 40;
             let dogPath = this.dogSpawnLayer.objects[i].width;
             let dogSpeed = Phaser.Math.Between(30, 60);
-            let sprite = this.physics.add.sprite(dogStartX, dogStartY,"dogImage");
-            sprite.setSize(sprite.width*0.8, sprite.height*0.8);
+            let sprite = this.physics.add.sprite(dogStartX, dogStartY, "dogImage");
+            sprite.setSize(sprite.width * 0.8, sprite.height * 0.8);
             this.dogsSprites.add(sprite);
             sprite.setVelocityX(dogSpeed);
-            sprite.scaleY=0.6;
-            sprite.scaleX=0.6;
-            this.dogs.push({"sprite" : sprite ,"path": dogPath, "startX": dogStartX, "speed": dogSpeed});
+            sprite.scaleY = 0.6;
+            sprite.scaleX = 0.6;
+            sprite.anims.play('spacedogWalk', true);
+            this.dogs.push({"sprite": sprite, "path": dogPath, "startX": dogStartX, "speed": dogSpeed});
         }
 
         // Create a Mice-Object-Array
         this.mice = [];
         this.miceSprites = this.physics.add.group();
-        for(let i = 0; i < this.miceSpawnLayer.objects.length; i++){
-            let mouseStartX = this.miceSpawnLayer.objects[i].x ;
-            let mouseStartY = this.miceSpawnLayer.objects[i].y-20;
+        for (let i = 0; i < this.miceSpawnLayer.objects.length; i++) {
+            let mouseStartX = this.miceSpawnLayer.objects[i].x;
+            let mouseStartY = this.miceSpawnLayer.objects[i].y - 20;
             let mousePath = this.miceSpawnLayer.objects[i].width;
             let mouseSpeed = Phaser.Math.Between(50, 80);
-            let sprite = this.physics.add.sprite(mouseStartX, mouseStartY,"mouse");
+            let sprite = this.physics.add.sprite(mouseStartX, mouseStartY, "mouse");
             sprite.flipX = true;
             sprite.setGravityY(1000);
             this.miceSprites.add(sprite);
             sprite.setVelocityX(mouseSpeed);
             sprite.anims.play('mouseWalk', true);
-            this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
+            this.mice.push({"sprite": sprite, "path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
-
         let lay = this.safezoneLayer.objects[0];
-        this.safezone = this.physics.add.image(lay.x + lay.width/2 , lay.y + lay.height/2 ,"home");
+        this.safezone = this.physics.add.image(lay.x + lay.width / 2, lay.y + lay.height / 2, "home");
         this.safezone.body.allowGravity = false;
         this.safezone.displayHeight = lay.height;
         this.safezone.displayWidth = lay.width;
 
         let lay2 = this.groundLayer.objects[0];
-        this.ground = this.physics.add.image(lay2.x + lay2.width/2 , lay2.y + lay2.height/2 ,"home");
+        this.ground = this.physics.add.image(lay2.x + lay2.width / 2, lay2.y + lay2.height / 2, "home");
         this.ground.body.allowGravity = false;
         this.ground.displayHeight = lay2.height;
         this.ground.displayWidth = lay2.width;
         this.ground.visible = false;
 
-
-
         //  Collide the cat and the mice with the platforms
-
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.dogsSprites, collisionLayer);
         this.physics.add.collider(this.miceSprites, collisionLayer);
@@ -164,51 +172,56 @@ class SpaceLevel extends BaseLevelScene {
         }, null, this);
 
         this.physics.add.collider(this.cat, this.dogsSprites, this.hitDog, null, this);
-        this.physics.add.collider(this.cat, this.ground, ()=>{this.catDies(this.cat);}, null, this);
-
+        this.physics.add.collider(this.cat, this.ground, () => {
+            this.catDies(this.cat);
+        }, null, this);
 
         this.cameras.main.startFollow(this.cat);
+
         // should be called at the end to the HUD will be on top
         super.create();
-
     }
 
     update(time, delta) {
         super.update(time, delta);
 
-        for(let i =0; i<this.dogs.length; i++){
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 2) {
+            this.inAir = true;
+        }
+        for (let i = 0; i < this.dogs.length; i++) {
             let currentDog = this.dogs[i];
-            if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
+            if (currentDog["sprite"].x > currentDog["startX"] + currentDog["path"]) {
                 currentDog["sprite"].setVelocityX(-currentDog["speed"]);
                 if (currentDog["sprite"].flipX === false) {
                     currentDog["sprite"].flipX = true;
                 }
             }
-            if (currentDog["sprite"].x < currentDog["startX"]){
+            if (currentDog["sprite"].x < currentDog["startX"]) {
                 currentDog["sprite"].setVelocityX(currentDog["speed"]);
-                if (currentDog["sprite"].flipX === true  ) {
+                if (currentDog["sprite"].flipX === true) {
                     currentDog["sprite"].flipX = false;
                 }
             }
         }
 
-        for(let i =0; i<this.mice.length; i++){
+        for (let i = 0; i < this.mice.length; i++) {
             let currentMouse = this.mice[i];
-            if (currentMouse["sprite"].x > currentMouse["startX"]+currentMouse["path"]) {
+            if (currentMouse["sprite"].x > currentMouse["startX"] + currentMouse["path"]) {
                 currentMouse["sprite"].setVelocityX(-currentMouse["speed"]);
                 if (currentMouse["sprite"].flipX === true) {
                     currentMouse["sprite"].flipX = false;
                 }
             }
-            if (currentMouse["sprite"].x < currentMouse["startX"]){
+            if (currentMouse["sprite"].x < currentMouse["startX"]) {
                 currentMouse["sprite"].setVelocityX(currentMouse["speed"]);
-                if (currentMouse["sprite"].flipX === false  ) {
+                if (currentMouse["sprite"].flipX === false) {
                     currentMouse["sprite"].flipX = true;
                 }
             }
         }
 
-        if (this.cat.velocity < 10){
+        if (this.cat.velocity < 10) {
             try {
                 this.sound.play("land");
             } catch {
@@ -216,7 +229,7 @@ class SpaceLevel extends BaseLevelScene {
             }
         }
 
-        if (this.millis > Phaser.Math.Between(100, 8000)){
+        if (this.millis > Phaser.Math.Between(100, 8000)) {
             try {
                 this.sound.play("bark");
             } catch {
@@ -224,7 +237,7 @@ class SpaceLevel extends BaseLevelScene {
             }
             this.millis = 0;
         }
-        this.millis +=1;
+        this.millis += 1;
     }
 
     buttonPressedLeft(pressed) {
@@ -233,7 +246,10 @@ class SpaceLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -247,7 +263,10 @@ class SpaceLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {

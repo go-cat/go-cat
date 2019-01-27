@@ -1,10 +1,10 @@
 # This file is a template, and might need editing before it works on your project.
 # Full project: https://gitlab.com/pages/plain-html
 pages:
-  stage: deploy
-  script:
-      - rsync -e "ssh -p 222" -r --delete index.html goicaa@www531.your-server.de:public_html/
-      - rsync -e "ssh -p 222" -r --delete src/ goicaa@www531.your-server.de:public_html/src/
-      - rsync -e "ssh -p 222" -r --delete assets/ goicaa@www531.your-server.de:public_html/assets/
-  only:
-  - master
+    stage: deploy
+    script:
+        - rsync -e "ssh -p 222" -r --delete index.html goicaa@www531.your-server.de:public_html/
+        - rsync -e "ssh -p 222" -r --delete src/ goicaa@www531.your-server.de:public_html/src/
+        - rsync -e "ssh -p 222" -r --delete assets/ goicaa@www531.your-server.de:public_html/assets/
+    only:
+        - master

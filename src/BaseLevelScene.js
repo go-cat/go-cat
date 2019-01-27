@@ -300,11 +300,11 @@ class BaseLevelScene extends Phaser.Scene {
     }
 
     catLoosesLive() {
-        if (this.remainingLives === 0) {
+        this.remainingLives--;
+
+        if (this.remainingLives < 0) {
             this.startNextLevel(false, this.scenes.indexOf('EndScene'));
         }
-
-        this.remainingLives--;
 
         for (let i = this.catLiveImages.length - 1; i >= 0; i--) {
             this.catLiveImages[i].visible = (i < this.remainingLives);
@@ -324,6 +324,8 @@ class BaseLevelScene extends Phaser.Scene {
         // magic numbers, don't change!
         hump_cat.displayWidth = cat.displayWidth * 0.9175257731958763;
         hump_cat.displayHeight = cat.displayHeight * 0.8514851485148515;
+        hump_cat.flipX = cat.flipX;
+        hump_cat.setTint(0xff0000);
 
         try {
             this.sound.play('angry_cat');

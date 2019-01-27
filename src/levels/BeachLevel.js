@@ -1,3 +1,5 @@
+"use strict";
+
 class BeachLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'BeachLevel' })
@@ -7,11 +9,9 @@ class BeachLevel extends BaseLevelScene {
         super.preload();
 
         this.load.tilemapTiledJSON("beachMap","assets/maps/BeachLevel/BeachLevel.json");
-        this.load.image('Cliff',"assets/images/BeachLevel/CliffTilset.png");
-        this.load.image('Ground',"assets/images/BeachLevel/GroundTileset.png");
-        this.load.image('Water',"assets/images/BeachLevel/WaterTileset.png");
+        this.load.image('beach',"assets/images/BeachLevel/BeachTileset.jpg");
         this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('dogImage', 'assets/images/BeachLevel/dog.png');
+        this.load.image('beachDog', 'assets/images/BeachLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
@@ -38,31 +38,27 @@ class BeachLevel extends BaseLevelScene {
 
         // layer and map for the Tilemap
         let beachMap = this.make.tilemap({ key: "beachMap", tileWidth: 16, tileHeight: 16 });
-        let tileset1 = beachMap.addTilesetImage("beachtileset","Cliff");
-        let tileset2 = beachMap.addTilesetImage("beachtileset","Ground");
-        let tileset3 = beachMap.addTilesetImage("beachtileset","Water");
+        let tileset = beachMap.addTilesetImage("BeachTileset","beach");
 
-        //let dynamicLayer = beachMap.createDynamicLayer("background", tileset, 0, 0);
-        let collisionLayer2 = beachMap.createStaticLayer("obstacles", tileset1, 0, 0);
-        let collisionLayer = beachMap.createStaticLayer("obstacles", tileset2, 0, 0);
-        let collisionLayer3 = beachMap.createStaticLayer("obstacles", tileset3, 0, 0);
+        let collisionLayer = beachMap.createStaticLayer("obstacles", tileset, 0, 0);
 
         collisionLayer.setCollisionByProperty({ collides: true });
 
 
 
         // bounds
-        this.physics.world.setBounds(0,0,2400,600, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 2400, 600);
+        this.physics.world.setBounds(0,0,100*32,46*32, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 100*32,46*32);
 
         // Variables
 
 
         this.millis = 0;
+        this.inAir = false;
 
 
         // The cat and its settings
-        this.cat = this.physics.add.sprite(100, 300, 'cat');
+        this.cat = this.physics.add.sprite(900, 1100, 'cat');
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
@@ -70,10 +66,17 @@ class BeachLevel extends BaseLevelScene {
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
 
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
+            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 3 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -90,7 +93,6 @@ class BeachLevel extends BaseLevelScene {
             frames: [ { key: 'animcat', frame: 0 } ],
             frameRate: 20,
         });
-
 
         // "Read" the Object-Layers
         this.dogSpawnLayer =  beachMap.objects.filter((maplayer)=> {
@@ -114,7 +116,7 @@ class BeachLevel extends BaseLevelScene {
             let dogStartY = this.dogSpawnLayer.objects[i].y-40;
             let dogPath = this.dogSpawnLayer.objects[i].width;
             let dogSpeed = Phaser.Math.Between(30, 60);
-            let sprite = this.physics.add.sprite(dogStartX, dogStartY,"dogImage");
+            let sprite = this.physics.add.sprite(dogStartX, dogStartY,"beachDog");
             sprite.setSize(sprite.width*0.8, sprite.height*0.8);
             this.dogsSprites.add(sprite);
             sprite.setVelocityX(dogSpeed);
@@ -140,7 +142,6 @@ class BeachLevel extends BaseLevelScene {
             this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
-
         let lay = this.safezoneLayer.objects[0];
         this.safezone = this.physics.add.image(lay.x + lay.width/2 , lay.y + lay.height/2 ,"home");
         this.safezone.body.allowGravity = false;
@@ -154,10 +155,7 @@ class BeachLevel extends BaseLevelScene {
         this.ground.displayWidth = lay2.width;
         this.ground.visible = false;
 
-
-
         //  Collide the cat and the mice with the platforms
-
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.dogsSprites, collisionLayer);
         this.physics.add.collider(this.miceSprites, collisionLayer);
@@ -176,13 +174,16 @@ class BeachLevel extends BaseLevelScene {
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
         super.create();
-
     }
 
     update(time, delta) {
         super.update(time, delta);
 
-        for(let i =0; i<this.dogs.length; i++){
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 2) {
+            this.inAir = true;
+        }
+        for (let i = 0; i < this.dogs.length; i++) {
             let currentDog = this.dogs[i];
             if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
                 currentDog["sprite"].setVelocityX(-currentDog["speed"]);
@@ -239,7 +240,10 @@ class BeachLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -253,7 +257,10 @@ class BeachLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {
