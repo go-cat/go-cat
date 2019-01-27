@@ -245,8 +245,8 @@
   </object>
   <object id="134" name="right" x="0" y="1824" width="800" height="64">
    <properties>
-    <property name="spawnRate" type="int" value="300"/>
-    <property name="speed" type="int" value="80"/>
+    <property name="spawnRate" type="int" value="400"/>
+    <property name="speed" type="int" value="110"/>
    </properties>
   </object>
  </objectgroup>
