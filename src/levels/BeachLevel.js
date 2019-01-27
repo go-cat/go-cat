@@ -59,7 +59,7 @@ class BeachLevel extends BaseLevelScene {
 
 
         // The cat and its settings
-        this.cat = this.physics.add.sprite(900, 1100, 'cat');
+        this.cat = this.physics.add.sprite(1100, 1100, 'cat');
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
