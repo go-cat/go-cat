@@ -280,7 +280,7 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.cat.body.velocity.y) < 0.18) {
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 1) {
             this.cat.setVelocityY(-this.catJump);
             try {
                 this.sound.play("jump");

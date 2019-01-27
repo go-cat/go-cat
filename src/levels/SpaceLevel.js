@@ -256,7 +256,7 @@ class SpaceLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.cat.body.velocity.y) < 0.18) {
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
             this.cat.setVelocityY(-400);
             try {
                 this.sound.play("jump");

@@ -56,13 +56,12 @@ class TreeLevel extends BaseLevelScene {
         this.goal = this.physics.add.image(this.game.config.width-64, worldheight-75, 'goal');
         this.goal.body.setAllowGravity(0, 0);
 
-        // Create the branches
+        // Create the branches, sometimes with birdhouses
+        let birdhouse;
         platforms.create(50, 100, 'branch');
         platforms.create(300, 200, 'branch').flipX = true;
-        let birdhouse = this.physics.add.image(500, 200, 'birdhouse');
+        birdhouse = this.physics.add.image(400, 150, 'birdhouse');
         birdhouse.body.setAllowGravity(0, 0);
-
-
         platforms.create(700, 400, 'branch').flipX = true;
         platforms.create(500, 500, 'branch');
         platforms.create(300, 700, 'branch');
