@@ -15,7 +15,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('house', 'assets/images/StreetLevel/house.png');
         this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
         this.load.image('cape', 'assets/images/cape.png');
-        this.load.spritesheet('animcape', 'assets/images/StreetLevel/cape_red_Sprite_streetlevel.png', {
+        this.load.spritesheet('street_animcape', 'assets/images/StreetLevel/cape_red_Sprite_streetlevel.png', {
             frameWidth: 87,
             frameHeight: 65,
             spacing: 14
@@ -162,7 +162,7 @@ class StreetLevel extends BaseLevelScene {
         this.anims.remove('cape');
         this.anims.create({
             key: 'cape',
-            frames: this.anims.generateFrameNumbers('animcape', {start: 0, end: 3}),
+            frames: this.anims.generateFrameNumbers('street_animcape', {start: 0, end: 3}),
             frameRate: 10,
             repeat: -1,
         });
