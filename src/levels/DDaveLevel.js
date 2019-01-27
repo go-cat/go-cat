@@ -262,7 +262,7 @@ class DDaveLevel extends BaseLevelScene {
         }
         this.millis += 1;
 
-        if (this.shootMillis > 50) {
+        if (this.shootMillis > 60) {
             this.shootFlag = false;
             this.shootMillis = 0;
         }
@@ -394,7 +394,7 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     shoot() {
-        if (!this.shootFlag) {
+        if (!(this.shootFlag)) {
             if (this.ammo > 0) {
                 this.wool = this.physics.add.sprite(this.cat.x, this.cat.y, "wool");
                 this.wool.body.allowGravity = false;
