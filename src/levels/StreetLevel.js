@@ -215,6 +215,11 @@ class StreetLevel extends BaseLevelScene {
 
         // Cape Mode!
         if (this.capeMode) {
+            if (this.cat.body.velocity.x == 0 && this.cat.body.velocity.y == 0) {
+                this.cape.visible = false;
+            } else {
+                this.cape.visible = true;
+            }
             this.cape.anims.play('cape', true);
             let cat_direction = -1;
             if (this.cat.flipX === true) {
