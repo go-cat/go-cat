@@ -113,7 +113,7 @@ class DDaveLevel extends BaseLevelScene {
 
 
         // Create HiddenCape
-        this.cape = this.physics.add.sprite(200,2800,"cape");//95*32,96*32,"cape");
+        this.cape = this.physics.add.sprite(95*32,96*32,"cape"); //200,2850,"cape");
         this.cape.body.allowGravity = false;
         this.capeMode = false
 
@@ -148,18 +148,21 @@ class DDaveLevel extends BaseLevelScene {
 
         this.physics.add.overlap(this.cat, this.miceSprites, this.collectMouse, null, this);
         this.physics.add.overlap(this.cat, this.cape, () =>{
-            this.capeMode = true;
-            // Music!
-            this.music.stop();
-            this.music = this.sound.add('backgroundmusidavecape');
-            try {
-                this.music.play();
-            } catch {
-                console.log('no audio possible');
+            if(!this.capeMode) {
+                this.capeMode = true;
+                // Music!
+                this.music.stop();
+                this.music = this.sound.add('backgroundmusidavecape');
+                try {
+                    this.music.play();
+                } catch {
+                    console.log('no audio possible');
+                }
+                this.ammo = 100;
+                this.cat.body.gravity.set(0, 200);
+                this.catSpeed = 350;
+                ;
             }
-            this.ammo = 100;
-            this.cat.body.gravity.set(0,200);
-            this.catSpeed = 350;;
             }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
             this.addScore(100);
@@ -193,8 +196,8 @@ class DDaveLevel extends BaseLevelScene {
 
         if (this.capeMode){
             this.cape.anims.play('cape', true);
-            this.cape.setX(-this.shootDirection * 12 +this.cat.x);
-            this.cape.setY(this.cat.y-5);
+            this.cape.setX(-this.shootDirection * 13 +this.cat.x);
+            this.cape.setY(this.cat.y-2);
         }
         if (this.cat.velocity < 10){
             try {
