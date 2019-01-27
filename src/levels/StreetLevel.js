@@ -14,7 +14,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
         this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
-        this.load.image('cape', 'assets/images/cape_red.png');
+        this.load.image('cape', 'assets/images/cape.png');
         this.load.spritesheet('animcape', 'assets/images/capeSprite.png', { frameWidth: 64, frameHeight: 64});
 
         this.load.audio('backgroundmusicstreet', 'assets/sounds/songs/Big_Rock.ogg');
@@ -177,14 +177,18 @@ class StreetLevel extends BaseLevelScene {
         this.physics.add.collider(this.cat, this.hiddenwall);
 
         this.physics.add.overlap(this.cat, this.cape, ()=>{
-            this.capeMode = true;
-            // Music!
-            this.music.stop();
-            this.music = this.sound.add('backgroundmusicstreetcape');
-            try {
-                this.music.play();
-            } catch {
-                console.log('no audio possible');
+            if(!this.capeMode) {
+                this.capeMode = true;
+                this.cape.displayWidth = 96;
+                this.cape.displayHeight = 96;
+                // Music!
+                this.music.stop();
+                this.music = this.sound.add('backgroundmusicstreetcape');
+                try {
+                    this.music.play();
+                } catch {
+                    console.log('no audio possible');
+                }
             }
         }, null, this);
 
