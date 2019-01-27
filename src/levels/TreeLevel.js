@@ -18,7 +18,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/house_home_transparent.png');
 
         // Sound
-        this.load.audio('backgroundmusictree', 'assets/sounds/songs/A_Mission.mp3');
+        this.load.audio('backgroundmusictree', 'assets/sounds/songs/A_Mission.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
     }
 

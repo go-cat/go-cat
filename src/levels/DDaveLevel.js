@@ -19,7 +19,7 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('wool', 'assets/images/ball_wool.png');
 
         // Audio
-        this.load.audio('backgroundmusidave', 'assets/sounds/songs/Industrial_Cinematic.mp3');
+        this.load.audio('backgroundmusidave', 'assets/sounds/songs/Industrial_Cinematic2.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
@@ -54,6 +54,7 @@ class DDaveLevel extends BaseLevelScene {
         this.shootFlag = false;
         this.shootMillis = 0;
         this.shootDirection = 1;
+        this.ammo = 20;
 
         // The cat and its settings
         this.cat = this.physics.add.sprite(200, 3000, 'cat');
@@ -308,12 +309,19 @@ class DDaveLevel extends BaseLevelScene {
 
     shoot(){
         if (!this.shootFlag){
-            this.wool = this.physics.add.sprite(this.cat.x,this.cat.y,"wool");
-            this.wool.body.allowGravity = false;
-            this.wool.setVelocityX (1000*this.shootDirection);//this.cat.velocityX*10);
-            this.wool.setVelocityY = this.cat.velocityY*10;
-            this.shootFlag = true;
-            this.physics.add.overlap(this.wool, this.dogsSprites, this.woolHitDog, null, this);
+            if (this.ammo > 0){
+                this.wool = this.physics.add.sprite(this.cat.x,this.cat.y,"wool");
+                this.wool.body.allowGravity = false;
+                this.wool.setVelocityX (1000*this.shootDirection);//this.cat.velocityX*10);
+                this.wool.setVelocityY = this.cat.velocityY*10;
+                this.shootFlag = true;
+                this.physics.add.overlap(this.wool, this.dogsSprites, this.woolHitDog, null, this);
+                this.ammo -= 1;
+            }
+            else{
+                // TODO: print something like OUT OF AMMO
+                // TODO: Maybe show an ammo-counter
+            }
         }
     }
 

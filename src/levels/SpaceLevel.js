@@ -15,7 +15,7 @@ class SpaceLevel extends BaseLevelScene {
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
-        this.load.audio('backgroundmusicspace', 'assets/sounds/songs/Iron_Horse.mp3');
+        this.load.audio('backgroundmusicspace', 'assets/sounds/songs/Iron_Horse.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
