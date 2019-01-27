@@ -13,7 +13,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('branch', 'assets/images/TreeLevel/branch.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
-        this.load.spritesheet('mouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
+        this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
         this.load.image('birdhouse', 'assets/images/bird_house.png');
         this.load.image('goal', 'assets/images/house_home_transparent.png');
@@ -162,7 +162,7 @@ class TreeLevel extends BaseLevelScene {
         this.anims.remove('mousewalk');
         this.anims.create({
             key: 'mousewalk',
-            frames: this.anims.generateFrameNumbers('mouse', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('animmouse', { start: 0, end: 1 }),
             frameRate: 10,
             repeat: -1
         });
