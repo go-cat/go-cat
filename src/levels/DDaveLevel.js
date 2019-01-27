@@ -66,6 +66,7 @@ class DDaveLevel extends BaseLevelScene {
         this.shootMillis = 0;
         this.shootDirection = 1;
         this.ammo = 8;
+        this.woolimages = [];
 
         // The cat and its settings
         this.cat = this.physics.add.sprite(200, 3000, 'cat');
@@ -132,7 +133,7 @@ class DDaveLevel extends BaseLevelScene {
         // Create HiddenCape
         this.cape = this.physics.add.sprite(95 * 32, 96 * 32, "cape"); //200,2850,"cape");
         this.cape.body.allowGravity = false;
-        this.capeMode = false
+        this.capeMode = false;
 
         // Create a Mice-Object-Array
         this.mice = [];
@@ -179,7 +180,12 @@ class DDaveLevel extends BaseLevelScene {
                 this.ammo = 8192;
                 this.cat.body.gravity.set(0, 200);
                 this.catSpeed = 350;
-                ;
+                // Delete all woolimages
+                this.woolimages.forEach( (woolimage) => { woolimage.visible = false; } );
+                // Show a green wool
+                let greenwoolimage = this.add.image(800 - 16, 64, 'wool');
+                greenwoolimage.setTint(0x00ff00);
+                greenwoolimage.setScrollFactor(0);
             }
         }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
@@ -269,7 +275,7 @@ class DDaveLevel extends BaseLevelScene {
         if (this.ammo > 1000) {
             // green wool means unlimited wool
         } else {
-            if (!this.woolimages) {
+            if (!this.woolimages.length) {
                 // Create pictures of wool
                 this.woolimages = [];
                 for (let i = 0; i < this.ammo; i++) {
@@ -389,21 +395,22 @@ class DDaveLevel extends BaseLevelScene {
                 this.shootFlag = true;
                 this.physics.add.overlap(this.wool, this.dogsSprites, this.woolHitDog, null, this);
                 this.ammo -= 1;
-                // Delete the picture of the wool
-                let found = 0;
-                for (let i = 0; i < this.woolimages.length; i++) {
-                    if (this.woolimages[i].visible == false) {
-                        // Delete the one before
-                        this.woolimages[i-1].visible = false;
-                        found = 1;
-                        break
+                if (!this.capeMode) {
+                    // Delete the picture of the wool
+                    let found = 0;
+                    for (let i = 0; i < this.woolimages.length; i++) {
+                        if (this.woolimages[i].visible == false) {
+                            // Delete the one before
+                            this.woolimages[i-1].visible = false;
+                            found = 1;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        // None found? Delete the last one!
+                        this.woolimages[this.woolimages.length-1].visible = false;
                     }
                 }
-                if (!found) {
-                    // None found? Delete the last one!
-                    this.woolimages[this.woolimages.length-1].visible = false;
-                }
-
                 try {
                     this.sound.play("spit");
                 } catch {
