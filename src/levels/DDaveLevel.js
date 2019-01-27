@@ -193,6 +193,8 @@ class DDaveLevel extends BaseLevelScene {
                 let greenwoolimage = this.add.image(800 - 16, 64, 'wool');
                 greenwoolimage.setTint(0x00ff00);
                 greenwoolimage.setScrollFactor(0);
+                greenwoolimage.scaleY = 2;
+                greenwoolimage.scaleX = 2;
             }
         }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
