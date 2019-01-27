@@ -67,6 +67,9 @@ class BaseLevelScene extends Phaser.Scene {
                 case '6':
                     this.startNextLevel(false, 6);
                     break;
+                case '7':
+                    this.startNextLevel(false, 7);
+                    break;
                 case 'ArrowUp':
                 case 'w':
                     this.buttonPressedUp(true);

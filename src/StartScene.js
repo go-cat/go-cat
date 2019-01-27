@@ -19,7 +19,7 @@ class StartScene extends BaseLevelScene {
     create() {
         this.add.image(400, 300, 'background');
         this.add.image(400, 300, 'logo');
-        this.startButton = this.add.image(400, 505, 'start_button');
+        this.startButton = this.add.image(400, 508, 'start_button');
         this.startButton.setInteractive();
 
         this.startButton.on('pointerover', (event) => {
