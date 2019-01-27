@@ -20,6 +20,7 @@ class LowTreeLevel extends BaseLevelScene {
         this.load.image('goal', 'assets/images/house_home_transparent.png');
 
         // Spritesheet
+        this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
 
         // Audio
