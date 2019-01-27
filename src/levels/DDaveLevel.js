@@ -217,6 +217,11 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         if (this.capeMode) {
+            if (this.cat.body.velocity.x == 0) {
+                this.cape.visible = false;
+            } else {
+                this.cape.visible = true;
+            }
             this.cape.anims.play('cape', true);
             this.cape.setX(-this.shootDirection * 13 + this.cat.x);
             this.cape.setY(this.cat.y - 2);
@@ -334,7 +339,7 @@ class DDaveLevel extends BaseLevelScene {
         } catch {
             console.log('no audio possible');
         }
-
+        this.cape.visible = false;
         this.catDies(cat);
     }
 
