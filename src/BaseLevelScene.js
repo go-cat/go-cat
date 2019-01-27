@@ -44,13 +44,11 @@ class BaseLevelScene extends Phaser.Scene {
     create() {
         this.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
-                // TODO remove 'cheat codes'
                 case 'Escape':
                     this.startNextLevel(false, 0);
                     break;
                 case '1':
                 case 'Enter':
-                case ' ':
                     this.catLoosesLive();
                     this.startNextLevel(false, 1);
                     break;
