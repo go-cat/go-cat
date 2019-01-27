@@ -300,11 +300,11 @@ class BaseLevelScene extends Phaser.Scene {
     }
 
     catLoosesLive() {
-        if (this.remainingLives === 0) {
+        this.remainingLives--;
+
+        if (this.remainingLives < 0) {
             this.startNextLevel(false, this.scenes.indexOf('EndScene'));
         }
-
-        this.remainingLives--;
 
         for (let i = this.catLiveImages.length - 1; i >= 0; i--) {
             this.catLiveImages[i].visible = (i < this.remainingLives);
