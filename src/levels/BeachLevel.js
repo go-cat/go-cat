@@ -11,7 +11,7 @@ class BeachLevel extends BaseLevelScene {
         this.load.tilemapTiledJSON("beachMap","assets/maps/BeachLevel/BeachLevel.json");
         this.load.image('beach',"assets/images/BeachLevel/BeachTileset.jpg");
         this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('dogImage', 'assets/images/BeachLevel/dog.png');
+        this.load.image('beachDog', 'assets/images/BeachLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
@@ -116,7 +116,7 @@ class BeachLevel extends BaseLevelScene {
             let dogStartY = this.dogSpawnLayer.objects[i].y-40;
             let dogPath = this.dogSpawnLayer.objects[i].width;
             let dogSpeed = Phaser.Math.Between(30, 60);
-            let sprite = this.physics.add.sprite(dogStartX, dogStartY,"dogImage");
+            let sprite = this.physics.add.sprite(dogStartX, dogStartY,"beachDog");
             sprite.setSize(sprite.width*0.8, sprite.height*0.8);
             this.dogsSprites.add(sprite);
             sprite.setVelocityX(dogSpeed);
