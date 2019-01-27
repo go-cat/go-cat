@@ -24,13 +24,21 @@ class LowTreeLevel extends BaseLevelScene {
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
 
         // Audio
-        this.load.audio('backgroundmusicspace', 'assets/sounds/songs/Iron_Horse.mp3');
+        this.load.audio('backgroundmusiclowtree', 'assets/sounds/songs/Iron_Horse.mp3');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
     }
 
     create() {
+        // Music!
+        this.music = this.sound.add('backgroundmusiclowtree');
+        try {
+            this.music.play();
+        } catch {
+            console.log('no audio possible');
+        }
+    
         // layer and map for the Tilemap
         let map = this.make.tilemap({ key: "lowTree_map", tileWidth: 32, tileHeight: 32 });
         let tileset = map.addTilesetImage("lowTreeTileset","tiles");
