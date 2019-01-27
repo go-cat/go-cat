@@ -154,6 +154,7 @@ class StreetLevel extends BaseLevelScene {
             } catch {
                 console.log('no audio possible');
             }
+            this.cape.visible = false;
             this.catDies(this.cat);
         });
 
