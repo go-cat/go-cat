@@ -10,11 +10,12 @@ class DDaveLevel extends BaseLevelScene {
         this.load.tilemapTiledJSON("mapDave","assets/maps/DDaveLevel/dave.json");
         this.load.image('tilesDave',"assets/images/DDaveLevel/DDaveTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
+        this.load.image('spaceDogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('cape', 'assets/images/cape.png');
         this.load.spritesheet('animcape', 'assets/images/capeSprite.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
         this.load.image('home', 'assets/images/house_home_transparent.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
 
@@ -85,6 +86,13 @@ class DDaveLevel extends BaseLevelScene {
             frames: [ { key: 'animcat', frame: 0 } ],
             frameRate: 20,
         });
+        this.anims.remove('mouseWalk');
+        this.anims.create({
+            key: 'mouseWalk',
+            frames: this.anims.generateFrameNumbers('animouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1,
+        });
 
         // Cape
         this.anims.remove('cape');
@@ -130,6 +138,7 @@ class DDaveLevel extends BaseLevelScene {
             sprite.body.gravity.y=1000;
             this.miceSprites.add(sprite);
             sprite.setVelocityX(mouseSpeed);
+            sprite.anims.play('mouseWalk', true);
             this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
@@ -313,7 +322,7 @@ class DDaveLevel extends BaseLevelScene {
             let dogStartX = this.dogSpawnLayer.objects[i].x;
             let dogStartY = this.dogSpawnLayer.objects[i].y - 40;
             let dogSpeed = Phaser.Math.Between(60, 200);
-            let sprite = this.physics.add.sprite(dogStartX, dogStartY, "dogImage");
+            let sprite = this.physics.add.sprite(dogStartX, dogStartY, "spaceDogImage");
             let dogDirection = 1;
             if (this.dogSpawnLayer.objects[i].properties.left === true) {
                 dogDirection = -1;

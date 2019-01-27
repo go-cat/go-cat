@@ -9,9 +9,10 @@ class SpaceLevel extends BaseLevelScene {
         this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
         this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
+        this.load.image('dogImage', 'assets/images/SpaceLevel/space_dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
+        this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
@@ -70,6 +71,13 @@ class SpaceLevel extends BaseLevelScene {
             frameRate: 10,
             repeat: -1,
         });
+        this.anims.remove('mouseWalk');
+        this.anims.create({
+            key: 'mouseWalk',
+            frames: this.anims.generateFrameNumbers('animouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('stand');
         this.anims.create({
             key: 'stand',
@@ -122,6 +130,7 @@ class SpaceLevel extends BaseLevelScene {
             sprite.setGravityY(1000);
             this.miceSprites.add(sprite);
             sprite.setVelocityX(mouseSpeed);
+            sprite.anims.play('mouseWalk', true);
             this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
