@@ -65,7 +65,7 @@ class DDaveLevel extends BaseLevelScene {
         this.shootFlag = false;
         this.shootMillis = 0;
         this.shootDirection = 1;
-        this.ammo = 20;
+        this.ammo = 8;
 
         // The cat and its settings
         this.cat = this.physics.add.sprite(200, 3000, 'cat');
@@ -168,7 +168,8 @@ class DDaveLevel extends BaseLevelScene {
                 } catch {
                     console.log('no audio possible');
                 }
-                this.ammo = 100;
+                // Give unlimited wool (kind of!)
+                this.ammo = 8192;
                 this.cat.body.gravity.set(0, 200);
                 this.catSpeed = 350;
                 ;
@@ -248,6 +249,20 @@ class DDaveLevel extends BaseLevelScene {
                 if (currentDog.time < 0) {
                     currentDog.sprite.disableBody(true, true);
                     this.dogs.splice(i, 1);
+                }
+            }
+        }
+
+        // Show wool in HUD
+        if (this.ammo > 1000) {
+            // green wool means unlimited wool
+        } else {
+            if (!this.woolimages) {
+                // Create pictures of wool
+                this.woolimages = [];
+                for (let i = 0; i < this.ammo; i++) {
+                    this.woolimages[i] = this.add.image(800 - 16 - (i * (8 + 24)), 64, 'wool');
+                    this.woolimages[i].setScrollFactor(0);
                 }
             }
         }
@@ -355,6 +370,21 @@ class DDaveLevel extends BaseLevelScene {
                 this.shootFlag = true;
                 this.physics.add.overlap(this.wool, this.dogsSprites, this.woolHitDog, null, this);
                 this.ammo -= 1;
+                // Delete the picture of the wool
+                let found = 0;
+                for (let i = 0; i < this.woolimages.length; i++) {
+                    if (this.woolimages[i].visible == false) {
+                        // Delete the one before
+                        this.woolimages[i-1].visible = false;
+                        found = 1;
+                        break
+                    }
+                }
+                if (!found) {
+                    // None found? Delete the last one!
+                    this.woolimages[this.woolimages.length-1].visible = false;
+                }
+
                 try {
                     this.sound.play("spit");
                 } catch {
@@ -366,8 +396,6 @@ class DDaveLevel extends BaseLevelScene {
                 } catch {
                     console.log('no audio possible');
                 }
-                // TODO: print something like OUT OF AMMO
-                // TODO: Maybe show an ammo-counter
             }
         }
     }
