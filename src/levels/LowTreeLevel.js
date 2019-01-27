@@ -1,6 +1,6 @@
 "use strict";
 
-class TreeLevel extends BaseLevelScene {
+class LowTreeLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'LowTreeLevel' })
     }
