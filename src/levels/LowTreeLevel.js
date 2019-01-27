@@ -100,15 +100,16 @@ class LowTreeLevel extends BaseLevelScene {
         this.birds = this.physics.add.group();
         this.birdAreas = []
         for (let i = 0; i < this.birdSpawnLayer.objects.length; i++) {
+          let areaStartX, areaSpeed;
           let areaStartY = this.birdSpawnLayer.objects[i].y-32;
           if (this.miceSpawnLayer.objects[i].name === "left") {
             // flying to the left
-            let areaStartX = this.birdSpawnLayer.objects[i].x + this.birdSpawnLayer.objects[i].width;
-            let areaSpeed = Phaser.Math.Between(-50, -80);
+            areaStartX = this.birdSpawnLayer.objects[i].x + this.birdSpawnLayer.objects[i].width;
+            areaSpeed = Phaser.Math.Between(-50, -80);
           } else {
             // flying to the right
-            let areaStartX = this.birdSpawnLayer.objects[i].x;
-            let areaSpeed = Phaser.Math.Between(50, 80);
+            areaStartX = this.birdSpawnLayer.objects[i].x;
+            areaSpeed = Phaser.Math.Between(50, 80);
           }
           this.birdAreas.push({"startX" : areaStartX, "startY" : areaStartY, "speed" : areaSpeed});
         }
