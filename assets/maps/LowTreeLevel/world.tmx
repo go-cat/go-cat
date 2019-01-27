@@ -2,6 +2,11 @@
 <map version="1.2" tiledversion="1.2.1" orientation="orthogonal" renderorder="right-down" width="25" height="75" tilewidth="32" tileheight="32" infinite="0" nextlayerid="13" nextobjectid="140">
  <tileset firstgid="1" name="lowTreeTileset" tilewidth="32" tileheight="32" tilecount="100" columns="10">
   <image source="../../images/LowTreeLevel/lowTreeTileset.png" width="320" height="320"/>
+  <tile id="0">
+   <properties>
+    <property name="collides" type="bool" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer id="6" name="background" width="25" height="75" locked="1">
   <data encoding="csv">
@@ -226,27 +231,42 @@
   <object id="73" x="131.25" y="2358.5"/>
  </objectgroup>
  <objectgroup id="8" name="birdSpawn">
-  <object id="132" name="right" x="0" y="768" width="800" height="64"/>
-  <object id="133" name="left" x="0" y="1088" width="800" height="64"/>
-  <object id="134" name="right" x="0" y="1824" width="800" height="64"/>
+  <object id="132" name="right" x="0" y="768" width="800" height="64">
+   <properties>
+    <property name="spawnRate" type="int" value="200"/>
+    <property name="speed" type="int" value="80"/>
+   </properties>
+  </object>
+  <object id="133" name="left" x="0" y="1088" width="800" height="64">
+   <properties>
+    <property name="spawnRate" type="int" value="230"/>
+    <property name="speed" type="int" value="-60"/>
+   </properties>
+  </object>
+  <object id="134" name="right" x="0" y="1824" width="800" height="64">
+   <properties>
+    <property name="spawnRate" type="int" value="300"/>
+    <property name="speed" type="int" value="80"/>
+   </properties>
+  </object>
  </objectgroup>
- <objectgroup id="11" name="miceSpawn" locked="1">
+ <objectgroup id="11" name="miceSpawn">
   <object id="99" x="576" y="64" width="64" height="32"/>
-  <object id="100" x="736" y="320" width="32" height="32"/>
+  <object id="100" x="720" y="320" width="32" height="32"/>
   <object id="101" x="288" y="416" width="32" height="32"/>
   <object id="102" x="384" y="416" width="128" height="32"/>
   <object id="103" x="544" y="320" width="64" height="32"/>
-  <object id="104" x="32" y="384" width="64" height="32"/>
+  <object id="104" x="48" y="384" width="48" height="32"/>
   <object id="105" x="640" y="992" width="96" height="32"/>
   <object id="108" x="160" y="672" width="128" height="32"/>
   <object id="109" x="608" y="1280" width="32" height="32"/>
   <object id="110" x="640" y="1280" width="32" height="32"/>
   <object id="111" x="96" y="1280" width="96" height="32"/>
   <object id="112" x="256" y="1344" width="64" height="32"/>
-  <object id="115" x="32" y="1728" width="64" height="32"/>
+  <object id="115" x="48" y="1728" width="64" height="32"/>
   <object id="116" x="96" y="1728" width="64" height="32"/>
-  <object id="123" x="320" y="1952" width="96" height="32"/>
-  <object id="124" x="384" y="1952" width="96" height="32"/>
+  <object id="123" x="336" y="1952" width="96" height="32"/>
+  <object id="124" x="368" y="1952" width="96" height="32"/>
   <object id="125" x="352" y="1952" width="96" height="32"/>
   <object id="126" x="256" y="2240" width="64" height="32"/>
   <object id="127" x="384" y="2304" width="64" height="32"/>
