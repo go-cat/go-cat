@@ -83,6 +83,13 @@ class DDaveLevel extends BaseLevelScene {
             frameRate: 10,
             repeat: -1,
         });
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('stand');
         this.anims.create({
             key: 'stand',
@@ -211,6 +218,11 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         if (this.capeMode) {
+            if (this.cat.body.velocity.x == 0) {
+                this.cape.visible = false;
+            } else {
+                this.cape.visible = true;
+            }
             this.cape.anims.play('cape', true);
             this.cape.setX(-this.shootDirection * 13 + this.cat.x);
             this.cape.setY(this.cat.y - 2);
@@ -275,7 +287,11 @@ class DDaveLevel extends BaseLevelScene {
             this.shootDirection = -1;
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
+
         }
 
         if (this.cat.flipX === false) {
@@ -291,7 +307,10 @@ class DDaveLevel extends BaseLevelScene {
             this.shootDirection = 1;
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {
@@ -335,7 +354,7 @@ class DDaveLevel extends BaseLevelScene {
         } catch {
             console.log('no audio possible');
         }
-
+        this.cape.visible = false;
         this.catDies(cat);
     }
 

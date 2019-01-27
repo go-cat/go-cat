@@ -15,7 +15,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.image('house', 'assets/images/StreetLevel/house.png');
         this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
         this.load.image('cape', 'assets/images/cape.png');
-        this.load.spritesheet('animcape', 'assets/images/StreetLevel/cape_red_Sprite_streetlevel.png', {
+        this.load.spritesheet('street_animcape', 'assets/images/StreetLevel/cape_red_Sprite_streetlevel.png', {
             frameWidth: 87,
             frameHeight: 65,
             spacing: 14
@@ -154,6 +154,7 @@ class StreetLevel extends BaseLevelScene {
             } catch {
                 console.log('no audio possible');
             }
+            this.cape.visible = false;
             this.catDies(this.cat);
         });
 
@@ -161,7 +162,7 @@ class StreetLevel extends BaseLevelScene {
         this.anims.remove('cape');
         this.anims.create({
             key: 'cape',
-            frames: this.anims.generateFrameNumbers('animcape', {start: 0, end: 3}),
+            frames: this.anims.generateFrameNumbers('street_animcape', {start: 0, end: 3}),
             frameRate: 10,
             repeat: -1,
         });
@@ -214,6 +215,11 @@ class StreetLevel extends BaseLevelScene {
 
         // Cape Mode!
         if (this.capeMode) {
+            if (this.cat.body.velocity.x == 0 && this.cat.body.velocity.y == 0) {
+                this.cape.visible = false;
+            } else {
+                this.cape.visible = true;
+            }
             this.cape.anims.play('cape', true);
             let cat_direction = -1;
             if (this.cat.flipX === true) {
@@ -232,7 +238,7 @@ class StreetLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand');
-        }
+            }
 
         if (this.cat.flipX === false) {
             this.cat.flipX = true;
@@ -247,7 +253,7 @@ class StreetLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand');
-        }
+            }
 
         if (this.cat.flipX === true) {
             this.cat.flipX = false;

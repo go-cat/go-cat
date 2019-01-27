@@ -23,6 +23,7 @@ class GrassLevel extends BaseLevelScene {
     }
 
     create() {
+        this.inAir = false;
         // Music!
         this.music = this.sound.add('backgroundmusicgrass');
         try {
@@ -55,6 +56,13 @@ class GrassLevel extends BaseLevelScene {
         this.cat.body.gravity.y = 300;
         this.cat.scaleY = 0.6;
         this.cat.scaleX = 0.6;
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
@@ -191,7 +199,10 @@ class GrassLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -205,7 +216,10 @@ class GrassLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {
@@ -236,5 +250,13 @@ class GrassLevel extends BaseLevelScene {
 
     spawnObject(x, y, sprite, group) {
         group.create(x * 32 + 16, y * 32, sprite);
+    }
+    update(time, delta){
+        super.update(time, delta);
+
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 4) {
+            this.inAir = true;
+        }
     }
 }
