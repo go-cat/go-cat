@@ -20,6 +20,7 @@ class TreeLevel extends BaseLevelScene {
         // Sound
         this.load.audio('backgroundmusictree', 'assets/sounds/songs/A_Mission.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
+        this.load.audio("poopsound", "assets/sounds/animals/bird_poop.ogg");
     }
 
     create() {
@@ -190,6 +191,12 @@ class TreeLevel extends BaseLevelScene {
                 birdpoop.setMass(0.1);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
+                
+                try {
+                    this.sound.play("poopsound");
+                } catch {
+                    console.log('no audio possible');
+                }
             }
             /* bird is gone */
             if (this.bird.x < 0 || this.bird.x > this.game.config.width) {
