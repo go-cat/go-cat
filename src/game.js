@@ -23,6 +23,7 @@ let config = {
         SpaceLevel,
         DDaveLevel,
         LowTreeLevel,
+        BeachLevel,
         EndScene,
     ],
 };

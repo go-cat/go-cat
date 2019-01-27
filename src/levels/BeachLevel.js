@@ -1,15 +1,17 @@
-class SpaceLevel extends BaseLevelScene {
+class BeachLevel extends BaseLevelScene {
     constructor() {
-        super({ key: 'SpaceLevel' })
+        super({ key: 'BeachLevel' })
     }
 
     preload() {
         super.preload();
 
-        this.load.tilemapTiledJSON("map","assets/maps/SpaceLevel/world.json");
-        this.load.image('tiles',"assets/images/SpaceLevel/spaceTileset.png");
+        this.load.tilemapTiledJSON("beachMap","assets/maps/BeachLevel/BeachLevel.json");
+        this.load.image('Cliff',"assets/images/BeachLevel/CliffTilset.png");
+        this.load.image('Ground',"assets/images/BeachLevel/GroundTileset.png");
+        this.load.image('Water',"assets/images/BeachLevel/WaterTileset.png");
         this.load.image('mouse', 'assets/images/mouse_left.png');
-        this.load.image('dogImage', 'assets/images/SpaceLevel/space_dog.png');
+        this.load.image('dogImage', 'assets/images/BeachLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
@@ -35,11 +37,15 @@ class SpaceLevel extends BaseLevelScene {
         }
 
         // layer and map for the Tilemap
-        let map = this.make.tilemap({ key: "map", tileWidth: 16, tileHeight: 16 });
-        let tileset = map.addTilesetImage("spacetileset","tiles");
+        let beachMap = this.make.tilemap({ key: "beachMap", tileWidth: 16, tileHeight: 16 });
+        let tileset1 = beachMap.addTilesetImage("beachtileset","Cliff");
+        let tileset2 = beachMap.addTilesetImage("beachtileset","Ground");
+        let tileset3 = beachMap.addTilesetImage("beachtileset","Water");
 
-        let dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
-        let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
+        //let dynamicLayer = beachMap.createDynamicLayer("background", tileset, 0, 0);
+        let collisionLayer2 = beachMap.createStaticLayer("obstacles", tileset1, 0, 0);
+        let collisionLayer = beachMap.createStaticLayer("obstacles", tileset2, 0, 0);
+        let collisionLayer3 = beachMap.createStaticLayer("obstacles", tileset3, 0, 0);
 
         collisionLayer.setCollisionByProperty({ collides: true });
 
@@ -67,7 +73,7 @@ class SpaceLevel extends BaseLevelScene {
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
-            frames: this.anims.generateFrameNumbers('animcat', { start: 1, end: 4 }),
+            frames: this.anims.generateFrameNumbers('animcat', { start: 0, end: 3 }),
             frameRate: 10,
             repeat: -1,
         });
@@ -87,16 +93,16 @@ class SpaceLevel extends BaseLevelScene {
 
 
         // "Read" the Object-Layers
-        this.dogSpawnLayer =  map.objects.filter((maplayer)=> {
-            return maplayer.name == "dogspawn";
+        this.dogSpawnLayer =  beachMap.objects.filter((maplayer)=> {
+            return maplayer.name == "dogSpawn";
         })[0];
-        this.miceSpawnLayer =  map.objects.filter((maplayer)=> {
-            return maplayer.name == "micespawn";
+        this.miceSpawnLayer =  beachMap.objects.filter((maplayer)=> {
+            return maplayer.name == "miceSpawn";
         })[0];
-        this.groundLayer =  map.objects.filter((maplayer)=> {
+        this.groundLayer =  beachMap.objects.filter((maplayer)=> {
             return maplayer.name == "ground";
         })[0];
-        this.safezoneLayer =  map.objects.filter((maplayer)=> {
+        this.safezoneLayer =  beachMap.objects.filter((maplayer)=> {
             return maplayer.name == "safezone";
         })[0];
 

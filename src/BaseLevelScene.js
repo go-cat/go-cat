@@ -21,6 +21,7 @@ class BaseLevelScene extends Phaser.Scene {
             'SpaceLevel',
             'DDaveLevel',
             'LowTreeLevel',
+            'BeachLevel',
             'EndScene',
         ];
         this.currentSceneIndex = this.scenes.indexOf(config.key);
@@ -37,6 +38,7 @@ class BaseLevelScene extends Phaser.Scene {
 
         this.load.image('touch_arrow', 'assets/images/touch_arrow_right.png');
         this.load.image('cat_lives', 'assets/images/cat_lives.png');
+        this.load.image('cats_hump', 'assets/images/cats_hump.png');
     }
 
     create() {
@@ -69,6 +71,9 @@ class BaseLevelScene extends Phaser.Scene {
                     break;
                 case '7':
                     this.startNextLevel(false, 7);
+                    break;
+                case '8':
+                    this.startNextLevel(false, 8);
                     break;
                 case 'ArrowUp':
                 case 'w':
@@ -314,7 +319,11 @@ class BaseLevelScene extends Phaser.Scene {
         this.catLoosesLive();
 
         this.physics.pause();
-        cat.setTint(0xff0000);
+        cat.visible = false;
+        let hump_cat = this.physics.add.sprite(cat.x, cat.y, 'cats_hump');
+        // magic numbers, don't change!
+        hump_cat.displayWidth = cat.displayWidth * 0.9175257731958763;
+        hump_cat.displayHeight = cat.displayHeight * 0.8514851485148515;
 
         try {
             this.sound.play('angry_cat');
@@ -329,7 +338,6 @@ class BaseLevelScene extends Phaser.Scene {
                 console.log('no audio possible');
             }
 
-            cat.setTint(0xffffff);
             this.physics.resume();
 
             this.startNextLevel(false, this.currentSceneIndex);
