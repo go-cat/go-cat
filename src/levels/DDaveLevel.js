@@ -54,7 +54,9 @@ class DDaveLevel extends BaseLevelScene {
         this.cameras.main.setBounds(0, 0, 3200, 3200);
 
         // Variables
+        this.inAir = false;
         this.catGravity = 500;
+        this.dogGravity = 800;
         this.catJump = 400;
         this.catSpeed = 260;
         this.millis = 0;
@@ -135,7 +137,7 @@ class DDaveLevel extends BaseLevelScene {
             let mouseSpeed = Phaser.Math.Between(50, 80);
             let sprite = this.physics.add.sprite(mouseStartX, mouseStartY,"mouse");
             sprite.flipX = true;
-            sprite.body.gravity.y=1000;
+            sprite.body.gravity.y = this.dogGravity;
             this.miceSprites.add(sprite);
             sprite.setVelocityX(mouseSpeed);
             sprite.anims.play('mouseWalk', true);
@@ -187,6 +189,10 @@ class DDaveLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 1){
+            this.inAir = true;
+        }
         for(let i =0; i<this.mice.length; i++){
             let currentMouse = this.mice[i];
             if (currentMouse["sprite"].x > currentMouse["startX"]+currentMouse["path"]) {
@@ -280,7 +286,7 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.cat.body.velocity.y) < 1) {
+        if (pressed && !this.inAir) {
             this.cat.setVelocityY(-this.catJump);
             try {
                 this.sound.play("jump");
@@ -329,7 +335,7 @@ class DDaveLevel extends BaseLevelScene {
                 sprite.flipX = true;
             }
             sprite.setSize(sprite.width * 0.8, sprite.height * 0.8);
-            sprite.body.gravity.set(0,800);
+            sprite.body.gravity.set(0,this.dogGravity);
             this.dogsSprites.add(sprite);
             sprite.setVelocityX(dogSpeed * dogDirection);
             sprite.scaleY = 0.6;
