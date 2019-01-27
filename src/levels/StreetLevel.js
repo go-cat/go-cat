@@ -13,7 +13,7 @@ class StreetLevel extends BaseLevelScene {
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
         this.load.image('goal', 'assets/images/house_home_transparent.png');
         this.load.image('house', 'assets/images/StreetLevel/house.png');
-        this.load.image('mouse', 'assets/images/mouse_left.png');
+        this.load.spritesheet('animmouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 });
         this.load.image('cape', 'assets/images/cape_red.png');
         this.load.spritesheet('animcape', 'assets/images/capeSprite.png', { frameWidth: 64, frameHeight: 64});
 
@@ -84,11 +84,22 @@ class StreetLevel extends BaseLevelScene {
 
         // Mice
         this.mice = this.physics.add.group();
+        this.anims.remove('mousewalk');
+        this.anims.create({
+            key: 'mousewalk',
+            frames: this.anims.generateFrameNumbers('animmouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
         for (let i = 0; i < 20; i++) {
             let x = Phaser.Math.Between(50, this.game.config.width-50);
             let y = Phaser.Math.Between(50, worldheight-50);
-            let mouse = this.mice.create(x, y, 'mouse');
+            let mouse = this.mice.create(x, y, 'animmouse');
             mouse.body.setAllowGravity(0, 0);
+            mouse.anims.play('mousewalk');
+            if (i%2 == 0) {
+                mouse.flipX = true;
+            }
         }
 
         this.physics.add.overlap(this.cat, this.mice, (cat, mouse) => {
@@ -175,7 +186,7 @@ class StreetLevel extends BaseLevelScene {
             } catch {
                 console.log('no audio possible');
             }
-            }, null, this);
+        }, null, this);
 
         // should be called at the end to the HUD will be on top
         super.create();
