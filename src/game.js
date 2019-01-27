@@ -22,6 +22,7 @@ let config = {
         TreeLevel,
         SpaceLevel,
         DDaveLevel,
+        LowTreeLevel,
         EndScene,
     ],
 };
