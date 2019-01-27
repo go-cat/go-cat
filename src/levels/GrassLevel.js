@@ -90,7 +90,39 @@ class GrassLevel extends BaseLevelScene {
         this.spawnObject(29,8,'mouse', this.mice);
         this.spawnObject(30,8,'mouse', this.mice);
         this.spawnObject(31,8,'mouse', this.mice);
-
+        this.spawnObject(53,7,'mouse', this.mice);
+        this.spawnObject(54,7,'mouse', this.mice);
+        this.spawnObject(55,7,'mouse', this.mice);
+        this.spawnObject(56,7,'mouse', this.mice);
+        this.spawnObject(57,7,'mouse', this.mice);
+        this.spawnObject(53,11,'mouse', this.mice);
+        this.spawnObject(54,11,'mouse', this.mice);
+        this.spawnObject(55,11,'mouse', this.mice);
+        this.spawnObject(56,11,'mouse', this.mice);
+        this.spawnObject(57,11,'mouse', this.mice);
+        this.spawnObject(69,7,'mouse', this.mice);
+        this.spawnObject(70,7,'mouse', this.mice);
+        this.spawnObject(71,7,'mouse', this.mice);
+        this.spawnObject(72,7,'mouse', this.mice);
+        this.spawnObject(79,11,'mouse', this.mice);
+        this.spawnObject(80,11,'mouse', this.mice);
+        this.spawnObject(81,11,'mouse', this.mice);
+        this.spawnObject(82,11,'mouse', this.mice);
+        this.spawnObject(85,11,'mouse', this.mice);
+        this.spawnObject(53,11,'mouse', this.mice);
+        this.spawnObject(86,11,'mouse', this.mice);
+        this.spawnObject(87,11,'mouse', this.mice);
+        this.spawnObject(81,7,'mouse', this.mice);
+        this.spawnObject(82,7,'mouse', this.mice);
+        this.spawnObject(83,7,'mouse', this.mice);
+        this.spawnObject(84,7,'mouse', this.mice);
+        this.spawnObject(85,7,'mouse', this.mice);
+        this.spawnObject(92,7,'mouse', this.mice);
+        this.spawnObject(93,7,'mouse', this.mice);
+        this.spawnObject(94,7,'mouse', this.mice);
+        this.spawnObject(95,7,'mouse', this.mice);
+        this.spawnObject(128,12,'mouse', this.mice);
+        this.spawnObject(129,12,'mouse', this.mice);
         // Create bomb
         this.bombs = this.physics.add.group();
 
@@ -181,7 +213,7 @@ class GrassLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && this.cat.body.touching.down) {
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 1.12) {
             this.cat.setVelocityY(-350);
         }
     }

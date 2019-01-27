@@ -272,7 +272,7 @@ class LowTreeLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && Math.abs(this.cat.body.velocity.y) < 2) {
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 0.18) {
             this.cat.setVelocityY(-420);
         }
     }
