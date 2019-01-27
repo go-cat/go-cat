@@ -115,8 +115,8 @@ class TreeLevel extends BaseLevelScene {
         platforms.create(200, 5200, 'branch');
         platforms.create(50, 5400, 'branch').flipX = true;
         platforms.create(300, 5500, 'branch');
-        platforms.create(600, 5750, 'branch');
-        birdhouse = this.physics.add.image(475, 5729, 'birdhouse');
+        platforms.create(700, 5750, 'branch');
+        birdhouse = this.physics.add.image(575, 5729, 'birdhouse');
         birdhouse.body.setAllowGravity(0, 0);
 
         // Our cat
