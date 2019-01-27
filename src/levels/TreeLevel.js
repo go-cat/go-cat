@@ -15,6 +15,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
         this.load.spritesheet('mouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
+        this.load.image('birdhouse', 'assets/images/bird_house.png');
         this.load.image('goal', 'assets/images/house_home_transparent.png');
 
         // Sound
@@ -58,6 +59,10 @@ class TreeLevel extends BaseLevelScene {
         // Create the branches
         platforms.create(50, 100, 'branch');
         platforms.create(300, 200, 'branch').flipX = true;
+        let birdhouse = this.physics.add.image(500, 200, 'birdhouse');
+        birdhouse.body.setAllowGravity(0, 0);
+
+
         platforms.create(700, 400, 'branch').flipX = true;
         platforms.create(500, 500, 'branch');
         platforms.create(300, 700, 'branch');

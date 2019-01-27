@@ -181,7 +181,7 @@ class GrassLevel extends BaseLevelScene {
     }
 
     buttonPressedUp(pressed) {
-        if (pressed && this.cat.body.touching.down) {
+        if (pressed && Math.abs(this.cat.body.velocity.y) < 0.18) {
             this.cat.setVelocityY(-350);
         }
     }
