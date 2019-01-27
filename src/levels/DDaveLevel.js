@@ -113,7 +113,7 @@ class DDaveLevel extends BaseLevelScene {
 
 
         // Create HiddenCape
-        this.cape = this.physics.add.sprite(95*32,96*32,"cape"); //200,2800,"cape");
+        this.cape = this.physics.add.sprite(95*32,96*32,"cape"); //200,2850,"cape");
         this.cape.body.allowGravity = false;
         this.capeMode = false
 
@@ -196,8 +196,8 @@ class DDaveLevel extends BaseLevelScene {
 
         if (this.capeMode){
             this.cape.anims.play('cape', true);
-            this.cape.setX(-this.shootDirection * 12 +this.cat.x);
-            this.cape.setY(this.cat.y-5);
+            this.cape.setX(-this.shootDirection * 13 +this.cat.x);
+            this.cape.setY(this.cat.y-2);
         }
         if (this.cat.velocity < 10){
             try {
