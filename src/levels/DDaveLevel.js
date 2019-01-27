@@ -190,11 +190,11 @@ class DDaveLevel extends BaseLevelScene {
                 // Delete all woolimages
                 this.woolimages.forEach( (woolimage) => { woolimage.visible = false; } );
                 // Show a green wool
-                let greenwoolimage = this.add.image(800 - 32, 96, 'wool');
+                let greenwoolimage = this.add.image(800 - 20, 78, 'wool');
                 greenwoolimage.setTint(0x00ff00);
                 greenwoolimage.setScrollFactor(0);
-                greenwoolimage.scaleY = 2;
-                greenwoolimage.scaleX = 2;
+                greenwoolimage.scaleY = 1.5;
+                greenwoolimage.scaleX = 1.5;
             }
         }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
@@ -257,7 +257,7 @@ class DDaveLevel extends BaseLevelScene {
         }
         this.millis += 1;
 
-        if (this.shootMillis > 50) {
+        if (this.shootMillis > 60) {
             this.shootFlag = false;
             this.shootMillis = 0;
         }
@@ -276,14 +276,12 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         // Show wool in HUD
-        if (this.ammo > 1000) {
-            // green wool means unlimited wool
-        } else {
+        if (this.ammo < 1000) {
             if (!this.woolimages.length) {
                 // Create pictures of wool
                 this.woolimages = [];
                 for (let i = 0; i < this.ammo; i++) {
-                    this.woolimages[i] = this.add.image(800 - 16 - (i * (8 + 24)), 64, 'wool');
+                    this.woolimages[i] = this.add.image(800 - 16 - (i * (8 + 24)), 68, 'wool');
                     this.woolimages[i].setScrollFactor(0);
                 }
             }
@@ -403,7 +401,7 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     shoot() {
-        if (!this.shootFlag) {
+        if (!(this.shootFlag)) {
             if (this.ammo > 0) {
                 this.wool = this.physics.add.sprite(this.cat.x, this.cat.y, "wool");
                 this.wool.body.allowGravity = false;
