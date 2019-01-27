@@ -19,6 +19,7 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('wool', 'assets/images/ball_wool.png');
 
         // Audio
+        this.load.audio('backgroundmusidavecape', 'assets/sounds/songs/Pixel_Peeker_Polka.ogg');
         this.load.audio('backgroundmusidave', 'assets/sounds/songs/Industrial_Cinematic2.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
@@ -145,6 +146,14 @@ class DDaveLevel extends BaseLevelScene {
         this.physics.add.overlap(this.cat, this.miceSprites, this.collectMouse, null, this);
         this.physics.add.overlap(this.cat, this.cape, () =>{
             this.capeMode = true;
+            // Music!
+            this.music.stop();
+            this.music = this.sound.add('backgroundmusidavecape');
+            try {
+                this.music.play();
+            } catch {
+                console.log('no audio possible');
+            }
             }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
             this.addScore(100);

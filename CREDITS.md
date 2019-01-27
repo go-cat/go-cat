@@ -6,6 +6,7 @@ Music
 * "Hamster March" by Kevin MacLeod (https://incompetech.com)
 * "Industrial Cinematic" by Kevin MacLeod (https://incompetech.com)
 * "Iron Horse" by Kevin MacLeod (https://incompetech.com)
+* "Pixel Peeker Polka" by Kevin MacLeod (https://incompetech.com)
 
 All Music: Creative Commons: By Attribution 3.0 (https://creativecommons.org/licenses/by/3.0)
 

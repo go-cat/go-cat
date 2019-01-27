@@ -25,7 +25,7 @@ class TreeLevel extends BaseLevelScene {
 
     create() {
         let numOfMice = 20;
-    
+
         // Music!
         this.music = this.sound.add('backgroundmusictree');
         try {
@@ -177,7 +177,7 @@ class TreeLevel extends BaseLevelScene {
 
     update(time, delta) {
         super.update(time, delta);
-        
+
         // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
         let poopiness = 20;
 
@@ -191,7 +191,7 @@ class TreeLevel extends BaseLevelScene {
                 birdpoop.setMass(0.1);
                 birdpoop.body.allowGravity = true;
                 birdpoop.body.setCollideWorldBounds(false);
-                
+
                 try {
                     this.sound.play("poopsound");
                 } catch {
