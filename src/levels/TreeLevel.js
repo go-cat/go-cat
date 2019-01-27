@@ -23,6 +23,8 @@ class TreeLevel extends BaseLevelScene {
     }
 
     create() {
+        let numOfMice = 20;
+    
         // Music!
         this.music = this.sound.add('backgroundmusictree');
         try {
@@ -131,7 +133,7 @@ class TreeLevel extends BaseLevelScene {
 
         // Mice
         this.mice = this.physics.add.group();
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i <= numOfMice; i++) {
             let x = Phaser.Math.Between(0, this.game.config.width);
             let y = Phaser.Math.Between(600, worldheight-100);
             let mouse = this.mice.create(x, y, 'mouse');
@@ -174,12 +176,15 @@ class TreeLevel extends BaseLevelScene {
 
     update(time, delta) {
         super.update(time, delta);
+        
+        // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
+        let poopiness = 20;
 
         // Birds fly
         /* Do we have a bird? */
         if (this.bird.flying) {
             /* should he poop? */
-            if (Phaser.Math.Between(1, 1000) < 20 && this.bird.y > 250) {
+            if (Phaser.Math.Between(1, 1000) <= poopiness && this.bird.y > 250) {
                 let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(2);
                 birdpoop.setBounceY(0);
                 birdpoop.setMass(0.1);
