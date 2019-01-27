@@ -13,6 +13,8 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('dogImage', 'assets/images/SpaceLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
         this.load.spritesheet('animcat', 'assets/images/cat_walking_animated.png', { frameWidth: 97, frameHeight: 101 });
+        this.load.image('cape', 'assets/images/cape.png');
+        this.load.spritesheet('animcape', 'assets/images/capeSprite.png', { frameWidth: 64, frameHeight: 64 });
         this.load.image('home', 'assets/images/house_home_transparent.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
 
@@ -23,6 +25,7 @@ class DDaveLevel extends BaseLevelScene {
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");
+        this.load.audio("whining", "assets/sounds/animals/dog_whining.ogg");
     }
 
     create() {
@@ -75,6 +78,15 @@ class DDaveLevel extends BaseLevelScene {
             frameRate: 20,
         });
 
+        // Cape
+        this.anims.remove('cape');
+        this.anims.create({
+            key: 'cape',
+            frames: this.anims.generateFrameNumbers('animcape', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1,
+        });
+
         // "Read" the Object-Layers
         this.dogSpawnLayer =  mapDave.objects.filter((mapDavelayer)=> {
             return mapDavelayer.name == "dogspawn";
@@ -90,6 +102,12 @@ class DDaveLevel extends BaseLevelScene {
         this.dogs = [];
         this.dogsSprites = this.physics.add.group();
         this.createDogs();
+
+
+        // Create HiddenCape
+        this.cape = this.physics.add.sprite(95*32,96*32,"cape");
+        this.cape.body.allowGravity = false;
+        this.capeMode = false
 
         // Create a Mice-Object-Array
         this.mice = [];
@@ -121,11 +139,14 @@ class DDaveLevel extends BaseLevelScene {
 
 
         this.physics.add.overlap(this.cat, this.miceSprites, this.collectMouse, null, this);
+        this.physics.add.overlap(this.cat, this.cape, () =>{
+            this.capeMode = true;
+            }, null, this);
         this.physics.add.overlap(this.cat, this.safezone, () => {
             this.addScore(100);
             this.addScore(Math.floor(this.timeLeft));
             this.startNextLevel();
-        }, null, this);
+            }, null, this);
 
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
@@ -151,6 +172,11 @@ class DDaveLevel extends BaseLevelScene {
             }
         }
 
+        if (this.capeMode){
+            this.cape.anims.play('cape', true);
+            this.cape.setX(-this.shootDirection * 12 +this.cat.x);
+            this.cape.setY(this.cat.y-5);
+        }
         if (this.cat.velocity < 10){
             try {
                 this.sound.play("land");
@@ -200,6 +226,7 @@ class DDaveLevel extends BaseLevelScene {
 
         if (this.cat.flipX === false) {
             this.cat.flipX = true;
+            this.cape.flipX = false;
         }
     }
 
@@ -215,6 +242,7 @@ class DDaveLevel extends BaseLevelScene {
 
         if (this.cat.flipX === true) {
             this.cat.flipX = false;
+            this.cape.flipX = true;
         }
     }
 
@@ -290,6 +318,11 @@ class DDaveLevel extends BaseLevelScene {
     }
 
     woolHitDog(wool, dog){
+        try {
+            this.sound.play("whining");
+        } catch {
+            console.log('no audio possible');
+        }
         dog.disableBody(true, true);
         wool.disableBody(true, true);
         this.shootFlag = false;
