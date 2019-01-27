@@ -321,6 +321,7 @@ class BaseLevelScene extends Phaser.Scene {
         this.physics.pause();
         cat.visible = false;
         let hump_cat = this.physics.add.sprite(cat.x, cat.y, 'cats_hump');
+        // magic numbers, don't change!
         hump_cat.displayWidth = cat.displayWidth * 0.9175257731958763;
         hump_cat.displayHeight = cat.displayHeight * 0.8514851485148515;
 
