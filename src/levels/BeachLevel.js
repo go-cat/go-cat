@@ -1,3 +1,5 @@
+"use strict";
+
 class BeachLevel extends BaseLevelScene {
     constructor() {
         super({ key: 'BeachLevel' })
@@ -52,6 +54,7 @@ class BeachLevel extends BaseLevelScene {
 
 
         this.millis = 0;
+        this.inAir = false;
 
 
         // The cat and its settings
@@ -63,6 +66,13 @@ class BeachLevel extends BaseLevelScene {
         this.cat.scaleY=0.6;
         this.cat.scaleX=0.6;
 
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
@@ -83,7 +93,6 @@ class BeachLevel extends BaseLevelScene {
             frames: [ { key: 'animcat', frame: 0 } ],
             frameRate: 20,
         });
-
 
         // "Read" the Object-Layers
         this.dogSpawnLayer =  beachMap.objects.filter((maplayer)=> {
@@ -133,7 +142,6 @@ class BeachLevel extends BaseLevelScene {
             this.mice.push({"sprite" : sprite ,"path": mousePath, "startX": mouseStartX, "speed": mouseSpeed});
         }
 
-
         let lay = this.safezoneLayer.objects[0];
         this.safezone = this.physics.add.image(lay.x + lay.width/2 , lay.y + lay.height/2 ,"home");
         this.safezone.body.allowGravity = false;
@@ -147,10 +155,7 @@ class BeachLevel extends BaseLevelScene {
         this.ground.displayWidth = lay2.width;
         this.ground.visible = false;
 
-
-
         //  Collide the cat and the mice with the platforms
-
         this.physics.add.collider(this.cat, collisionLayer);
         this.physics.add.collider(this.dogsSprites, collisionLayer);
         this.physics.add.collider(this.miceSprites, collisionLayer);
@@ -169,13 +174,16 @@ class BeachLevel extends BaseLevelScene {
         this.cameras.main.startFollow(this.cat);
         // should be called at the end to the HUD will be on top
         super.create();
-
     }
 
     update(time, delta) {
         super.update(time, delta);
 
-        for(let i =0; i<this.dogs.length; i++){
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 1) {
+            this.inAir = true;
+        }
+        for (let i = 0; i < this.dogs.length; i++) {
             let currentDog = this.dogs[i];
             if (currentDog["sprite"].x > currentDog["startX"]+currentDog["path"]) {
                 currentDog["sprite"].setVelocityX(-currentDog["speed"]);
@@ -232,7 +240,10 @@ class BeachLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -246,7 +257,10 @@ class BeachLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {
