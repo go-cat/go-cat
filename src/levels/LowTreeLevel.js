@@ -154,13 +154,13 @@ class LowTreeLevel extends BaseLevelScene {
         // Decorative bird droppings
         for(let i = 0; i < this.birdDroppingsLayer.objects.length; i++) {
             let drop = this.birdDroppingsLayer.objects[i];
-            let dropEl = decorativeElements.create(drop.x, drop.y, 'birddropping');
+            let dropEl = this.decorativeElements.create(drop.x, drop.y, 'birddropping');
             dropEl.flipX = Phaser.Math.Between(0, 10) > 5;
         }
         // Decorative static birds
         for(let i = 0; i < this.birdStaticLayer.objects.length; i++) {
             let sBird = this.birdStaticLayer.objects[i];
-            let sBirdEl = decorativeElements.create(sBird.x, sBird.y, 'bird');
+            let sBirdEl = this.decorativeElements.create(sBird.x, sBird.y, 'bird');
             sBirdEl.flipX = Phaser.Math.Between(0, 10) > 5;
         }
 
