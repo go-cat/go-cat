@@ -281,9 +281,7 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         // Show wool in HUD
-        if (this.ammo > 1000) {
-            // green wool means unlimited wool
-        } else {
+        if (this.ammo < 1000) {
             if (!this.woolimages.length) {
                 // Create pictures of wool
                 this.woolimages = [];
