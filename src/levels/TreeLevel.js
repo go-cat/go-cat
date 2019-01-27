@@ -13,7 +13,7 @@ class TreeLevel extends BaseLevelScene {
         this.load.image('branch', 'assets/images/TreeLevel/branch.png');
         this.load.image('ground', 'assets/images/TreeLevel/bottom_green_60px.png');
         this.load.spritesheet('bird', 'assets/images/bird_flying_animated.png', { frameWidth: 30, frameHeight: 30 } );
-        this.load.image('mouse', 'assets/images/mouse_left.png');
+        this.load.spritesheet('mouse', 'assets/images/mouse_left_animated.png', { frameWidth: 30, frameHeight: 20 } );
         this.load.image('birddropping', 'assets/images/bird_dropping.png');
         this.load.image('goal', 'assets/images/house_home_transparent.png');
 
@@ -134,13 +134,20 @@ class TreeLevel extends BaseLevelScene {
 
         // Mice
         this.mice = this.physics.add.group();
+        this.anims.remove('mousewalk');
+        this.anims.create({
+            key: 'mousewalk',
+            frames: this.anims.generateFrameNumbers('mouse', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
         for (let i = 0; i <= numOfMice; i++) {
             let x = Phaser.Math.Between(0, this.game.config.width);
             let y = Phaser.Math.Between(600, worldheight-100);
             let mouse = this.mice.create(x, y, 'mouse');
             mouse.body.setCollideWorldBounds(true);
+            mouse.anims.play('mousewalk');
         }
-
 
         // Colide events
         // The cat
