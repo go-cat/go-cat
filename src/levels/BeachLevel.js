@@ -47,8 +47,8 @@ class BeachLevel extends BaseLevelScene {
 
 
         // bounds
-        this.physics.world.setBounds(0,0,100*32,40*32, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 100*32,40*32);
+        this.physics.world.setBounds(0,0,100*32,46*32, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 100*32,46*32);
 
         // Variables
 
