@@ -213,7 +213,7 @@ class DDaveLevel extends BaseLevelScene {
         super.update(time, delta);
 
         this.inAir = false;
-        if (Math.abs(this.cat.body.velocity.y) > 1) {
+        if (Math.abs(this.cat.body.velocity.y) > 0.91) {
             this.inAir = true;
         }
         for (let i = 0; i < this.mice.length; i++) {

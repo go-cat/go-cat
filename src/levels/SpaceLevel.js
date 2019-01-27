@@ -186,7 +186,7 @@ class SpaceLevel extends BaseLevelScene {
         super.update(time, delta);
 
         this.inAir = false;
-        if (Math.abs(this.cat.body.velocity.y) > 2) {
+        if (Math.abs(this.cat.body.velocity.y) > 1.12) {
             this.inAir = true;
         }
         for (let i = 0; i < this.dogs.length; i++) {
