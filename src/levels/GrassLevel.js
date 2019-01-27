@@ -33,6 +33,7 @@ class GrassLevel extends BaseLevelScene {
         let map = this.make.tilemap({ key: "grass_map", tileWidth: 32, tileHeight: 32 });
         let tileset = map.addTilesetImage("grassTileset","grass_tiles");
 
+        let dynamicLayer2 = map.createDynamicLayer("background2", tileset, 0, 0);
         let dynamicLayer = map.createDynamicLayer("background", tileset, 0, 0);
         let collisionLayer = map.createStaticLayer("obstacles", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({ collides: true });
