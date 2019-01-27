@@ -764,12 +764,12 @@
                         {
                          "name":"spawnRate",
                          "type":"int",
-                         "value":300
+                         "value":400
                         }, 
                         {
                          "name":"speed",
                          "type":"int",
-                         "value":80
+                         "value":110
                         }],
                  "rotation":0,
                  "type":"",

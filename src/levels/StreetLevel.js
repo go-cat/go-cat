@@ -215,11 +215,6 @@ class StreetLevel extends BaseLevelScene {
 
         // Cape Mode!
         if (this.capeMode) {
-            if (this.cat.body.velocity.x == 0 && this.cat.body.velocity.y == 0) {
-                this.cape.visible = false;
-            } else {
-                this.cape.visible = true;
-            }
             this.cape.anims.play('cape', true);
             let cat_direction = -1;
             if (this.cat.flipX === true) {
@@ -235,10 +230,16 @@ class StreetLevel extends BaseLevelScene {
         if (pressed) {
             this.cat.setVelocityX(-350);
             this.cat.anims.play('walk', true);
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand');
+            if (this.capeMode) {
+                this.cape.visible = false;
             }
+        }
 
         if (this.cat.flipX === false) {
             this.cat.flipX = true;
@@ -250,10 +251,16 @@ class StreetLevel extends BaseLevelScene {
         if (pressed) {
             this.cat.setVelocityX(350);
             this.cat.anims.play('walk', true);
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand');
+            if (this.capeMode) {
+                this.cape.visible = false;
             }
+        }
 
         if (this.cat.flipX === true) {
             this.cat.flipX = false;
@@ -265,9 +272,15 @@ class StreetLevel extends BaseLevelScene {
         if (pressed) {
             this.cat.setVelocityY(-350);
             this.cat.anims.play('walk', true);
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityY(0);
             this.cat.anims.play('stand');
+            if (this.capeMode) {
+                this.cape.visible = false;
+            }
         }
     }
 
@@ -275,9 +288,15 @@ class StreetLevel extends BaseLevelScene {
         if (pressed) {
             this.cat.setVelocityY(350);
             this.cat.anims.play('walk', true);
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityY(0);
             this.cat.anims.play('stand');
+            if (this.capeMode) {
+                this.cape.visible = false;
+            }
         }
     }
 }

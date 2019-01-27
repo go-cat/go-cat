@@ -233,11 +233,6 @@ class DDaveLevel extends BaseLevelScene {
         }
 
         if (this.capeMode) {
-            if (this.cat.body.velocity.x == 0) {
-                this.cape.visible = false;
-            } else {
-                this.cape.visible = true;
-            }
             this.cape.anims.play('cape', true);
             this.cape.setX(-this.shootDirection * 13 + this.cat.x);
             this.cape.setY(this.cat.y - 2);
@@ -298,11 +293,17 @@ class DDaveLevel extends BaseLevelScene {
             this.cat.setVelocityX(-this.catSpeed);
             this.cat.anims.play('walk', true);
             this.shootDirection = -1;
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('idle', true);
             if (!(this.inAir)){
                 this.cat.anims.play('stand');
+                if (this.capeMode) {
+                    this.cape.visible = false;
+                }
             }
 
         }
@@ -318,11 +319,17 @@ class DDaveLevel extends BaseLevelScene {
             this.cat.setVelocityX(this.catSpeed);
             this.cat.anims.play('walk', true);
             this.shootDirection = 1;
+            if (this.capeMode) {
+                this.cape.visible = true;
+            }
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('idle', true);
             if (!(this.inAir)){
                 this.cat.anims.play('stand');
+                if (this.capeMode) {
+                    this.cape.visible = false;
+                }
             }
         }
 
