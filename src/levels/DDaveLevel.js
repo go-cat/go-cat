@@ -17,7 +17,7 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('cape', 'assets/images/cape.png');
         this.load.spritesheet('animcape', 'assets/images/capeSprite.png', {frameWidth: 64, frameHeight: 64});
         this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
-        this.load.spritesheet('doganim', 'assets/images/SpaceLevel/dog_sprites.png', {frameWidth: 146, frameHeight: 135});
+        this.load.spritesheet('spacedoganim', 'assets/images/SpaceLevel/dog_sprites.png', {frameWidth: 146, frameHeight: 135});
         this.load.image('home', 'assets/images/house_home_transparent.png');
         this.load.image('wool', 'assets/images/ball_wool.png');
 
@@ -107,7 +107,7 @@ class DDaveLevel extends BaseLevelScene {
         this.anims.remove('dogWalk');
         this.anims.create({
             key: 'dogWalk',
-            frames: this.anims.generateFrameNumbers('doganim', {start: 0, end: 2}),
+            frames: this.anims.generateFrameNumbers('spacedoganim', {start: 0, end: 2}),
             frameRate: 10,
             repeat: -1,
         });
