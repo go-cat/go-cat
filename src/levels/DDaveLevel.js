@@ -203,7 +203,7 @@ class DDaveLevel extends BaseLevelScene {
                 console.log('no audio possible');
             }
         }
-        console.log ("millis: ", this.millis, "timeout: ", this.timeout, "delta", delta, "dog time: ", this.dogs[0].time);
+        // console.log ("millis: ", this.millis, "timeout: ", this.timeout, "delta", delta, "dog time: ", this.dogs[0].time);
         if (this.millis > this.timeout){
             this.createDogs();
             try {
@@ -324,7 +324,6 @@ class DDaveLevel extends BaseLevelScene {
             sprite.scaleX = 0.6;
             this.dogs.push({"sprite": sprite, "startX": dogStartX, "speed": dogSpeed, "time" : 40000});
         }
-        console.log ("dogs created FINISH")
     }
 
     shoot(){
