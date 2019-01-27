@@ -190,7 +190,7 @@ class DDaveLevel extends BaseLevelScene {
                 // Delete all woolimages
                 this.woolimages.forEach( (woolimage) => { woolimage.visible = false; } );
                 // Show a green wool
-                let greenwoolimage = this.add.image(800 - 16, 64, 'wool');
+                let greenwoolimage = this.add.image(800 - 32, 96, 'wool');
                 greenwoolimage.setTint(0x00ff00);
                 greenwoolimage.setScrollFactor(0);
                 greenwoolimage.scaleY = 2;
