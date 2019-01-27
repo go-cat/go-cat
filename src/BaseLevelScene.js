@@ -44,34 +44,9 @@ class BaseLevelScene extends Phaser.Scene {
     create() {
         this.input.keyboard.on('keydown', (event) => {
             switch (event.key) {
-                case 'Escape':
-                    this.startNextLevel(false, 0);
-                    break;
-                case '1':
                 case 'Enter':
                     this.catLoosesLive();
                     this.startNextLevel(false, 1);
-                    break;
-                case '2':
-                    this.startNextLevel(false, 2);
-                    break;
-                case '3':
-                    this.startNextLevel(false, 3);
-                    break;
-                case '4':
-                    this.startNextLevel(false, 4);
-                    break;
-                case '5':
-                    this.startNextLevel(false, 5);
-                    break;
-                case '6':
-                    this.startNextLevel(false, 6);
-                    break;
-                case '7':
-                    this.startNextLevel(false, 7);
-                    break;
-                case '8':
-                    this.startNextLevel(false, 8);
                     break;
                 case 'ArrowUp':
                 case 'w':
