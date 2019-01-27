@@ -21,6 +21,7 @@ class BaseLevelScene extends Phaser.Scene {
             'SpaceLevel',
             'DDaveLevel',
             'LowTreeLevel',
+            'BeachLevel',
             'EndScene',
         ];
         this.currentSceneIndex = this.scenes.indexOf(config.key);
@@ -69,6 +70,9 @@ class BaseLevelScene extends Phaser.Scene {
                     break;
                 case '7':
                     this.startNextLevel(false, 7);
+                    break;
+                case '8':
+                    this.startNextLevel(false, 8);
                     break;
                 case 'ArrowUp':
                 case 'w':
