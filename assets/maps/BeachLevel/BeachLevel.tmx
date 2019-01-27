@@ -89,27 +89,27 @@
   <object id="14" x="2099.89" y="1285.01" width="265.731" height="17.5483"/>
   <object id="15" x="40.0138" y="1284.8" width="77.7137" height="20.0552"/>
   <object id="18" x="306.078" y="742.637" width="77.7137" height="20.0552"/>
-  <object id="19" x="1860.45" y="292.073" width="350.965" height="25.0689"/>
-  <object id="20" x="1856.05" y="289.769" width="353.472" height="27.5758"/>
+  <object id="19" x="1806.91" y="291.836" width="358.214" height="25.5867"/>
+  <object id="20" x="1802.42" y="289.484" width="360.773" height="28.1454"/>
   <object id="21" x="2289.21" y="262.778" width="486.089" height="17.5483"/>
   <object id="22" x="2251.73" y="263.739" width="525.113" height="17.5483"/>
   <object id="23" x="3034.97" y="680.844" width="42.6172" height="20.0552"/>
-  <object id="25" x="2147.53" y="896.437" width="350.965" height="25.0689"/>
-  <object id="26" x="2147.53" y="901.451" width="345.951" height="17.5483"/>
+  <object id="25" x="2167.93" y="902.558" width="306.081" height="25.0689"/>
+  <object id="26" x="2166.91" y="907.572" width="302.087" height="17.5483"/>
   <object id="27" x="1731.38" y="487.813" width="213.086" height="25.0689"/>
   <object id="41" x="300.448" y="515.849" width="77.7137" height="20.0552"/>
  </objectgroup>
  <objectgroup name="dogSpawn">
   <object id="28" x="1743.92" y="482.8" width="205.565" height="30.0827"/>
-  <object id="29" x="2140.01" y="893.93" width="353.472" height="22.562"/>
+  <object id="29" x="2166.53" y="900.051" width="302.467" height="22.562"/>
   <object id="30" x="1275.13" y="1257.43" width="193.031" height="52.6448"/>
-  <object id="34" x="376.922" y="294.783" width="1836.93" height="25.0689"/>
-  <object id="35" x="804.642" y="288.414" width="1408.87" height="15.0414"/>
-  <object id="36" x="797.17" y="287.262" width="1416.4" height="25.0689"/>
-  <object id="39" x="2237.4" y="236.205" width="538.982" height="42.6172"/>
+  <object id="34" x="442.137" y="294.601" width="1725.47" height="25.5867"/>
+  <object id="35" x="729.297" y="288.101" width="1437.97" height="15.352"/>
+  <object id="36" x="721.67" y="286.925" width="1445.65" height="25.5867"/>
+  <object id="39" x="2244.59" y="236.205" width="538.982" height="42.6172"/>
  </objectgroup>
  <objectgroup name="safezone">
-  <object id="42" x="3072.75" y="536.734" width="122.15" height="162.866"/>
+  <object id="42" x="3075.37" y="591.093" width="121" height="113"/>
  </objectgroup>
  <objectgroup name="ground">
   <object id="1" x="805.297" y="1380.57" width="2396.54" height="86.3664"/>
