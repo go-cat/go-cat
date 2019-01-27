@@ -232,7 +232,7 @@ class StreetLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand');
-        }
+            }
 
         if (this.cat.flipX === false) {
             this.cat.flipX = true;
@@ -247,7 +247,7 @@ class StreetLevel extends BaseLevelScene {
         } else {
             this.cat.setVelocityX(0);
             this.cat.anims.play('stand');
-        }
+            }
 
         if (this.cat.flipX === true) {
             this.cat.flipX = false;

@@ -56,6 +56,7 @@ class BeachLevel extends BaseLevelScene {
 
         // Variables
         this.millis = 0;
+        this.inAir = false;
 
         // The cat and its settings
         this.cat = this.physics.add.sprite(100, 300, 'cat');
@@ -66,6 +67,13 @@ class BeachLevel extends BaseLevelScene {
         this.cat.scaleY = 0.6;
         this.cat.scaleX = 0.6;
 
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
@@ -173,6 +181,10 @@ class BeachLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 1) {
+            this.inAir = true;
+        }
         for (let i = 0; i < this.dogs.length; i++) {
             let currentDog = this.dogs[i];
             if (currentDog["sprite"].x > currentDog["startX"] + currentDog["path"]) {
@@ -230,7 +242,10 @@ class BeachLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -244,7 +259,10 @@ class BeachLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {

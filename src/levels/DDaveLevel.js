@@ -83,6 +83,13 @@ class DDaveLevel extends BaseLevelScene {
             frameRate: 10,
             repeat: -1,
         });
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('stand');
         this.anims.create({
             key: 'stand',
@@ -260,7 +267,11 @@ class DDaveLevel extends BaseLevelScene {
             this.shootDirection = -1;
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
+
         }
 
         if (this.cat.flipX === false) {
@@ -276,7 +287,10 @@ class DDaveLevel extends BaseLevelScene {
             this.shootDirection = 1;
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {

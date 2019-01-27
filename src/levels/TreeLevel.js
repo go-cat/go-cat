@@ -26,6 +26,7 @@ class TreeLevel extends BaseLevelScene {
     }
 
     create() {
+        this.inAir = false;
         let numOfMice = 20;
 
         // Music!
@@ -125,6 +126,13 @@ class TreeLevel extends BaseLevelScene {
         this.cameras.main.startFollow(this.cat);
         this.cat.body.gravity.y = 300;
         this.cat.setSize(50, 50, true);
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
@@ -213,6 +221,11 @@ class TreeLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 3) {
+            this.inAir = true;
+        }
+
         // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
         let poopiness = 20;
         // How big is a poop hitbox?
@@ -263,7 +276,10 @@ class TreeLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -277,7 +293,10 @@ class TreeLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {

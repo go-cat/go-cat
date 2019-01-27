@@ -31,6 +31,7 @@ class LowTreeLevel extends BaseLevelScene {
     }
 
     create() {
+        this.inAir = false;
         // Music!
         this.music = this.sound.add('backgroundmusiclowtree');
         try {
@@ -78,6 +79,13 @@ class LowTreeLevel extends BaseLevelScene {
         this.cat.scaleX = 0.7;
 
         // Cat animations
+        this.anims.remove('idle');
+        this.anims.create({
+            key: 'idle',
+            frames: this.anims.generateFrameNumbers('animcat', {start: 1, end: 1}),
+            frameRate: 10,
+            repeat: -1,
+        });
         this.anims.remove('walk');
         this.anims.create({
             key: 'walk',
@@ -192,6 +200,10 @@ class LowTreeLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
+        this.inAir = false;
+        if (Math.abs(this.cat.body.velocity.y) > 1) {
+            this.inAir = true;
+        }
         // delete Birds that are out of sight
         for (let i = 0; i < this.birds.length; i++) {
             let birdX = this.birds[i].x;
@@ -242,7 +254,10 @@ class LowTreeLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand');
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === false) {
@@ -256,7 +271,10 @@ class LowTreeLevel extends BaseLevelScene {
             this.cat.anims.play('walk', true);
         } else {
             this.cat.setVelocityX(0);
-            this.cat.anims.play('stand', true);
+            this.cat.anims.play('idle', true);
+            if (!(this.inAir)){
+                this.cat.anims.play('stand');
+            }
         }
 
         if (this.cat.flipX === true) {
