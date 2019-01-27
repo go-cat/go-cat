@@ -11,8 +11,13 @@ class EndScene extends BaseLevelScene {
     preload() {
         super.preload();
 
+        let middleImage = 'assets/images/go_cat_endscene.png';
+        if (this.remainingLives < 0) {
+            middleImage = 'assets/images/go_sad_cat_endscene.png';
+        }
+
         this.load.image('background', 'assets/images/go_cat_start_background_brown.png');
-        this.load.image('middle', 'assets/images/go_cat_endscene.png');
+        this.load.image('middle', middleImage);
         this.load.image('button', 'assets/images/go_again_cat_startbutton_brown.png');
 
         this.load.audio('cat_purr', 'assets/sounds/animals/cat_purr.ogg');
