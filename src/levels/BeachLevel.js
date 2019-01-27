@@ -1,5 +1,3 @@
-"use strict";
-
 class BeachLevel extends BaseLevelScene {
     constructor() {
         super({key: 'BeachLevel'})
@@ -9,9 +7,7 @@ class BeachLevel extends BaseLevelScene {
         super.preload();
 
         this.load.tilemapTiledJSON("beachMap", "assets/maps/BeachLevel/BeachLevel.json");
-        this.load.image('Cliff', "assets/images/BeachLevel/CliffTilset.png");
-        this.load.image('Ground', "assets/images/BeachLevel/GroundTileset.png");
-        this.load.image('Water', "assets/images/BeachLevel/WaterTileset.png");
+        this.load.image('beach', "assets/images/BeachLevel/BeachTileset.jpg");
         this.load.image('mouse', 'assets/images/mouse_left.png');
         this.load.image('dogImage', 'assets/images/BeachLevel/dog.png');
         this.load.image('cat', 'assets/images/cat_walking_right.png');
@@ -39,26 +35,20 @@ class BeachLevel extends BaseLevelScene {
 
         // layer and map for the Tilemap
         let beachMap = this.make.tilemap({key: "beachMap", tileWidth: 16, tileHeight: 16});
-        let tileset1 = beachMap.addTilesetImage("beachtileset", "Cliff");
-        let tileset2 = beachMap.addTilesetImage("beachtileset", "Ground");
-        let tileset3 = beachMap.addTilesetImage("beachtileset", "Water");
+        let tileset = beachMap.addTilesetImage("BeachTileset", "beach");
 
-        //let dynamicLayer = beachMap.createDynamicLayer("background", tileset, 0, 0);
-        let collisionLayer2 = beachMap.createStaticLayer("obstacles", tileset1, 0, 0);
-        let collisionLayer = beachMap.createStaticLayer("obstacles", tileset2, 0, 0);
-        let collisionLayer3 = beachMap.createStaticLayer("obstacles", tileset3, 0, 0);
-
+        let collisionLayer = beachMap.createStaticLayer("obstacles", tileset, 0, 0);
         collisionLayer.setCollisionByProperty({collides: true});
 
         // bounds
-        this.physics.world.setBounds(0, 0, 2400, 600, true, true, true, true);
-        this.cameras.main.setBounds(0, 0, 2400, 600);
+        this.physics.world.setBounds(0, 0, 90 * 32, 40 * 32, true, true, true, true);
+        this.cameras.main.setBounds(0, 0, 90 * 32, 40 * 32);
 
         // Variables
         this.millis = 0;
 
         // The cat and its settings
-        this.cat = this.physics.add.sprite(100, 300, 'cat');
+        this.cat = this.physics.add.sprite(900, 1100, 'cat');
         this.cat.setBounce(0.2);
         this.cat.setCollideWorldBounds(true);
         this.cameras.main.startFollow(this.cat);
@@ -166,6 +156,7 @@ class BeachLevel extends BaseLevelScene {
         }, null, this);
 
         this.cameras.main.startFollow(this.cat);
+
         // should be called at the end to the HUD will be on top
         super.create();
     }
