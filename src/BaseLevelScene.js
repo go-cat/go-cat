@@ -181,7 +181,7 @@ class BaseLevelScene extends Phaser.Scene {
                     continue;
                 }
 
-                switch (pad.axes[0].value) {
+                switch (parseInt(pad.axes[0].value)) {
                     case -1:
                         this.xAxisGamepadPressed = true;
                         this.buttonPressedLeft(true);
@@ -199,7 +199,7 @@ class BaseLevelScene extends Phaser.Scene {
                         break;
                 }
 
-                switch (pad.axes[1].value) {
+                switch (parseInt(pad.axes[1].value)) {
                     case -1:
                         this.yAxisGamepadPressed = true;
                         this.buttonPressedUp(true);
