@@ -25,7 +25,7 @@ class LowTreeLevel extends BaseLevelScene {
         this.load.spritesheet('animouse', 'assets/images/mouse_left_animated.png', {frameWidth: 30, frameHeight: 20});
 
         // Audio
-        this.load.audio('backgroundmusiclowtree', 'assets/sounds/songs/Iron_Horse.ogg');
+        this.load.audio('backgroundmusiclowtree', 'assets/sounds/music/Hiding_Your_Reality.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("jump", "assets/sounds/movement/jump_sfx_movement_jump8.wav");
         this.load.audio("land", "assets/sounds/movement/land_sfx_movement_jump9_landing.wav");

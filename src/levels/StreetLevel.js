@@ -21,8 +21,8 @@ class StreetLevel extends BaseLevelScene {
             spacing: 14
         });
 
-        this.load.audio('backgroundmusicstreet', 'assets/sounds/songs/Big_Rock.ogg');
-        this.load.audio('backgroundmusicstreetcape', 'assets/sounds/songs/Pixel_Peeker_Polka.ogg');
+        this.load.audio('backgroundmusicstreet', 'assets/sounds/music/Big_Rock.ogg');
+        this.load.audio('backgroundmusicstreetcape', 'assets/sounds/music/Pixel_Peeker_Polka.ogg');
         this.load.audio('cat_hit', 'assets/sounds/animals/cat_angry.ogg');
         this.load.audio('meow', 'assets/sounds/animals/cat_meow1.ogg');
     }

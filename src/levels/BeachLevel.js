@@ -19,7 +19,7 @@ class BeachLevel extends BaseLevelScene {
         this.load.image('home', 'assets/images/house_home_transparent.png');
 
         // Audio
-        this.load.audio('backgroundmusicspace', 'assets/sounds/songs/Iron_Horse.ogg');
+        this.load.audio('backgroundmusicbeach', 'assets/sounds/music/Lagoa_v2.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");
@@ -30,7 +30,7 @@ class BeachLevel extends BaseLevelScene {
 
     create() {
         // Music!
-        this.music = this.sound.add('backgroundmusicspace');
+        this.music = this.sound.add('backgroundmusicbeach');
         try {
             this.music.play();
         } catch {
