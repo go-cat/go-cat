@@ -22,8 +22,8 @@ class DDaveLevel extends BaseLevelScene {
         this.load.image('wool', 'assets/images/ball_wool.png');
 
         // Audio
-        this.load.audio('backgroundmusidavecape', 'assets/sounds/songs/Pixel_Peeker_Polka.ogg');
-        this.load.audio('backgroundmusidave', 'assets/sounds/songs/Industrial_Cinematic2.ogg');
+        this.load.audio('backgroundmusidavecape', 'assets/sounds/music/Pixel_Peeker_Polka.ogg');
+        this.load.audio('backgroundmusidave', 'assets/sounds/music/Industrial_Cinematic2.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
         this.load.audio("dogLong", "assets/sounds/animals/dog_bark_long.ogg");

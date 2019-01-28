@@ -17,7 +17,7 @@ class GrassLevel extends BaseLevelScene {
         this.load.image('grass_goal', 'assets/images/house_home_transparent.png');
 
         // Audio
-        this.load.audio('backgroundmusicgrass', 'assets/sounds/songs/Hamster_March.ogg');
+        this.load.audio('backgroundmusicgrass', 'assets/sounds/music/Hamster_March.ogg');
         this.load.audio("meow", "assets/sounds/animals/cat_meow1.ogg");
         this.load.audio("bark", "assets/sounds/animals/dog_bark_short.ogg");
     }
