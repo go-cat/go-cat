@@ -24,12 +24,13 @@ class EndScene extends BaseLevelScene {
     }
 
     create() {
-        // Music!
-        this.music = this.sound.add('cat_purr', {loop: true});
-        try {
-            this.music.play();
-        } catch {
-            console.log('no audio possible');
+        if (this.remainingLives >= 0) {
+            this.music = this.sound.add('cat_purr', {loop: true});
+            try {
+                this.music.play();
+            } catch {
+                console.log('no audio possible');
+            }
         }
 
         this.add.image(400, 300, 'background');
