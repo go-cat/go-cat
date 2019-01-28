@@ -46,7 +46,10 @@ class BaseLevelScene extends Phaser.Scene {
             switch (event.key) {
                 case 'Enter':
                     // Only when in start screen or end screen
-                    if (this.currentSceneIndex == 0 || this.currentSceneIndex == this.scenes.length-1) {
+                    if (
+                        this.scenes[this.currentSceneIndex] === 'StartScene'
+                        || this.scenes[this.currentSceneIndex] === 'EndScene'
+                    ) {
                         this.catLoosesLive();
                         this.startNextLevel(false, 1);
                     }
