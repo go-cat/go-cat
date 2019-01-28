@@ -174,7 +174,7 @@ class TreeLevel extends BaseLevelScene {
             frameRate: 10,
             repeat: -1
         });
-        for (let i = 0; i <= numOfMice; i++) {
+        for (let i = 0; i < numOfMice; i++) {
             let x = Phaser.Math.Between(0, this.game.config.width);
             let y = Phaser.Math.Between(600, worldheight - 100);
             let mouse = this.mice.create(x, y, 'mouse');
@@ -182,6 +182,14 @@ class TreeLevel extends BaseLevelScene {
             mouse.anims.play('mousewalk');
             if (i % 2 == 0) {
                 mouse.flipX = true;
+            }
+            // Make it move
+            if (Phaser.Math.Between(1, 2) == 1) {
+                mouse.setVelocityX(600);
+                mouse.flipX = true;
+            } else {
+                mouse.setVelocityX(-600);
+                mouse.flipX = false;
             }
         }
 
@@ -221,15 +229,40 @@ class TreeLevel extends BaseLevelScene {
     update(time, delta) {
         super.update(time, delta);
 
+        // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
+        let poopiness = 20;
+        // How big is a poop hitbox?
+        let poopsize = 5;
+
+        // Check if cat in Air
         this.inAir = false;
         if (Math.abs(this.cat.body.velocity.y) > 3) {
             this.inAir = true;
         }
 
-        // poopiness of the bird between 0 (house-trained) and 1000 (shitstorm)
-        let poopiness = 20;
-        // How big is a poop hitbox?
-        let poopsize = 5;
+        // Mice do move
+        this.mice.children.iterate((mouse) => {
+            // Check if mouse is about to fall down
+            if (!mouse.body.touching.down) {
+                // Let it turn
+                if (mouse.flipX == true) {
+                    mouse.setVelocityX(-600);
+                    mouse.flipX = false;
+                } else {
+                    mouse.setVelocityX(600);
+                    mouse.flipX = true;
+                }
+            }
+            // Check if mouse is hanging
+            if (mouse.body.blocked.right) {
+                mouse.setVelocityX(-600);
+                mouse.flipX = false;
+            }
+            if (mouse.body.blocked.left) {
+                mouse.setVelocityX(600);
+                mouse.flipX = true;
+            }
+        });
 
         // Birds fly
         /* Do we have a bird? */
