@@ -116,6 +116,9 @@ class BaseLevelScene extends Phaser.Scene {
         }
 
         if (this.deviceSupportsTouch()) {
+            // One more pointer to push up to two buttons at the same time
+            this.input.addPointer(1);
+
             this.leftTouchArrow = this.add.image(60, 540, 'touch_arrow');
             this.leftTouchArrow.angle = 180;
             this.leftTouchArrow.setInteractive();
