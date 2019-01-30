@@ -55,5 +55,9 @@ class EndScene extends BaseLevelScene {
         });
 
         super.create();
+
+        if (this.remainingLives >= 0) {
+            this.addScore(200 * this.remainingLives);
+        }
     }
 }
