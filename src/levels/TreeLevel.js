@@ -269,7 +269,7 @@ class TreeLevel extends BaseLevelScene {
         if (this.bird.flying) {
             /* should he poop? */
             if (Phaser.Math.Between(1, 1000) <= poopiness && this.bird.y > 250) {
-                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y, 'birddropping').setScale(3);
+                let birdpoop = this.birdpoops.create(this.bird.x, this.bird.y+25, 'birddropping').setScale(3);
                 birdpoop.setBounceY(0);
                 birdpoop.setMass(0.1);
                 birdpoop.setSize(poopsize, poopsize, true);
