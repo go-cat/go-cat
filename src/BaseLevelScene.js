@@ -255,6 +255,15 @@ class BaseLevelScene extends Phaser.Scene {
         this.scoreText.text = 'score:' + BaseLevelScene.formatNumberToText(this.score);
     }
 
+    getScore() {
+        return this.score;
+    }
+
+    changeScorePos(x = 0, y = 0){
+        this.scoreText.y = this.scoreText.y + y;
+        this.scoreText.x = this.scoreText.x + x;
+    }
+
     startNextLevel(next = true, sceneIndex) {
         if (this.music && this.music.isPlaying) {
             this.music.stop();
